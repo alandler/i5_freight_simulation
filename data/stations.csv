@@ -1,0 +1,485 @@
+﻿OID_,OBJECTID,station_na,fuel_type_,status_cod,street_add,city,st_prv_cod,zip,station_ph,access_day,groups_wit,cards_acce,longitude,latitude
+1,14,Scripps Green Hospital,ELEC,AVBL,10666 N Torrey Pines Rd,La Jolla,CA,92037,858-554-9100,24 hours daily,Public, ,-117.242999999999995,32.899470000000001
+2,31,Sacramento International Airport - Daily A Lot,ELEC,AVBL,Lindbergh Dr,Sacramento,CA,95837,916-874-0670,24 hours daily; pay lot,Public, ,-121.588890000000006,38.690049999999999
+3,57,Sylmar Metrolink Station,ELEC,AVBL,Village Way Dr,San Fernando,CA,91342,866-816-7584  818-237-7641,24 hours daily,Public, ,-118.449791399999995,34.292413400000001
+4,83,Sutter Galleria Mall - University of California - Davis Extension,ELEC,AVBL,2901 K St,Sacramento,CA,95816,916-327-7072,24 hours daily; pay lot; visitor and student use only,Public, ,-121.467901999999995,38.572769999999998
+5,87,City of Sacramento - Belle Cooledge Library,ELEC,AVBL,5600 S Land Park Dr,Sacramento,CA,95822,916-264-2700,24 hours daily,Public, ,-121.511200000000002,38.524403000000000
+6,467,Nissan of Irvine,ELEC,AVBL,32 Auto Center Dr,Irvine,CA,92618,949-385-6044,Dealership business hours,Public - Call ahead, ,-117.723298000000000,33.632505000000002
+7,472,Nissan of Mission Hills,ELEC,AVBL,11000 Sepulveda Blvd,Mission Hills,CA,91345,818-838-4444,Dealership business hours,Public - Call ahead, ,-118.466605999999999,34.269809000000002
+8,478,Mossy Nissan - Oceanside,ELEC,AVBL,3535 College Blvd,Oceanside,CA,92056,760-720-9797,Dealership business hours,Public - Call ahead, ,-117.298333999999997,33.181953000000000
+9,484,Crown Nissan,ELEC,AVBL,300 E Cypress Ave,Redding,CA,96002,530-223-2177,Dealership business hours,Public - Call ahead, ,-122.366540000000001,40.571632000000001
+10,497,Nissan - San Juan Capistrano,ELEC,AVBL,33633 Camino Capistrano,San Juan Capistrano,CA,92675,888-718-2419,Dealership business hours,Public - Call ahead, ,-117.676141999999999,33.474429999999998
+11,510,Champion Nissan,ELEC,AVBL,24111 Creekside Rd,Valencia,CA,91355,661-255-2020,Dealership business hours,Public - Call ahead, ,-118.557773999999995,34.420546000000002
+12,1062,EVSP WALGREENS,ELEC,AVBL,26531 Aliso Creek Rd,Aliso Viejo,CA,92656,888-758-4389,24 hours daily,Public, ,-117.723844499999998,33.577102799999999
+13,2366,University of California - Davis Medical Center,ELEC,AVBL,4241 X St,Sacramento,CA,95817,800-282-3284,24 hours daily,Public, ,-121.456100000000006,38.553545000000000
+14,2768,California Air Resources Board,ELEC,AVBL,1900 14th St,Sacramento,CA,95811,916-322-3289,24 hours daily,Public, ,-121.492654000000002,38.568680999999998
+15,2769,Wells Fargo Center,ELEC,AVBL,400 Capital Mall,Sacramento,CA,95814,916-614-8850,Garage business hours; pay lot,Public, ,-121.502380000000002,38.578648000000001
+16,3034,SACRAMENTO,ELEC,AVBL,300 Richards Blvd,Sacramento,CA,95811,888-758-4389,24 hours daily,Public, ,-121.500626999999994,38.596758000000001
+17,3051,Evergreen,ELEC,AVBL,300 Capitol Mall,Sacramento,CA,95814,916-498-9854,24 hours daily; pay lot,Public, ,-121.503856999999996,38.578940000000003
+18,3392,Los Banos KOA,ELEC,AVBL,28485 Gonzaga Rd,Gustine,CA,95322,800-562-3992,8am-5pm daily,Public, ,-121.015401999999995,37.055146999999998
+19,3590,Trillium - Yolo County Transportation District,ELEC,AVBL,350 Industrial Way,Woodland,CA,95776,800-920-1166  530-661-0816,24 hours daily,Public, ,-121.753507999999997,38.679225000000002
+20,3789,Los Angeles County Sheriff - Santa Clarita Station,ELEC,AVBL,23740 Magic Mountain Pkwy,Santa Clarita,CA,91355,323-267-2023,"24 hours daily; keypad activated, instructions on EVSE",Public, ,-118.551259000000002,34.416091999999999
+21,3942,Los Angeles County - Olive View UCLA Medical Center,ELEC,AVBL,14445 Olive View Dr,Sylmar,CA,91342,323-267-2023,"24 hours daily; keypad activated, instructions on EVSE",Public, ,-118.445513000000005,34.325912000000002
+22,4514,R Street Parking Plaza,ELEC,AVBL,1515 R St,Sacramento,CA,95811,916-709-0414,24 hours daily,Public, ,-121.490127999999999,38.569558999999998
+23,4581,San Joaquin County Office of Education,ELEC,AVBL,2707 Transworld Dr,Stockton,CA,95206,209-468-4800,8am-5pm M-F; see front desk for access,Public - Call ahead, ,-121.232399999999998,37.909461999999998
+24,4696,Redding Kia,ELEC,AVBL,418 E Cypress Ave,Redding,CA,96002,530-226-0418,Dealership business hours,Public - Call ahead, ,-122.364311000000001,40.571392000000003
+25,4724,City of Woodland - Public Parking,ELEC,AVBL,617 Dead Cat Alley,Woodland,CA,95695,530-661-2060,24 hours daily; 2 hour parking limit,Public, ,-121.772700000000000,38.678300000000000
+26,4725,City of Woodland - Woodland Public Library,ELEC,AVBL,501 Court St,Woodland,CA,95695,530-661-2060,24 hours daily,Public, ,-121.774299999999997,38.679200000000002
+27,4731,Castaic Lake RV Park,ELEC,AVBL,31540 Ridge Route Rd,Castaic,CA,91384,661-257-3340,24 hours daily; accepts EVRUS Card,Public, ,-118.616810999999998,34.491866000000002
+28,4772,Sacramento Natural Foods Co-Op,ELEC,AVBL,2815 S St,Sacramento,CA,95816,916-455-2667,24 hours daily,Public, ,-121.472785000000002,38.564078000000002
+29,4835,Sacramento Metro Air Quality Management District,ELEC,AVBL,777 12th St,Sacramento,CA,95814,916-874-4800,Garage business hours; mainly for employee use,Public, ,-121.489350000000002,38.582059000000001
+30,4843,Woodland Joint Unified School District - Zamora Elementary,ELEC,AVBL,1716 Cottonwood St,Woodland,CA,95695,530-666-3641,24 hours daily; check in with office during school hours,Public, ,-121.794707000000002,38.658127999999998
+31,4845,Woodland Joint Unified School District - Woodland High School,ELEC,AVBL,21 N W St,Woodland,CA,95695,530-662-4678,24 hours daily; check in with office during school hours,Public, ,-121.786231999999998,38.686897000000002
+32,4846,Woodland Joint Unified School District - District Office,ELEC,AVBL,435 6th St,Woodland,CA,95695,530-662-0201,24 hours daily; check in with office during school hours,Public, ,-121.766289000000000,38.676195999999997
+33,4847,Woodland Joint Unified School District - Rhoda Maxwell Elementary School,ELEC,AVBL,50 Ashley Ave,Woodland,CA,95695,530-662-1784,24 hours daily; check in with office during school hours,Public, ,-121.799049999999994,38.683942999999999
+34,4848,Woodland Joint Unified School District - Whitehead Elementary,ELEC,AVBL,624 W Southwood Dr,Woodland,CA,95695,530-662-2824,24 hours daily; check in with office during school hours,Public, ,-121.794557999999995,38.669818999999997
+35,4849,Woodland Joint Unified School District - Tafoya Elementary,ELEC,AVBL,720 Homestead Way,Woodland,CA,95776,530-666-4324,24 hours daily; check in with office during school hours,Public, ,-121.739797999999993,38.671075000000002
+36,4897,Quail Hill Shopping Center,ELEC,AVBL,6601 Quail Hill Pkwy,Irvine,CA,92620,949-339-1033,24 hours daily,Public, ,-117.778086999999999,33.654080000000000
+37,4903,Sacramento Area Electrical Training Center,ELEC,AVBL,2836 El Centro Rd,Sacramento,CA,95833,916-646-6688,24 hours daily,Public, ,-121.535360999999995,38.618915999999999
+38,4905,Ocean Air Rec. Center - San Diego,ELEC,AVBL,4770 Fairport Way,San Diego,CA,92130,855-885-9571, ,Public, ,-117.217378999999994,32.931291999999999
+39,4956,CalPERS,ELEC,AVBL,400 Q St,Sacramento,CA,95811,916-795-2446,Garage business hours,Public, ,-121.504869999999997,38.574401999999999
+40,4957,CalPERS,ELEC,AVBL,400 P St,Sacramento,CA,95811,916-795-2446,Garage business hours,Public, ,-121.504536999999999,38.575240000000001
+41,5189,Hacienda,ELEC,AVBL,28811 Ortega Way,San Juan Capistrano,CA,92675,855-443-3873,24 hours daily,Public, ,-117.624821984999997,33.525379424999997
+42,5191,The Outpost,ELEC,AVBL,28811 Ortega Way,San Juan Capistrano,CA,92675,855-443-3873,24 hours daily,Public, ,-117.616509320999995,33.527301550799997
+43,5192,Ranch House,ELEC,AVBL,28811 Ortega Way,San Juan Capistrano,CA,92675,855-443-3873,24 hours daily,Public, ,-117.624134401999996,33.525951541300003
+44,5461,Jeronimo 9501 2,ELEC,AVBL,9501  Jeronimo Rd,Irvine,CA,92618,855-443-3873,24 hours daily,Public, ,-117.716963000000007,33.649738900000003
+45,5489,Jeronimo 9501 1,ELEC,AVBL,9501  Jeronimo Rd,Irvine,CA,92618,855-443-3873,24 hours daily,Public, ,-117.716763000000000,33.649738900000003
+46,5952,City of Woodland - Public Parking,ELEC,AVBL,435 Court St,Woodland,CA,95695,530-661-2060,24 hours daily,Public, ,-121.775000000000006,38.679000000000002
+47,6078,Christa McAuliffe Middle School,ELEC,AVBL,3880 Iron Canyon Cir,Stockton,CA,95209,209-331-7193,24 hours daily,Public, ,-121.366808000000006,38.045079999999999
+48,6079,Bear Creek High School,ELEC,AVBL,10555 Thornton Rd,Stockton,CA,95209,209-331-7193,24 hours daily,Public, ,-121.351267000000007,38.051544999999997
+49,6124,Los Angeles County - Olive View UCLA Medical Center - Overflow Lot,ELEC,AVBL,14445 Olive View Dr,Sylmar,CA,91342,323-267-2023,"24 hours daily; keypad activated, instructions on EVSE",Public, ,-118.445513000000005,34.325912000000002
+50,6292,Best Western,ELEC,AVBL,25020 W Dorris Ave,Coalinga,CA,93210,559-935-0866,24 hours daily,Public,A Cash Checks D M V,-120.248181000000002,36.256100000000004
+51,6421,Days Inn,ELEC,AVBL,14684 Aloma St,Lost Hills,CA,93249,877-676-6266  661-797-2371,24 hours daily,Public,A Cash Checks D M V,-119.656362999999999,35.617189000000003
+52,6970,Sacramento International Airport - Cell Phone Lot,ELEC,AVBL,Lindbergh Dr,Sacramento,CA,95837,888-751-8560  916-874-0670,24 hours daily,Public, ,-121.591806899999995,38.678937699999999
+53,8316,Whole Foods - Flower Hill Promenade,ELEC,AVBL,2600 Via de la Valle,Del Mar,CA,92014,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.252453000000003,32.981482999999997
+54,8362,The Shops at Mission Viejo,ELEC,AVBL,555 the Shops at Mission Viejo,Mission Viejo,CA,92691,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.668266000000003,33.557200999999999
+55,8436,Lazy Acres,ELEC,AVBL,150 Encinitas Blvd,Encinitas,CA,92024,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.288899000000001,33.049812000000003
+56,8453,Carlsbad Premium Outlets,ELEC,AVBL,5620 Paseo del Norte,Carlsbad,CA,92008,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.319507000000002,33.124966000000001
+57,8616,Bridgeport Marketplace,ELEC,AVBL,23841 Newhall Ranch Rd,Valencia,CA,91355,877-455-3833,24 hours daily,Public - Card key at all times, ,-118.552869000000001,34.429412999999997
+58,8879,Walmart,ELEC,AVBL,755 Riverpoint Ct,West Sacramento,CA,95605,877-455-3833,24 hours daily,Public - Card key at all times, ,-121.550955000000002,38.587955000000001
+59,8905,7-Eleven,ELEC,AVBL,901 Palomar Airport Rd,Carlsbad,CA,92011,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.318729000000005,33.121561000000000
+60,9120,Office Building,ELEC,AVBL,15231 Alton Pkwy,Irvine,CA,92618,866-816-7584,Office business hours; for employee and guest use only,Public, ,-117.733618000000007,33.649355000000000
+61,9121,Office Building,ELEC,AVBL,15285 Alton Pkwy,Irvine,CA,92618,866-816-7584,Office business hours; for employee and guest use only,Public, ,-117.735106000000002,33.651367000000000
+62,9395,Sheraton Carlsbad,ELEC,AVBL,5440 Grand Pacific Dr,Carlsbad,CA,92008,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.309162999999998,33.131337000000002
+63,9424,IKEA - West Sacramento,ELEC,AVBL,700 IKEA Court,West Sacramento,CA,95605,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-121.552594999999997,38.586430000000000
+64,9479,Hilton La Jolla Torrey Pines,ELEC,AVBL,10950 North Torrey Pines Road,La Jolla,CA,92037,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.243771400000000,32.901535799999998
+65,9578,City of Encinitas - Lot B SW Corner Vulcan and E St,ELEC,AVBL,600 S Vulcan Ave,Encinitas,CA,92024,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.292413400000001,33.044805699999998
+66,9664,Salk Institute,ELEC,AVBL,10010 North Torrey Pines Road,La Jolla,CA,92037,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.244243999999995,32.886682000000000
+67,9738,City of Solana Beach,ELEC,AVBL,635 South HGWY 101,Solana Beach,CA,92075,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.270627000000005,32.983421999999997
+68,9742,Providence Holy Cross Medical Center - Cancer Research Center,ELEC,AVBL,15031 Rinaldi Street,Mission Hills,CA,91345,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-118.460143000000002,34.279220000000002
+69,9743,Providence Holy Cross Medical Center - General Parking,ELEC,AVBL,15031 Rinaldi Street,Mission Hills,CA,91345,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-118.461522000000002,34.280225999999999
+70,9986,HOLOGIC Gen-Probe,ELEC,AVBL,6333 Sequence Drive,San Diego,CA,92121,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.184630999999996,32.905825000000000
+71,10083,City of Woodland - Municipal Service Center,ELEC,AVBL,655 N Pioneer Ave,Woodland,CA,95776,530-661-2060,24 hours daily,Public, ,-121.700000000000003,38.695999999999998
+72,10370,Greenlots - 33056,ELEC,AVBL,45 Oldfield,Irvine,CA,92618,855-900-7584,24 hours daily,Public, ,-117.721893311000002,33.635841369600001
+73,10429,Greenlots - 43139,ELEC,AVBL,401 I St,Sacramento,CA,95814,855-900-7584,24 hours daily,Public, ,-121.500877380000006,38.583518981899999
+74,10441,Greenlots - 43136,ELEC,AVBL,2820 R Street,Sacramento,CA,95816,855-900-7584,24 hours daily,Public, ,-121.471954346000004,38.564548492400000
+75,10442,Greenlots - 12257,ELEC,AVBL,2820 R Street,Sacramento,CA,95817,855-900-7584,24 hours daily,Public, ,-121.471992493000002,38.564552307100001
+76,10473,Greenlots - 12589,ELEC,AVBL,16772 Chatsworth St,Granada Hills,CA,91344,855-900-7584,24 hours daily,Public, ,-118.497146606000001,34.264656066900002
+77,10497,Greenlots - 182082,ELEC,AVBL,11121 Sepulveda Blvd,Mission Hills,CA,91345,855-900-7584,24 hours daily,Public, ,-118.468619000000004,34.272942000000000
+78,10693,Santa Clarita Metrolink Station,ELEC,AVBL,22122 Soledad Canyon Rd,Santa Clarita,CA,91351,866-816-7584  661-294-1287,24 hours daily,Public, ,-118.524156000000005,34.415081000000001
+79,10796,Greenlots - 12923,ELEC,AVBL,10432 Sepulveda,Los Angeles,CA,91345,855-900-7584,24 hours daily,Public, ,-118.467147827000005,34.261177062999998
+80,10901,Camino Town and Country,ELEC,AVBL,2227 S El Camino Real,Oceanside,CA,92054,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.328962000000004,33.185527000000000
+81,10927,Easy Trip Food Store - Tesla Supercharger,ELEC,AVBL,29541 Stockdale Hwy,Bakersfield,CA,93314,877-798-3752,24 hours daily; for Tesla use only,Public, ,-119.331599999999995,35.354599999999998
+82,10931,Starbucks - Tesla Supercharger,ELEC,AVBL,20673 Tracy Ave.,Buttonwillow,CA,93206,877-798-3752,24 hours daily; for Tesla use only,Public, ,-119.397800000000004,35.400100000000002
+83,10933,Harris Ranch Inn and Restaurant - Tesla Supercharger,ELEC,AVBL,24505 W Dorris Ave,Coalinga,CA,93210,877-798-3752,24 hours daily; for Tesla use only,Public, ,-120.237899999999996,36.254100000000001
+84,10935,Rabobank Corning - Tesla Supercharger,ELEC,AVBL,950 Hwy 99 W,Corning,CA,96021,877-798-3752,24 hours daily; for Tesla use only,Public, ,-122.198400000000007,39.926499999999997
+85,10960,Bernard Drive - Tesla Supercharger,ELEC,AVBL,27675 Bernard Drive,Kettleman City,CA,93239,877-798-3752,24 hours daily; for Tesla use only,Public, ,-119.961799999999997,35.987299999999998
+86,10962,Petro Shopping Center - Tesla Supercharger,ELEC,AVBL,5602 Dennis McCarthy Drive,Lebec,CA,93243,877-798-3752,24 hours daily; for Tesla use only,Public, ,-118.946299999999994,34.987400000000001
+87,10968,Mt Shasta Shopping Center - Tesla Supercharger,ELEC,AVBL,134 Morgan Way,Mount Shasta,CA,96067,877-798-3752,24 hours daily; for Tesla use only,Public, ,-122.315899999999999,41.310299999999998
+88,10969,Best Western Plus Treehouse Mt. Shasta - Tesla Supercharger,ELEC,AVBL,111 Morgan Way,Mt. Shasta,CA,96067,877-798-3752,24 hours daily; for Tesla use only,Public, ,-122.317300000000003,41.310200000000002
+89,10980,Promenade at Sacramento Gateway - Tesla Supercharger,ELEC,AVBL,3668 N. Freeway Blvd.,Sacramento,CA,95834,877-798-3752,24 hours daily; for Tesla use only,Public, ,-121.497200000000007,38.637799999999999
+90,10984,Outlets at San Clemente - Tesla Supercharger,ELEC,AVBL,101 West Avenida Vista Hermosa,San Clemente,CA,92672,877-798-3752,24 hours daily; for Tesla use only,Public, ,-117.626900000000006,33.436799999999998
+91,10985,Qualcomm Incorporated - Tesla Supercharger,ELEC,AVBL,10155 Pacific Heights Blvd,San Diego,CA,92121,877-798-3752,24 hours daily; for Tesla use only,Public, ,-117.193700000000007,32.902200000000001
+92,10987,Union Bank - Tesla Supercharger,ELEC,AVBL,31971  Camino Capistrano,San Juan Capistrano,CA,92675,877-798-3752,24 hours daily; for Tesla use only,Public, ,-117.663100000000000,33.498500000000000
+93,11000,Bridgeport Marketplace - Tesla Supercharger,ELEC,AVBL,24061 Newhall Ranch Road Valencia,Valencia,CA,91355,877-798-3752,24 hours daily; for Tesla use only,Public, ,-118.554100000000005,34.430999999999997
+94,11549,Greenlots - 12938,ELEC,AVBL,12860 Encinitas Ave,Los Angeles,CA,91342,855-900-7584,24 hours daily,Public, ,-118.478019713999998,34.303348541299997
+95,11552,Greenlots - 12928,ELEC,AVBL,10331 Langdon Ave,Los Angeles,CA,91345,855-900-7584,24 hours daily,Public, ,-118.469757079999994,34.257701873800002
+96,11646,Mercy Medical Center,ELEC,AVBL,914 Pine St,Mt Shasta,CA,96067,530-926-6111,24 hours daily,Public, ,-122.319699999999997,41.317501999999998
+97,12333,Park Hyatt Aviara - Tesla Destination,ELEC,AVBL,7100 Aviara Resort Dr,Carlsbad,CA,92056,760-448-1234  877-798-3752,24 hours daily; for customer use only; see valet for access,Public, ,-117.285906999999995,33.099167999999999
+98,12334,Four Seasons Resort Aviara - Tesla Destination,ELEC,AVBL,7210 Blue Heron Pl,Carlsbad,CA,92011,760-603-3700  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-117.283607000000003,33.097012999999997
+99,12370,Monarch Beach Resort - Tesla Destination,ELEC,AVBL,1 Monarch Beach Resort N,Dana Point,CA,92629,949-234-3200  877-798-3752,24 hours daily; for customer use only; see valet for access,Public, ,-117.715295999999995,33.483047999999997
+100,12371,Best Western Plus Marina Shores Hotel - Tesla Destination,ELEC,AVBL,34280 Pacific Coast Hwy,Dana Point,CA,92629,949-248-1000  877-798-3752,24 hours daily; for customer use only,Public, ,-117.689368000000002,33.465904000000002
+101,12372,Best Western Plus Dana Point Inn By The Sea - Tesla Destination,ELEC,AVBL,34744 Pacific Coast Hwy,Dana Point,CA,92624,949-240-0150  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-117.670657000000006,33.457689000000002
+102,12375,L'Auberge Del Mar - Tesla Destination,ELEC,AVBL,1540 Camino Del Mar,Del Mar,CA,92014,858-259-1515  877-798-3752,24 hours daily; for customer use only; see valet for access,Public, ,-117.265995000000004,32.960065000000000
+103,12376,Hilton San Diego/Del Mar - Tesla Destination,ELEC,AVBL,15575 Jimmy Durante Blvd,Del Mar,CA,92014,858-792-5200  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-117.256067999999999,32.978524999999998
+104,12381,Dunsmuir Lodge - Tesla Destination,ELEC,AVBL,6604 Dunsmuir Ave,Dunsmuir,CA,96025,530-235-2884  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-122.276779000000005,41.198543000000001
+105,12384,Hampton Inn Elk Grove - Tesla Destination,ELEC,AVBL,2305 Longport Ct,Elk Grove,CA,95758,916-683 9545  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-121.482246000000004,38.426921000000000
+106,12451,Marriott Irvine Spectrum - Tesla Destination,ELEC,AVBL,7889 Irvine Center Dr,Irvine,CA,92618,949-759-0200  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-117.748728999999997,33.656739000000002
+107,12468,Ayres Hotel - Laguna Woods - Tesla Destination,ELEC,AVBL,24341 El Toro Rd,Laguna Woods,CA,92637,949-588-0131  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-117.729669000000001,33.610486999999999
+108,12544,Shasta Inn - Tesla Destination,ELEC,AVBL,1121 S Mount Shasta Blvd,Mount Shasta,CA,96067,530-926-3411  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-122.309015000000002,41.303488999999999
+109,12672,Best Western Antelope Inn - Tesla Destination,ELEC,AVBL,203 Antelope Blvd,Red Bluff,CA,96080,530-527-8882  877-798-3752,24 hours daily; for customer use only,Public, ,-122.220237999999995,40.181629000000001
+110,12673,Best Western Plus Hilltop Inn - Tesla Destination,ELEC,AVBL,2300 Hilltop Dr,Redding,CA,96002,530-221-6100  877-798-3752,24 hours daily; for customer use only,Public, ,-122.359084999999993,40.574272000000001
+111,12682,Hyatt Regency Sacramento - Tesla Destination,ELEC,AVBL,1209 L St,Sacramento,CA,95814,916-443-1234  877-798-3752,24 hours daily,Public, ,-121.491084999999998,38.577427999999998
+112,12683,Kimpton Sawyer Hotel - Tesla Destination,ELEC,AVBL,500 J St,Sacramento,CA,95814,916-545-7100  877-798-3752,24 hours daily; for customer use only; see valet for access,Public, ,-121.499471000000000,38.581384000000000
+113,12688,The Lodge at Torrey Pines - Tesla Destination,ELEC,AVBL,11480 N Torrey Pines Rd,San Diego,CA,92037,858-453-4420  877-798-3752,24 hours daily; for customer use only,Public - Call ahead, ,-117.243853000000001,32.905731000000003
+114,12699,"Embassy Suites Hotel - San Diego, La Jolla - Tesla Destination",ELEC,AVBL,4550 La Jolla Village Dr,San Diego,CA,92122,858-453-0400  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-117.208541999999994,32.874580000000002
+115,12701,Fairmont Grand Del Mar Resort - Tesla Destination,ELEC,AVBL,5300 Grand Del Mar Ct,San Diego,CA,92130,858-314-2000  877-798-3752,24 hours daily; for customer use only; see valet for access,Public, ,-117.197363999999993,32.938409000000000
+116,12708,Estancia La Jolla Hotel and Spa - Tesla Destination,ELEC,AVBL,9700 North Torrey Pines Rd,San Diego,CA,92037,844-233-4127  877-798-3752,24 hours daily; for customer use only; see valet for access,Public, ,-117.244163000000000,32.883809999999997
+117,12781,Pamplemousse Grille - Tesla Destination,ELEC,AVBL,514 Via de la Valle,Solana Beach,CA,92075,858-792-9090  877-798-3752,24 hours daily; for customer use only; see front desk for access,Public, ,-117.259940000000000,32.980668000000001
+118,12782,Courtyard by Marriott Solana Beach - Tesla Destination,ELEC,AVBL,717 S Hwy 101,Solana Beach,CA,92075,858-792-8200  877-798-3752,24 hours daily; see front desk for access,Public, ,-117.270353000000000,32.982894999999999
+119,15502,Autoskinz,ELEC,AVBL,27525 Newhall Ranch Rd,Valencia,CA,91355,661-347-8468,Office business hours,Public - Call ahead, ,-118.563288999999997,34.435186000000002
+120,15670,San Diego Tech Center,ELEC,AVBL,9725 Scranton Rd,San Diego,CA,92121,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.200779999999995,32.896878999999998
+121,15855,Irvine Spectrum Center,ELEC,AVBL,71 Spectrum Center Dr,Irvine,CA,92618,949-789-9180,24 hours daily,Public - Credit card at all times,A M V,-117.742523000000006,33.652588000000002
+122,15919,Greenlots - 52313,ELEC,AVBL,15215 Barranca Pkwy,Irvine,CA,92618,855-900-7584,24 hours daily,Public, ,-117.734530000000007,33.656238000000002
+123,15978,IRVINE  CO  OFC,ELEC,AVBL,4660 La Jolla Village Dr,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.206496999999999,32.874661000000003
+124,16420,America's Best Value Inn,ELEC,AVBL,3930 County Road 89,Dunnigan,CA,95937,833-632-2778,24 hours daily,Public, ,-121.972465000000000,38.882323000000000
+125,16423,The Cannery,ELEC,AVBL,1651 Alhambra Blvd.,Sacramento,CA,95816,833-632-2778,24 hours daily,Public, ,-121.468481999999995,38.564621000000002
+126,16682,Pea Soup Andersen's - Tesla Supercharger,ELEC,AVBL,12411 CA-33,Gustine,CA,95322,877-798-3752,24 hours daily; for Tesla use only,Public, ,-121.017600000000002,37.109400000000001
+127,16698,The Beacon La Costa - Tesla Supercharger,ELEC,AVBL,7710-7770 El Camino Real,Carlsbad,CA,92009,877-798-3752,24 hours daily; for Tesla use only,Public, ,-117.266300000000001,33.084099999999999
+128,16743,Red Lion Hotel Redding - Tesla Destination,ELEC,AVBL,1830  Hill Top Dr,Redding,CA,96002,530-221-8700  877-798-3752,24 hours daily; for customer use only,Public - Call ahead, ,-122.358833000000004,40.580997000000004
+129,16900,Southside Park,ELEC,AVBL,2115 6th St,Sacramento,CA,95818,877-455-3833,24 hours daily,Public - Card key at all times, ,-121.504936999999998,38.567526000000001
+130,16966,Walmart 5843 Patterson,ELEC,AVBL,1030 Sperry Ave,Patterson,CA,95363,833-632-2778,24 hours daily,Public, ,-121.141278000000000,37.462245000000003
+131,17026,16th & L Street Parking Lot,ELEC,AVBL,1601 L Street,Sacramento,CA,95814,833-632-2778,24 hours daily,Public, ,-121.485731999999999,38.576143999999999
+132,17214,Architectural Gas & Aluminum,ELEC,AVBL,15251 Alton Pkwy,Irvine,CA,92618,866-816-7584,24 hours daily,Public, ,-117.734779099999997,33.651670400000000
+133,17222,CBC Steel Buildings,ELEC,AVBL,1700 E Louis Ave,Lathrop,CA,94801,866-816-7584,24 hours daily,Public, ,-121.272454800000006,37.811637699999999
+134,17225,San Joaquin County - Community Development Department,ELEC,AVBL,1810 E Hazelton Ave,Stockton,CA,95205,866-816-7584,24 hours daily,Public, ,-121.265408500000007,37.950305499999999
+135,17249,California Highway Patrol,ELEC,AVBL,32941 Camino Capistrano,San Juan Capistrano,CA,92675,866-816-7584,24 hours daily,Public, ,-117.669014399999995,33.484904299999997
+136,17276,Universal Hospital Services,ELEC,AVBL,9853 Pacific Heights Blvd,San Diego,CA,92121,866-816-7584,24 hours daily,Public, ,-117.187879199999998,32.899364499999997
+137,17447,Riverpoint Marketplace,ELEC,AVBL,795 Ikea Court,West Sacramento,CA,95605,833-632-2778,24 hours daily,Public, ,-121.551083000000006,38.588963999999997
+138,17604,Ocean View Plaza Shopping Center,ELEC,AVBL,638 Camino de los Mares,San Clemente,CA,92673,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.652067000000002,33.459077999999998
+139,17665,Greenlots - 112475U,ELEC,AVBL,5701 Outlets at Tejon Parkway,Arvin,CA,93203,855-900-7584,24 hours daily,Public, ,-118.942081000000002,34.985515999999997
+140,17771,Chevron #200913,ELEC,AVBL,23022 Aliso Creek Rd,Aliso Viejo,CA,92656,877-455-3833,24 hours daily,Public - Card key at all times, ,-117.728471999999996,33.593144000000002
+141,17783,Target T2115 N. Freeway,ELEC,AVBL,3601 N. Freeway Blvd.,Sacramento,CA,95834,833-632-2778,24 hours daily,Public, ,-121.499202999999994,38.639949999999999
+142,17848,IRVINE COMPANY,ELEC,AVBL,8505 Irvine Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.745223999999993,33.645563000000003
+143,18291,Sacramento International Airport,ELEC,AVBL,6900 Airport Blvd.,Sacramento,CA,95837,833-632-2778,24 hours daily,Public, ,-121.589247999999998,38.677894000000002
+144,18313,Sacramento International Airport - Terminal B Garage,ELEC,AVBL,Lindbergh Dr,Sacramento,CA,95837,916-874-0670,24 hours daily; pay lot,Public, ,-121.593429455000006,38.688737911399997
+145,18511,"Walmart 1630 - Yreka, CA",ELEC,AVBL,1906 Fort Jones Road,Yreka,CA,96097,833-632-2778,24 hours daily,Public, ,-122.645122999999998,41.699378000000003
+146,18519,Delta Shores - Starbucks,ELEC,AVBL,8152 Delta Shores Cir S,Sacramento,CA,95832,888-264-2208,6am-12am daily,Public, ,-121.492388000000005,38.463949999999997
+147,18520,Delta Shores - In & Out Burger,ELEC,AVBL,8200 Delta Shores Cir S,Sacramento,CA,95832,888-264-2208,6am-12am daily,Public, ,-121.492155999999994,38.462302999999999
+148,20008,400 Main,ELEC,AVBL,400 East Main Street,Stockton,CA,95202,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-121.284988499999997,37.952846399999999
+149,20239,Cinema Level 2SW,ELEC,AVBL,26950 Theater Drive,Santa Clarita,CA,91355,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-118.560180000000003,34.418300000000002
+150,20295,"Endologix, Inc.",ELEC,AVBL,2 Musick,Irvine,CA,92618,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.704774000000000,33.660286100000000
+151,20298,Spectrum Business Center,ELEC,AVBL,6 Venture,Irvine,CA,92618,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.753224700000004,33.658939599999997
+152,20300,Kaiser Irvine Medical Center |P520,ELEC,AVBL,6640 Alton Parkway,Irvine,CA,92618,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.774462799999995,33.658451900000003
+153,20314,Lomas Santa Fe Plaza,ELEC,AVBL,975 Lomas Santa Fe Drive,Solana Beach,CA,92075,800-663-5633,MO: 12:00am-12:00am; TU: 12:00am-12:00am; WE: 12:00am-12:00am; TH: 12:00am-12:00am; FR: 12:00am-12:00am; SA: 12:00am-12:00am; SU: 12:00am-12:00am,Public, ,-117.253175111999994,32.994029859900003
+154,20315,Solana Beach Towne Centre,ELEC,AVBL,685 San Rodolfo Drive,Solana Beach,CA,92075,800-663-5633,MO: 12:00am-12:00am; TU: 12:00am-12:00am; WE: 12:00am-12:00am; TH: 12:00am-12:00am; FR: 12:00am-12:00am; SA: 12:00am-12:00am; SU: 12:00am-12:00am,Public, ,-117.257803069000005,32.994335061000001
+155,20316,SBCC,ELEC,AVBL,420 Stevens Avenue,Solana Beach,CA,92075,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.261121099999997,32.991540899999997
+156,20318,Cathedral Catholic High School,ELEC,AVBL,5555 Del Mar Heights Road,San Diego,CA,92130,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.201469000000003,32.959656000000003
+157,20322,Paseo Del Mar 3,ELEC,AVBL,12275 El Camino Real,San Diego,CA,92130,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.239219500000004,32.941177400000001
+158,20323,Paseo Del Mar 2,ELEC,AVBL,12265 El Camino Real,San Diego,CA,92130,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.239043100000004,32.940229199999997
+159,20324,Paseo Del Mar 1,ELEC,AVBL,12255 El Camino Real,San Diego,CA,92130,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.239917800000001,32.939426800000000
+160,20325,Del Mar Gateway,ELEC,AVBL,11978 El Camino Real,San Diego,CA,92130,800-663-5633,MO: 12:00am-12:00am; TU: 12:00am-12:00am; WE: 12:00am-12:00am; TH: 12:00am-12:00am; FR: 12:00am-12:00am; SA: 12:00am-12:00am; SU: 12:00am-12:00am,Public, ,-117.238693900000001,32.936451699999999
+161,20326,Torrey Reserve North B,ELEC,AVBL,11720 El Camino Real,San Diego,CA,92130,800-663-5633,MO: 06:00am-09:00pm; TU: 06:00am-09:00pm; WE: 06:00am-09:00pm; TH: 06:00am-09:00pm; FR: 06:00am-09:00pm; SA: 09:00am-01:00pm; SU: Closed,Public, ,-117.237894800000007,32.930115200000003
+162,20327,Torrey Reserve North A,ELEC,AVBL,11710 El Camino Real,San Diego,CA,92130,800-663-5633,MO: 06:00am-09:00pm; TU: 06:00am-09:00pm; WE: 06:00am-09:00pm; TH: 06:00am-09:00pm; FR: 06:00am-09:00pm; SA: 09:00am-01:00pm; SU: Closed,Public, ,-117.238278100000002,32.929369600000001
+163,20328,Torrey Reserve A,ELEC,AVBL,11582 El Camino Real,San Diego,CA,92130,800-663-5633,MO: 12:00am-12:00am; TU: 12:00am-12:00am; WE: 12:00am-12:00am; TH: 12:00am-12:00am; FR: 12:00am-12:00am; SA: 12:00am-12:00am; SU: 12:00am-12:00am,Public, ,-117.236854234999996,32.927196015800000
+164,20329,Torrey Reserve B,ELEC,AVBL,11455 El Camino Real,San Diego,CA,92130,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.236938899999998,32.927060400000002
+165,20330,Gateway at Torrey Hills,ELEC,AVBL,3588 Carmel Mountain Road,San Diego,CA,92130,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-117.232979799999995,32.919825500000002
+166,20331,Torrey Point,ELEC,AVBL,3420 Carmel Mountain Road,San Diego,CA,92121,800-663-5633,MO: 12:00am-12:00am; TU: 12:00am-12:00am; WE: 12:00am-12:00am; TH: 12:00am-12:00am; FR: 12:00am-12:00am; SA: 12:00am-12:00am; SU: 12:00am-12:00am,Public, ,-117.238034346999996,32.919753911299999
+167,20332,"CSHV Torrey Reserve West, LLC",ELEC,AVBL,3396 Carmel Mountain Road,San Diego,CA,92121,800-663-5633,MO: 12:00am-12:00am; TU: 12:00am-12:00am; WE: 12:00am-12:00am; TH: 12:00am-12:00am; FR: 12:00am-12:00am; SA: 12:00am-12:00am; SU: 12:00am-12:00am,Public, ,-117.236453699999998,32.917845200000002
+168,20333,Parking Structure,ELEC,AVBL,11480 North Torrey Pines Road,La Jolla,CA,92037,800-663-5633,MO: 12:00am-12:00am; TU: 12:00am-12:00am; WE: 12:00am-12:00am; TH: 12:00am-12:00am; FR: 12:00am-12:00am; SA: 12:00am-12:00am; SU: 12:00am-12:00am,Public, ,-117.244631499999997,32.904119700000003
+169,20634,"Shop N' Save - Williams, CA",ELEC,AVBL,421 7th St,Williams,CA,95987,877-455-3833,24 hours daily,Public, ,-122.150232000000003,39.155571000000002
+170,20702,One Paseo - Tesla Supercharger,ELEC,AVBL,3275 Del Mar Heights Road,San Diego,CA,92014,877-798-3752,24 hours daily; for Tesla use only,Public, ,-117.235399999999998,32.952900000000000
+171,20753,County Fair Fashion Mall,ELEC,AVBL,1264 E Gibson Rd Ste E500,Woodland,CA,95776,877-455-3833,24 hours daily,Public, ,-121.763541000000004,38.662340000000000
+172,20830,Greenlots - 12598,ELEC,AVBL,13640 Foothill Blvd,Sylmar,CA,91342,855-900-7584,24 hours daily,Public, ,-118.431076050000001,34.307910919199998
+173,21110,Belle Mill Landing - Tesla Supercharger,ELEC,AVBL,82 Belle Mill Road,Red Bluff,CA,96080,877-798-3752,24 hours daily; for Tesla use only,Public, ,-122.227500000000006,40.182200000000002
+174,21166,"Walmart 2527 - San Clemente, CA",ELEC,AVBL,951 Avenida Pico,San Clemente,CA,92673,833-632-2778,24 hours daily,Public, ,-117.606652999999994,33.454825000000000
+175,21340,Park Tower - Tesla Destination,ELEC,AVBL,980 9th St,Sacramento,CA,95814,  877-798-3752,24 hours daily; pay lot,Public, ,-121.495001999999999,38.581214000000003
+176,21461,UCSD - Athena Garage - Tesla Destination,ELEC,AVBL,9415 Campus Point Dr,La Jolla,CA,92093,858-534-4223  877-798-3752,24 hours daily,Public, ,-117.223341000000005,32.880287000000003
+177,21504,"Safeway 0273 - Anderson, CA",ELEC,AVBL,2601 Balls Ferry Road,Anderson,CA,96007,833-632-2778,24 hours daily,Public, ,-122.289270999999999,40.453456000000003
+178,21520,Granzella's Gourmet and Gifts - Tesla Supercharger,ELEC,AVBL,464 6th Street,Williams,CA,95987,877-798-3752,24 hours daily; for Tesla use only,Public, ,-122.149299999999997,39.155600000000000
+179,21536,Plaza Paseo Real,ELEC,AVBL,6941- 6985 El Camino Real,Carlsbad,CA,92009,888-264-2208,6am-12am daily,Public, ,-117.268415000000005,33.104661000000000
+180,21537,Poinsettia Village,ELEC,AVBL,7130 Avenida Encinas,Carlsbad,CA,92011,888-264-2208,6am-12am daily,Public, ,-117.311200999999997,33.101208000000000
+181,21565,Del Mar Highlands Town Center,ELEC,AVBL,12861 El Camino Real,San Diego,CA,92130,888-264-2208,6am-12am daily,Public, ,-117.232543000000007,32.951180999999998
+182,21581,Valencia Crossroads,ELEC,AVBL,24130 Valencia Blvd,Santa Clarita,CA,91355,888-264-2208,6am-12am daily,Public, ,-118.556224099999994,34.412158599999998
+183,21850,"Walmart 2053 - Willows, CA",ELEC,AVBL,470 Airport Road,Willows,CA,95988,833-632-2778,24 hours daily,Public, ,-122.218592999999998,39.525492000000000
+184,21856,LADWP - Truman,ELEC,AVBL,1765 Truman St,San Fernando,CA,91340, ,24 hours daily,Public, ,-118.448935000000006,34.291096000000003
+185,21857,LADWP - Chatsworth,ELEC,AVBL,15350 Chatsworth St,Mission Hills,CA,91345, ,24 hours daily,Public, ,-118.466123999999994,34.264344999999999
+186,22172,The Shops at La Jolla Village - Whole Foods,ELEC,AVBL,8825 Villa La Jolla Dr,La Jolla,CA,92037,888-264-2208,6am-12pm daily,Public, ,-117.230991000000003,32.868631000000001
+187,22173,The Shops at La Jolla Village - Entrance,ELEC,AVBL,8825 Villa La Jolla Dr,La Jolla,CA,92037,888-264-2208,6am-12pm daily,Public, ,-117.231503000000004,32.868479000000001
+188,22292,15596 W Roxford St,ELEC,AVBL,15596 W Roxford St,Los Angeles,CA,91342,888-356-8911,24 hours daily,Public, ,-118.471137700000000,34.311619139999998
+189,22418,Black Bear - Willows A1,ELEC,AVBL,246 N Humboldt Ave,Willows,CA,95988,877-455-3833,24 hours daily,Public, ,-122.211805499999997,39.523224999999996
+190,22449,11320 Laurel Canyon Blvd,ELEC,AVBL,11320 Laurel Canyon Blvd,Los Angeles,CA,91340,888-356-8911,24 hours daily,Public, ,-118.449813300000002,34.275546810000002
+191,22453,IRVINE  CO  OFC,ELEC,AVBL,6 Cromwell,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.706164000000001,33.653119099999998
+192,22489,14901 Rinaldi street,ELEC,AVBL,14901 Rinaldi Street,Los Angeles,CA,91345,888-356-8911,24 hours daily,Public, ,-118.458005900000003,34.279094420000000
+193,22588,Redding School of the Arts,ELEC,AVBL,955 Inspiration Way,Redding,CA,96003,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-122.323081000000002,40.595497000000002
+194,22647,CUEV,ELEC,AVBL,14725 Alton Pkwy,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.717433999999997,33.651187000000000
+195,22687,DC CORRIDOR,ELEC,AVBL,20725 Lakeshore Dr,Lakehead-Lakeshore,CA,96051,888-758-4389,24 hours daily,Public, ,-122.384741000000005,40.886305000000000
+196,22790,"Walmart 3352 - Stockton, CA",ELEC,AVBL,10355 Trinity Parkway,Stockton,CA,95219,833-632-2778,24 hours daily,Public, ,-121.376698000000005,38.050441999999997
+197,22807,"Walmart 5162 - Santa Clarita, CA",ELEC,AVBL,27931 KELLY JOHNSON PKWY.,Santa Clarita,CA,91355,833-632-2778,24 hours daily,Public, ,-118.577145000000002,34.444147000000001
+198,22988,IRVINE  CO  OFC,ELEC,AVBL,7555 Irvine Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.751478000000006,33.660981000000000
+199,23119,IRVINE  CO  OFC,ELEC,AVBL,15460 Laguna Canyon Rd,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.759660999999994,33.667335000000001
+200,23320,The Shops at Missions Viejo - Tesla Supercharger,ELEC,AVBL,555 The Shops at Mission Viejo,Mission Viejo,CA,92691,877-798-3752,24 hours daily; for Tesla use only,Public, ,-117.668000000000006,33.557287000000002
+201,23341,Berry Patch Restaurant,ELEC,AVBL,900 Newville Rd,Orland,CA,95963,877-455-3833,24 hours daily,Public, ,-122.202650700000007,39.750079300000003
+202,23417,Pierce Joint Unified School District,ELEC,AVBL,950 Wild Wood Rd,Arbuckle,CA,95912,866-816-7584,24 hours daily; Also accepts Paypal,Public,A D M V,-122.055383800000001,39.008776599999997
+203,23475,Ace Parking - 900 13th St Garage,ELEC,AVBL,900 13th St,Sacramento,CA,95814,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-121.489101000000005,38.580106000000001
+204,23488,Shops at Mission Viejo,ELEC,AVBL,555 Shops Blvd.,Mission Viejo,CA,92691,833-632-2778,24 hours daily,Public, ,-117.668004999999994,33.557264000000004
+205,23532,Embassy Suites - Sacramento,ELEC,AVBL,100 Capitol Mall,Sacramento,CA,95814,916-326-5000 x5113,24 hours daily; for guest use only,Public, ,-121.506825000000006,38.579593000000003
+206,23618,PRP OCEANSIDE,ELEC,AVBL,1928 S Moreno Street,Oceanside,CA,92054,888-758-4389,24 hours daily,Public, ,-117.352953999999997,33.177267999999998
+207,23619,PRP OCEANSIDE,ELEC,AVBL,1330 Vista Way,Oceanside,CA,92054,888-758-4389,24 hours daily,Public, ,-117.352491999999998,33.176586999999998
+208,23883,Santa Fe Christian Schools,ELEC,AVBL,838 Academy Drive,Solana Beach,CA,92075,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.257254000000003,32.991498000000000
+209,24073,DC CORRIDOR,ELEC,AVBL,20672 Tracy Ave #102,Buttonwillow,CA,93206,888-758-4389,24 hours daily,Public, ,-119.398230999999996,35.400860000000002
+210,24151,CC STATION 1,ELEC,AVBL,23081 Via Campo Verde,Laguna Woods,CA,92637,888-758-4389,24 hours daily,Public, ,-117.727209000000002,33.606566999999998
+211,24198,LUX ART INST.,ELEC,AVBL,1578 El Camino Real,Encinitas,CA,92024,888-758-4389,24 hours daily,Public, ,-117.255973600000004,33.027351600000003
+212,24476,CSG EV,ELEC,AVBL,101 W Avenida Vista Hermosa,San Clemente,CA,92672,888-758-4389,24 hours daily,Public, ,-117.628764000000004,33.438288000000000
+213,24477,TCC,ELEC,AVBL,777 12th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.489384999999999,38.582011000000001
+214,24492,RMV,ELEC,AVBL,30492 Gateway Pl,Mission Viejo,CA,92694,888-758-4389,24 hours daily,Public, ,-117.616579999999999,33.522120399999999
+215,24503,IRVINE  CO  OFC,ELEC,AVBL,4 Cromwell,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.706750999999997,33.652107999999998
+216,24525,SANTA CLARITA,ELEC,AVBL,26441 Bouquet Canyon Rd,Santa Clarita,CA,91350,888-758-4389,24 hours daily,Public, ,-118.536369699999995,34.426485499999998
+217,24528,LENNAR,ELEC,AVBL,3701 Haymar Dr,Carlsbad,CA,92010,888-758-4389,24 hours daily,Public, ,-117.302599000000001,33.178367999999999
+218,24531,IRVINE  CO  OFC,ELEC,AVBL,4350 La Jolla Village Dr,San Diego,CA,92122,888-758-4389,24 hours daily,Public, ,-117.212605300000007,32.874438800000000
+219,24536,UCSD,ELEC,AVBL,3683 Voigt Dr,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.222594999999998,32.881687999999997
+220,24538,PRMNDE I II III,ELEC,AVBL,4460 Molino,Irvine,CA,92603,888-758-4389,24 hours daily,Public, ,-117.743829899999994,33.640816299999997
+221,24568,UCSD,ELEC,AVBL,Osler Parking Structure Osler Lane,San Diego,CA,92092,888-758-4389,24 hours daily,Public, ,-117.237719499999997,32.873736500000000
+222,24596,DC CORRIDOR,ELEC,AVBL,27710 The Old Rd,Valencia,CA,91355,888-758-4389,24 hours daily,Public, ,-118.585466999999994,34.423461000000003
+223,24599,IRVINE COMPANY,ELEC,AVBL,71 Spectrum Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.742533899999998,33.652650199999997
+224,24612,DC CORRIDOR,ELEC,AVBL,5701 Dennis McCarthy Dr,Lebec,CA,93243,888-758-4389,24 hours daily,Public, ,-118.947148999999996,34.987853999999999
+225,24617,SC CITY HALL,ELEC,AVBL,910 Calle Negocio,San Clemente,CA,92673,888-758-4389,24 hours daily,Public, ,-117.607652000000002,33.450857999999997
+226,24643,UCSD,ELEC,AVBL,"Athena Circle, Lot P783 Miramar St N.",San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.222382899999999,32.876179999999998
+227,24648,CARLSBAD CA,ELEC,AVBL,6435 Ambrosia Ln,Carlsbad,CA,92011,888-758-4389,24 hours daily,Public, ,-117.282229999999998,33.114513000000002
+228,24674,CC STATION 1,ELEC,AVBL,24351 El Toro Rd,Laguna Woods,CA,92637,888-758-4389,24 hours daily,Public, ,-117.731016999999994,33.610357999999998
+229,24678,IRVINE  CO  OFC,ELEC,AVBL,9975 Toledo Way,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.707521000000000,33.651262000000003
+230,24705,BLN,ELEC,AVBL,27665 Forbes Rd,Laguna Niguel,CA,92677,888-758-4389,24 hours daily,Public, ,-117.675897000000006,33.560969000000000
+231,24708,UCSD,ELEC,AVBL,9300 Campus Point Dr Medical Center Dr,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.224083300000004,32.879142399999999
+232,24712,EAGLES NEST HD,ELEC,AVBL,13900 Harlan Rd,Lathrop,CA,95330,888-758-4389,24 hours daily,Public, ,-121.286683999999994,37.832126500000001
+233,24717,DC CORRIDOR,ELEC,AVBL,2385 North St,Anderson,CA,96007,888-758-4389,24 hours daily,Public, ,-122.295829999999995,40.454783999999997
+234,24721,DC CORRIDOR,ELEC,AVBL,27923 Sloan Canyon Rd,Castaic,CA,91384,888-758-4389,24 hours daily,Public, ,-118.624906999999993,34.495552000000004
+235,24735,QCOM,ELEC,AVBL,4161 Campus Point Ct,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.226402500000006,32.888808500000003
+236,24761,IRVINE  CO  OFC,ELEC,AVBL,4780 Eastgate Mall,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.203309000000004,32.880882000000000
+237,24778,IRVINE  CO  OFC,ELEC,AVBL,4820 Eastgate Mall,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.206783000000001,32.883439000000003
+238,24785,IRVINE  CO  OFC,ELEC,AVBL,165 Technology Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.746060000000000,33.664386000000000
+239,24798,DC CORRIDOR,ELEC,AVBL,4040 Rd 89,Dunnigan,CA,95937,888-758-4389,24 hours daily,Public, ,-121.971361999999999,38.881138000000000
+240,24817,IRVINE CO APTS,ELEC,AVBL,8808 Irvine Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.749526099999997,33.657106800000001
+241,24819,IRVINE CO APTS,ELEC,AVBL,7725 Gateway,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.750781000000003,33.656520999999998
+242,24820,COUNTY EVSE,ELEC,AVBL,800 F St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.493374099999997,38.584641800000000
+243,24837,DGS MAIN,ELEC,AVBL,1616 Capitol Ave,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.485802000000007,38.574866399999998
+244,24839,E-MAIN ENTRANCE,ELEC,AVBL,15575 Jimmy Durante Blvd,Del Mar,CA,92014,888-758-4389,24 hours daily,Public, ,-117.255882099999994,32.978501799999997
+245,24845,IRVINE  CO  OFC,ELEC,AVBL,29B Technology Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.740264999999994,33.652842000000000
+246,24847,IRVINE  CO  OFC,ELEC,AVBL,30 Pacifica,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.751017000000004,33.650354999999998
+247,24852,CITYOFPATTERSON,ELEC,AVBL,1033 W Las Palmas Ave,Patterson,CA,95363,888-758-4389,24 hours daily,Public, ,-121.142172000000002,37.466907999999997
+248,24866,DGS MAIN,ELEC,AVBL,1416 10th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.496397000000002,38.575265999999999
+249,24883,CIVIC CENTER,ELEC,AVBL,1700 coast boulevard,Del mar,CA,92014,888-758-4389,24 hours daily,Public, ,-117.268231599999993,32.962413800000000
+250,24889,4 HOURS FREE,ELEC,AVBL,500 Capitol Mall,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.501407000000000,38.578057999999999
+251,24891,IRVINE  CO  OFC,ELEC,AVBL,201 Technology Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.748863999999998,33.666007000000000
+252,24898,IRVINE  CO  OFC,ELEC,AVBL,15555 Laguna Canyon Rd,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.761524899999998,33.668087100000001
+253,24899,IRVINE  CO  OFC,ELEC,AVBL,15201 Laguna Canyon Rd,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.761116999999999,33.670194000000002
+254,24921,UCSD,ELEC,AVBL,10280 N Torrey Pines Rd,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.242148000000000,32.890875000000001
+255,24930,IRVINE  CO  OFC,ELEC,AVBL,1 Technology,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.734278000000003,33.647334000000001
+256,24933,AUTONATION CHEV,ELEC,AVBL,23649 Valencia Blvd,Santa Clarita,CA,91355,888-758-4389,24 hours daily,Public, ,-118.550368500000005,34.417217600000001
+257,24939,IRVINE COMPANY,ELEC,AVBL,950 Spectrum Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.744816000000000,33.648521000000002
+258,24940,IRVINE COMPANY,ELEC,AVBL,121 Fortune Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.739077899999998,33.647842599999997
+259,24953,GREAT PARK ICE,ELEC,AVBL,888 Ridge Valley,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.745303399999997,33.678298499999997
+260,24959,IRVINE  CO  OFC,ELEC,AVBL,505 Technology Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.757097799999997,33.673011400000000
+261,24960,IRVINE  CO  OFC,ELEC,AVBL,93232 Walnut Trail,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.757116800000006,33.672987499999998
+262,24962,ONE PASEO,ELEC,AVBL,3703 Caminito Court,San Diego,CA,92130,888-758-4389,24 hours daily,Public, ,-117.235354900000004,32.952241999999998
+263,24966,DC CORRIDOR,ELEC,AVBL,10424 Trinity Pkwy,Stockton,CA,95219,888-758-4389,24 hours daily,Public, ,-121.374994999999998,38.051876000000000
+264,24972,PFENEX INC.,ELEC,AVBL,10790 Roselle St,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.223757000000006,32.898107000000003
+265,24975,621 CAPITOL MAL,ELEC,AVBL,621 Capitol Mall,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.499077000000000,38.578755999999998
+266,24979,ONE PASEO,ELEC,AVBL,3387 Del Mar Heights Rd,San Diego,CA,92130,888-758-4389,24 hours daily,Public, ,-117.234305000000006,32.953422000000003
+267,24986,IRVINE  CO  OFC,ELEC,AVBL,6501 Irvine Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.765236000000002,33.670461000000003
+268,24992,DC CORRIDOR,ELEC,AVBL,25032 W Dorris Ave,Coalinga,CA,93210,888-758-4389,24 hours daily,Public, ,-120.249229000000000,36.254790000000000
+269,25058,IRVINE  CO  OFC,ELEC,AVBL,15615 Alton Pkwy,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.753074999999995,33.655602000000002
+270,25066,DC CORRIDOR,ELEC,AVBL,203 Antelope Blvd.,Red Bluff,CA,96080,888-758-4389,24 hours daily,Public, ,-122.220237999999995,40.181629000000001
+271,25072,UCSD,ELEC,AVBL,3100 Gilman Dr,San Diego,CA,92093,888-758-4389,24 hours daily,Public, ,-117.233312999999995,32.877153999999997
+272,25073,UCSD,ELEC,AVBL,3100 gilman dr,La jolla,CA,92093,888-758-4389,24 hours daily,Public, ,-117.233978699999994,32.877904500000000
+273,25075,DC CORRIDOR,ELEC,AVBL,4917 Dunsmuir Ave,Dunsmuir,CA,96025,888-758-4389,24 hours daily,Public, ,-122.276465000000002,41.222907999999997
+274,25077,DC CORRIDOR,ELEC,AVBL,111 Morgan Way,Mount Shasta,CA,96067,888-758-4389,24 hours daily,Public, ,-122.316687999999999,41.307482999999998
+275,25078,UCSD,ELEC,AVBL,2 Scholars Dr S,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.242857900000004,32.873406699999997
+276,25079,DC CORRIDOR,ELEC,AVBL,12754 CA-33,Gustine,CA,95322,888-758-4389,24 hours daily,Public, ,-121.015259000000000,37.104464000000000
+277,25085,QCOM,ELEC,AVBL,6455P Lusk Blvd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.202723000000006,32.903291000000003
+278,25088,QCOM,ELEC,AVBL,5741 Wireless Way,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.197100000000006,32.903720999999997
+279,25089,QCOM,ELEC,AVBL,5745 Pacific Center Blvd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.197070100000005,32.903544799999999
+280,25090,QCOM,ELEC,AVBL,5865 Pacific Center Blvd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.192532000000000,32.903692999999997
+281,25091,QCOM,ELEC,AVBL,10105 Pacific Heights Blvd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.192532000000000,32.903692999999997
+282,25092,QCOM,ELEC,AVBL,10145 Pacific Center Blvd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.192764400000002,32.903400900000001
+283,25093,QCOM,ELEC,AVBL,5775 Morehouse Dr,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.195611999999997,32.897117999999999
+284,25095,QCOM,ELEC,AVBL,5585 Morehouse Dr,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.195255000000003,32.895980999999999
+285,25096,QCOM,ELEC,AVBL,5665 Morehouse Dr,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.197053999999994,32.895657999999997
+286,25106,DC CORRIDOR,ELEC,AVBL,1842 Fort Jones Rd,Yreka,CA,96097,888-758-4389,24 hours daily,Public, ,-122.644295999999997,41.700493999999999
+287,25118,DC CORRIDOR,ELEC,AVBL,1844 Shastina Dr,Weed,CA,96094,888-758-4389,24 hours daily,Public, ,-122.380070000000003,41.399268999999997
+288,25120,UCSD,ELEC,AVBL,Osler Parking Structure Osler Lane,La Jolla,CA,92092,888-758-4389,24 hours daily,Public, ,-117.236502700000003,32.873097199999997
+289,25140,UCSD,ELEC,AVBL,270 Muir Ln,San Diego,CA,92161,888-758-4389,24 hours daily,Public, ,-117.239886600000006,32.879304599999998
+290,25152,PARKING STRUCT,ELEC,AVBL,10 Parker Pl,Aliso Viejo,CA,92656,888-758-4389,24 hours daily,Public, ,-117.731556499999996,33.583456800000000
+291,25156,UCSD,ELEC,AVBL,Osler Parking Structure Osler Lane,San Diego,CA,92161,888-758-4389,24 hours daily,Public, ,-117.236785299999994,32.874388799999998
+292,25207,IRVINE  CO  OFC,ELEC,AVBL,520 Technology,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.761517299999994,33.673322800000001
+293,25208,IRVINE  CO  OFC,ELEC,AVBL,15244 Sand Canyon Ave,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.762433999999999,33.672936000000000
+294,25209,IRVINE  CO  OFC,ELEC,AVBL,510 Technology,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.759732700000001,33.673179800000000
+295,25210,IRVINE  CO  OFC,ELEC,AVBL,Technology Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.759669500000001,33.673242999999999
+296,25211,IRVINE  CO  OFC,ELEC,AVBL,500 Technology,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.759011700000002,33.674415000000003
+297,25214,QCOM,ELEC,AVBL,10198 McKellar Ct,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.201282000000006,32.903834000000003
+298,25225,IRVINE  CO  OFC,ELEC,AVBL,4835 Eastgate Mall,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.203045000000003,32.879488000000002
+299,25242,LEASING STATION,ELEC,AVBL,309 Solana Hills Dr,Solana Beach,CA,92075,888-758-4389,24 hours daily,Public, ,-117.259455799999998,32.997272600000002
+300,25245,CARLSBAD CA,ELEC,AVBL,3209 Harding St,Carlsbad,CA,92008,888-758-4389,24 hours daily,Public, ,-117.342644000000007,33.158967300000000
+301,25251,23046 AVENIDA,ELEC,AVBL,23046 Avenida De La Carlota,Laguna Hills,CA,92653,888-758-4389,24 hours daily,Public, ,-117.721924000000001,33.627622000000002
+302,25253,IRVINE  CO  OFC,ELEC,AVBL,530 Technology,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.760338000000004,33.674376000000002
+303,25256,ESQUIRE PLAZA,ELEC,AVBL,1215 K St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.489885999999998,38.578474000000000
+304,25272,3841 N FREEWAY,ELEC,AVBL,3841 N Freeway Blvd,Sacramento,CA,95834,888-758-4389,24 hours daily,Public, ,-121.486015800000004,38.641741199999998
+305,25273,CIVIC CENTER,ELEC,AVBL,1050 Camino Del Mar,Del Mar,CA,92014,888-758-4389,24 hours daily,Public, ,-117.264104599999996,32.955108099999997
+306,25277,IRVINE  CO  OFC,ELEC,AVBL,510 Technology Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.759832200000005,33.673334699999998
+307,25280,IRVINE  CO  OFC,ELEC,AVBL,22195 Irvine Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.747431599999999,33.649872400000000
+308,25284,CIVIC CENTER,ELEC,AVBL,227 11th St,Del Mar,CA,92014,888-758-4389,24 hours daily,Public, ,-117.264080800000002,32.955007999999999
+309,25301,VALENCIA,ELEC,AVBL,24201 Town Center Dr,Santa Clarita,CA,91355,888-758-4389,24 hours daily,Public, ,-118.557654999999997,34.415363999999997
+310,25306,VALENCIA,ELEC,AVBL,24201 Valencia Blvd,Santa Clarita,CA,91355,888-758-4389,24 hours daily,Public, ,-118.559341599999996,34.415564000000003
+311,25407,SF CITY EV,ELEC,AVBL,1004-1030 Celis St,San Fernando,CA,91340,888-758-4389,24 hours daily,Public, ,-118.441884799999997,34.281682600000003
+312,25408,SF CITY EV,ELEC,AVBL,712-740 Truman St,San Fernando,CA,91340,888-758-4389,24 hours daily,Public, ,-118.438480200000001,34.280424799999999
+313,25409,SF CITY EV,ELEC,AVBL,1120 Truman St,San Fernando,CA,91340,888-758-4389,24 hours daily,Public, ,-118.441990300000001,34.284055400000000
+314,25410,SF CITY EV,ELEC,AVBL,111 N Macneil St,San Fernando,CA,91340,888-758-4389,24 hours daily,Public, ,-118.439027899999999,34.284155200000001
+315,25411,SF CITY EV,ELEC,AVBL,942-1060 Truman St,San Fernando,CA,91340,888-758-4389,24 hours daily,Public, ,-118.440409200000005,34.282568800000000
+316,25415,520 CAPITOL MAL,ELEC,AVBL,520 Capitol Mall,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.500937199999996,38.577911499999999
+317,25418,PARKING STRUCT,ELEC,AVBL,10 Enterprise,Aliso Viejo,CA,92656,888-758-4389,24 hours daily,Public, ,-117.731478999999993,33.583351000000000
+318,25442,500 J SAWYER GA,ELEC,AVBL,1007 6th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.498688999999999,38.581356999999997
+319,25444,500 J SAWYER GA,ELEC,AVBL,560 J St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.498791999999995,38.581530000000001
+320,25454,500 J SAWYER GA,ELEC,AVBL,558-598 J St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.499249599999999,38.581808899999999
+321,25461,ASTON POINT,ELEC,AVBL,1800 Aston Ave,Carlsbad,CA,92008,888-758-4389,24 hours daily,Public, ,-117.291404000000000,33.131464000000001
+322,25465,UCSD,ELEC,AVBL,John Jay Hopkins Dr Scholars Dr N,San Diego,CA,92093,888-758-4389,24 hours daily,Public, ,-117.241287600000007,32.887164400000003
+323,25468,UCSD,ELEC,AVBL,9500 Gilman Dr,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.234677599999998,32.876473799999999
+324,25469,UCSD,ELEC,AVBL,Voigt Lane Hopkins Drive,San Diego,CA,92093,888-758-4389,24 hours daily,Public, ,-117.239136900000005,32.883567100000000
+325,25473,UCSD,ELEC,AVBL,Pangea Parking Structure Scholars Dr N,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.243063300000003,32.884503400000000
+326,25485,UCSD,ELEC,AVBL,Voigt Ln,San Diego,CA,92161,888-758-4389,24 hours daily,Public, ,-117.239324600000003,32.883540000000004
+327,25486,UCSD,ELEC,AVBL,Hopkins Drive,San Diego,CA,92093,888-758-4389,24 hours daily,Public, ,-117.239141599999996,32.883535700000003
+328,25487,UCSD,ELEC,AVBL,9577 Gilman Dr,San Diego,CA,92161,888-758-4389,24 hours daily,Public, ,-117.234483699999998,32.876491500000000
+329,25513,DC CORRIDOR,ELEC,AVBL,1280 Dana Dr,Redding,CA,96003,888-758-4389,24 hours daily,Public, ,-122.348823400000001,40.586220300000001
+330,25518,CARLSBAD CA,ELEC,AVBL,3021 State St,Carlsbad,CA,92008,888-758-4389,24 hours daily,Public, ,-117.348484200000001,33.159026799999999
+331,25533,CUEV,ELEC,AVBL,9401 Jeronimo Rd,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.717680500000000,33.650564199999998
+332,25542,MASTER ACCOUNT,ELEC,AVBL,28494 Westinghouse Pl,Valencia,CA,91355,888-758-4389,24 hours daily,Public, ,-118.598517700000002,34.442890700000000
+333,25543,TMB,ELEC,AVBL,525 Park Ave,San Fernando,CA,91340,888-758-4389,24 hours daily,Public, ,-118.430105999999995,34.284635999999999
+334,25548,UTC,ELEC,AVBL,4545 La Jolla Village Dr,San Diego,CA,92122,888-758-4389,24 hours daily,Public, ,-117.210044999999994,32.873348999999997
+335,25575,CCC,ELEC,AVBL,2860 Gateway Oaks Dr,Sacramento,CA,95833,888-758-4389,24 hours daily,Public, ,-121.518423499999997,38.622235500000002
+336,25576,QCOM,ELEC,AVBL,4243 Campus Point Ct,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.226105000000004,32.888539999999999
+337,25583,UTC,ELEC,AVBL,9001-9065 Genesee Ave,San Diego,CA,92122,888-758-4389,24 hours daily,Public, ,-117.213219600000002,32.870489999999997
+338,25584,CUEV,ELEC,AVBL,9501 Jeronimo Rd,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.717028700000000,33.650175599999997
+339,25606,UTC,ELEC,AVBL,8650 Genesee Ave,San Diego,CA,92122,888-758-4389,24 hours daily,Public, ,-117.215239999999994,32.868958300000003
+340,25620,THE ARTISAN,ELEC,AVBL,"290-252,251-299 Cozumel",Laguna Beach,CA,92651,888-758-4389,24 hours daily,Public, ,-117.753501000000000,33.593614000000002
+341,25660,IRVINE  CO  OFC,ELEC,AVBL,45 Parker,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.702527000000003,33.657601999999997
+342,25701,450 B STREET IN,ELEC,AVBL,9920 pacific heights blvd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.190847000000005,32.900159000000002
+343,25724,BLN,ELEC,AVBL,26033 Cape Dr,Laguna Niguel,CA,92677,888-758-4389,24 hours daily,Public, ,-117.675825000000003,33.559646999999998
+344,25753,"ROF IV UTC, LLC",ELEC,AVBL,4180 La Jolla Village Dr,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.210065999999998,32.873992200000004
+345,25774,SOUTH TOWERS,ELEC,AVBL,5389 Scranton Rd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.202945000000000,32.890937999999998
+346,25786,NORMREEVESHONDA,ELEC,AVBL,16 Auto Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.721905000000007,33.631281000000001
+347,25792,CCC,ELEC,AVBL,2870 Gateway Oaks Dr,Sacramento,CA,95833,888-758-4389,24 hours daily,Public, ,-121.521017000000001,38.621974399999999
+348,25793,CCC,ELEC,AVBL,2890 Gateway Oaks,Sacramento,CA,95833,888-758-4389,24 hours daily,Public, ,-121.522437300000007,38.621186799999997
+349,25795,IRVINE  CO  OFC,ELEC,AVBL,400 Spectrum Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.745840999999999,33.653050999999998
+350,25800,UCSD,ELEC,AVBL,3803 Miramar St N,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.223834999999994,32.875602999999998
+351,25816,UCSD,ELEC,AVBL,3835 Miramar St N,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.223121899999995,32.875647499999999
+352,25825,ORCHARD PARKING,ELEC,AVBL,23803 McBean Pkwy,Santa Clarita,CA,91355,888-758-4389,24 hours daily,Public, ,-118.552402999999998,34.397649000000001
+353,25832,CITY HALL,ELEC,AVBL,58-74 Bridge St,West Sacramento,CA,95691,888-758-4389,24 hours daily,Public, ,-121.516112199999995,38.576750199999999
+354,25833,CITY HALL,ELEC,AVBL,74 Bridge St,West Sacramento,CA,95691,888-758-4389,24 hours daily,Public, ,-121.516178499999995,38.576783200000001
+355,25837,500 J SAWYER GA,ELEC,AVBL,1028 7th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.498904999999993,38.580891899999997
+356,25850,MERGE,ELEC,AVBL,5550 Carmel Mountain Rd,San Diego,CA,92130,888-758-4389,24 hours daily,Public, ,-117.197542999999996,32.928902999999998
+357,25879,UCSD,ELEC,AVBL,3803 Miramar St N,La Jolla,CA,92037,888-758-4389,24 hours daily,Public, ,-117.223878900000003,32.875514199999998
+358,25887,MERGE,ELEC,AVBL,5500 Carmel Mountain Rd,San Diego,CA,92130,888-758-4389,24 hours daily,Public, ,-117.197654799999995,32.928803899999998
+359,25888,BROADCOM,ELEC,AVBL,15101 Alton Pkwy,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.725262000000001,33.648234000000002
+360,25889,BROADCOM,ELEC,AVBL,15191 Alton Pkwy,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.730763999999994,33.647843999999999
+361,25913,HOAG HOSPITAL,ELEC,AVBL,Hospital Trail,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.771264700000003,33.661229800000001
+362,25924,WELCOME CENTER,ELEC,AVBL,301 Stewart Rd,Lathrop,CA,95330,888-758-4389,24 hours daily,Public, ,-121.309828300000007,37.788365900000002
+363,25936,CITYOFPATTERSON,ELEC,AVBL,315 W Las Palmas,Patterson,CA,95363,888-758-4389,24 hours daily,Public, ,-121.131035699999998,37.471518500000002
+364,25991,DC CORRIDOR,ELEC,AVBL,1242 Dana Dr,Redding,CA,96003,888-758-4389,24 hours daily,Public, ,-122.348844900000003,40.586106600000001
+365,26018,IRVINE  CO  OFC,ELEC,AVBL,15495 Sand Canyon Ave,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.766336999999993,33.669843999999998
+366,26019,IRVINE  CO  OFC,ELEC,AVBL,9620 Towne Centre Dr,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.210021999999995,32.881841000000001
+367,26021,IRVINE  CO  OFC,ELEC,AVBL,15776 Laguna Canyon Rd,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.760982999999996,33.665432000000003
+368,26026,IRVINE  CO  OFC,ELEC,AVBL,15485 Sand Canyon,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.766278000000000,33.669904000000002
+369,26032,CLUBHOUSE,ELEC,AVBL,3340 McKinley Village Way,Sacramento,CA,95816,888-758-4389,24 hours daily,Public, ,-121.456550800000002,38.583371000000000
+370,26035,UCSD,ELEC,AVBL,Osler Lane,San Diego,CA,92161,888-758-4389,24 hours daily,Public, ,-117.237859999999998,32.875066900000000
+371,26060,BLIZZARD,ELEC,AVBL,1 Blizzard Way,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.767196600000005,33.659139300000000
+372,26064,UCSD,ELEC,AVBL,304 Medical Center Dr,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.225614399999998,32.880212899999997
+373,26085,IRVINE  CO  OFC,ELEC,AVBL,4275 Executive Square,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.214994000000004,32.873612999999999
+374,26090,UCSD,ELEC,AVBL,Medical Center Dr,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.221960199999998,32.879213700000001
+375,26091,IRVINE  CO  OFC,ELEC,AVBL,15535 Sand Canyon,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.769718999999995,33.666435999999997
+376,26128,IRVINE  CO  OFC,ELEC,AVBL,15485 Sand Canyon Ave,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.766763200000000,33.669735600000003
+377,26137,114 PACIFICA,ELEC,AVBL,114 Pacifica,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.754288000000003,33.661288999999996
+378,26140,ORCHARD PARKING,ELEC,AVBL,23839-23851 McBean Pkwy,Santa Clarita,CA,91355,888-758-4389,24 hours daily,Public, ,-118.553054799999998,34.397142700000003
+379,26158,IRVINE  CO  OFC,ELEC,AVBL,3 Ada,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.737398999999996,33.654426999999998
+380,26159,UCSD,ELEC,AVBL,304 Medical Center Dr,La Jolla,CA,92037,888-758-4389,24 hours daily,Public, ,-117.225927400000003,32.879716600000002
+381,26184,DGS MAIN,ELEC,AVBL,1517 11th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.494575999999995,38.573779999999999
+382,26187,SENDERO,ELEC,AVBL,1701 Gateway Pl,Rancho Mission Viejo,CA,92694,888-758-4389,24 hours daily,Public, ,-117.617217699999998,33.519189799999999
+383,26196,UCSD,ELEC,AVBL,Pangea Parking Structure Scholars Dr N,San Diego,CA,92093,888-758-4389,24 hours daily,Public, ,-117.242910800000004,32.884051399999997
+384,26198,HOAG   HOSPITAL,ELEC,AVBL,16305 Sand Canyon,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.774281000000002,33.662108000000003
+385,26215,SPORTS CENTER,ELEC,AVBL,30 Terrace Rd,Ladera Ranch,CA,92694,888-758-4389,24 hours daily,Public, ,-117.627168999999995,33.556648000000003
+386,26216,SDUHSD,ELEC,AVBL,155 Stevens Ave,Solana Beach,CA,92075,888-758-4389,24 hours daily,Public, ,-117.262476899999996,32.994685900000000
+387,26219,SDUHSD,ELEC,AVBL,157 Stevens Ave,Solana Beach,CA,92075,888-758-4389,24 hours daily,Public, ,-117.262440900000001,32.994508799999998
+388,26223,IRVINE  CO  OFC,ELEC,AVBL,22055-22083 Irvine Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.748190699999995,33.654385599999998
+389,26248,IRVINE  CO  OFC,ELEC,AVBL,250 Spectrum,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.747615600000003,33.652553699999999
+390,26294,IRVINE  CO  OFC,ELEC,AVBL,15370 Barranca Pkwy,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.742046999999999,33.660971000000004
+391,26298,CSU FULLERTON,ELEC,AVBL,3 Banting,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.760416199999995,33.659449199999997
+392,26304,IRVINE  CO  OFC,ELEC,AVBL,46 Discovery,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.755482999999998,33.664822000000001
+393,26306,EVSP WALGREENS,ELEC,AVBL,1420 Meadowview Rd,Sacramento,CA,95832,888-758-4389,24 hours daily,Public, ,-121.504221999999999,38.480752000000003
+394,26308,EVSP WALGREENS,ELEC,AVBL,1401 Broadway,Sacramento,CA,95818,888-758-4389,24 hours daily,Public, ,-121.494284500000006,38.562456699999998
+395,26309,EVSP WALGREENS,ELEC,AVBL,2900 Stockton Blvd,Sacramento,CA,95817,888-758-4389,24 hours daily,Public, ,-121.454897000000003,38.547788199999999
+396,26312,HQ STATION 5,ELEC,AVBL,700 N 10th St,Sacramento,CA,95811,888-758-4389,24 hours daily,Public, ,-121.486031999999994,38.598118999999997
+397,26367,CARLSBAD CA,ELEC,AVBL,6565 Alicante Rd,Carlsbad,CA,92009,888-758-4389,24 hours daily,Public, ,-117.263521499999996,33.117445799999999
+398,26381,PUR,ELEC,AVBL,24555 Los Alisos Blvd,Laguna Hills,CA,92653,888-758-4389,24 hours daily,Public, ,-117.702186900000001,33.606662100000001
+399,26399,IRVINE  CO  OFC,ELEC,AVBL,9191 Towne Center Dr,San Diego,CA,92122,888-758-4389,24 hours daily,Public, ,-117.206298000000004,32.873403000000003
+400,26405,IRVINE  CO  OFC,ELEC,AVBL,38 Discovery,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.755502000000007,33.666434000000002
+401,26431,IRVINE  CO  OFC,ELEC,AVBL,153 Technology Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.745880000000000,33.663356000000000
+402,26433,OLIVE PIT,ELEC,AVBL,2156 Solano St,Corning,CA,96021,888-758-4389,24 hours daily,Public, ,-122.197226499999999,39.928576499999998
+403,26436,ARE - 10996,ELEC,AVBL,10996 Torreyana Rd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.239429999999999,32.904325999999998
+404,26464,EVSP WALGREENS,ELEC,AVBL,25533 Marguerite Pkwy,Mission Viejo,CA,92692,888-758-4389,24 hours daily,Public, ,-117.660591800000006,33.592048200000001
+405,26468,UCSD,ELEC,AVBL,3377 N Torrey Pines Ct,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.241568000000001,32.892366000000003
+406,26494,YAKS ON THE 5,ELEC,AVBL,4314 Pioneer Way,Dunsmuir,CA,96025,888-758-4389,24 hours daily,Public, ,-122.276218499999999,41.223041600000002
+407,26507,OC PARKS,ELEC,AVBL,28373 Alicia Pkwy,Aliso Viejo,CA,92656,888-758-4389,24 hours daily,Public, ,-117.720047899999997,33.551332000000002
+408,26516,CALPERS,ELEC,AVBL,400 Q St,Sacramento,CA,95811,888-758-4389,24 hours daily,Public, ,-121.504467800000000,38.574087400000003
+409,26524,IRVINE  CO  OFC,ELEC,AVBL,4655 Executive Dr,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.206104999999994,32.875815000000003
+410,26540,LEGOLAND,ELEC,AVBL,1 Legoland Dr,Carlsbad,CA,92008,888-758-4389,24 hours daily,Public, ,-117.311054999999996,33.126176999999998
+411,26550,58 DISCOVERY,ELEC,AVBL,58 Discovery,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.758789800000002,33.661342200000000
+412,26629,IRVINE  CO  OFC,ELEC,AVBL,4770 Eastgate Mall,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.203648999999999,32.881628999999997
+413,26653,IRVINE  CO  OFC,ELEC,AVBL,15271 Laguna Canyon Rd,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.761752200000004,33.672251600000003
+414,26712,SNG-18,ELEC,AVBL,500 R St,Sacramento,CA,95811,888-758-4389,24 hours daily,Public, ,-121.503397000000007,38.572757000000003
+415,26716,IRVINE  CO  OFC,ELEC,AVBL,150 Spectrum Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.746159000000006,33.649918999999997
+416,26728,IRVINE  CO  OFC,ELEC,AVBL,22207 Irvine Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.747340500000007,33.649641099999997
+417,26796,SCRIPPS HEALTH,ELEC,AVBL,I-5,Encinitas,CA,92024,888-758-4389,24 hours daily,Public, ,-117.284180800000001,33.039095400000001
+418,26849,IRVINE  CO  OFC,ELEC,AVBL,4225 Executive Square,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.215675000000005,32.873811000000003
+419,26854,BMW FACILITIES,ELEC,AVBL,1101 Runway Dr,Stockton,CA,95206,888-758-4389,24 hours daily,Public, ,-121.268014399999998,37.896020800000002
+420,26855,IRVINE  CO  OFC,ELEC,AVBL,43 Discovery,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.756791000000007,33.666936999999997
+421,26857,IRVINE  CO  OFC,ELEC,AVBL,6531 Irvine Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.763816000000006,33.670465999999998
+422,26864,IRVINE  CO  OFC,ELEC,AVBL,12680 High Bluff Dr,San Diego,CA,92130,888-758-4389,24 hours daily,Public, ,-117.241850999999997,32.948940600000000
+423,26901,CITY HALL,ELEC,AVBL,1110 West Capitol Ave,West Sacramento,CA,95691,888-758-4389,24 hours daily,Public, ,-121.523507899999998,38.582059000000001
+424,26928,IRVINE  CO  OFC,ELEC,AVBL,4365 Executive Dr,San Diego,CA,92122,888-758-4389,24 hours daily,Public, ,-117.211804000000001,32.874710999999998
+425,26939,DGS MAIN,ELEC,AVBL,800 Q St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.499385000000004,38.572992999999997
+426,26940,DGS MAIN,ELEC,AVBL,1615 Capitol Ave,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.486295999999996,38.575074999999998
+427,26942,DGS MAIN,ELEC,AVBL,1500 Capitol Ave,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.488112999999998,38.574792000000002
+428,26943,DGS MAIN,ELEC,AVBL,1430 N St.,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.489142000000001,38.573858000000001
+429,26944,DGS MAIN,ELEC,AVBL,1421 15th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.488964999999993,38.573572800000001
+430,26950,DGS MAIN,ELEC,AVBL,1501 Capitol Ave,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.487039499999995,38.575755500000000
+431,26987,SACRAMENTO,ELEC,AVBL,312 K St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.502604000000005,38.581108999999998
+432,26994,SACRAMENTO,ELEC,AVBL,414 J St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.500957999999997,38.582118000000001
+433,27029,DGS MAIN,ELEC,AVBL,1500 10th Street,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.496061999999995,38.574855999999997
+434,27030,DGS MAIN,ELEC,AVBL,1517 13th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.491641999999999,38.572907000000001
+435,27031,DGS MAIN,ELEC,AVBL,707 3rd St,West Sacramento,CA,95605,888-758-4389,24 hours daily,Public, ,-121.510851000000002,38.583376999999999
+436,27037,ESQUIRE PLAZA,ELEC,AVBL,1074-1098 13th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.489187999999999,38.579732000000000
+437,28501,DC CORRIDOR,ELEC,AVBL,73 Frazier Mountain Park Rd,Lebec,CA,93243,888-758-4389,24 hours daily,Public, ,-118.883184000000000,34.818390999999998
+438,28583,SALT,ELEC,AVBL,313N N Cleveland St,Oceanside,CA,92054,888-758-4389,24 hours daily,Public, ,-117.382610099999994,33.195852299999999
+439,28605,ONE PASEO,ELEC,AVBL,12845 Paseo Village Way,San Diego,CA,92130,888-758-4389,24 hours daily,Public, ,-117.236653799999999,32.950944900000003
+440,28716,NCTD-Oceanside Transit Center,ELEC,AVBL,235 South Tremont Street,Oceanside,CA,92054,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.378693999999996,33.192667000000000
+441,28734,TPS NATOMAS,ELEC,AVBL,4090 E Commerce Way,Sacramento,CA,95834,888-758-4389,24 hours daily,Public, ,-121.519109000000000,38.642847000000003
+442,28926,SACRAMENTO,ELEC,AVBL,South Area Corporate Yard (SACY) 5730 24th Street,Sacramento,CA,95822,888-758-4389,24 hours daily,Public, ,-121.484468500000006,38.520302500000000
+443,28930,SACRAMENTO,ELEC,AVBL,Capitol Garage 1303 10th Street,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.493131099999999,38.578151400000003
+444,28931,SACRAMENTO,ELEC,AVBL,Memorial Garage 801 14th St,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.486093199999999,38.580221500000000
+445,28932,SACRAMENTO,ELEC,AVBL,Old Sacramento Garage 125 I Street,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.502911299999994,38.583701200000000
+446,28933,SACRAMENTO,ELEC,AVBL,Tower Bridge Garage 1289 Front Street,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.506200000000007,38.580844999999997
+447,28934,SACRAMENTO,ELEC,AVBL,City Hall Garage  939 10th Street,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.493003999999999,38.580975000000002
+448,28935,SACRAMENTO,ELEC,AVBL,Public Safety Administration Building (PSAB) 5770 Freeport Blvd,Sacramento,CA,95822,888-758-4389,24 hours daily,Public, ,-121.498620000000003,38.521895999999998
+449,28982,Six Flags Magic Mountain,ELEC,AVBL,26101 Magic Mountain Pkwy,Valencia,CA,91355,661-255-4100,24 hours daily,Public, ,-118.594905999999995,34.428862000000002
+450,28983,College of the Canyons - Parking Structure,ELEC,AVBL,26455 Rockwell Canyon Rd,Santa Clarita,CA,91355,661-259-7800,24 hours daily; parking permit required,Public, ,-118.569045000000003,34.407972999999998
+451,28984,College of the Canyons - Lot 15,ELEC,AVBL,26455 Rockwell Canyon Rd,Santa Clarita,CA,91355,661-259-7800,24 hours daily; parking permit required,Public, ,-118.568546999999995,34.402310999999997
+452,28985,Audi Valencia,ELEC,AVBL,23923 Creekside Rd,Valencia,CA,91355,888-885-5748,Dealership business hours,Public, ,-118.553042000000005,34.419198999999999
+453,28998,Gnarly Wood,ELEC,AVBL,2081 Faraday,Carlsbad,CA,92008,888-998-2546,MON: 24 hours | TUE: 24 hours | WED: 24 hours | THU: 24 hours | FRI: 24 hours | SAT: 24 hours | SUN: 24 hours,Public, ,-117.285866999999996,33.134627999999999
+454,29075,BIOSCIENCE PROP,ELEC,AVBL,10770 Wateridge Cir,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.211960000000005,32.900759999999998
+455,29117,Target T0310 Riverside Blvd.,ELEC,AVBL,2505 Riverside Blvd.,Sacramento,CA,95818,833-632-2778,24 hours daily,Public, ,-121.497855000000001,38.562896000000002
+456,29179,Countryside Market - Shell,ELEC,AVBL,9741 South Enos Lane,Bakersfield,CA,93311,833-632-2778,24 hours daily,Public, ,-119.252960999999999,35.266528000000001
+457,29293,Market West,ELEC,AVBL,3270 Arena Blvd.,Sacramento,CA,95834,833-632-2778,24 hours daily,Public, ,-121.532587000000007,38.641632999999999
+458,29440,ENCLAVE SD,ELEC,AVBL,9868 Scranton Rd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.203487999999993,32.898766999999999
+459,29561,The Park Shopping Center,ELEC,AVBL,4720 Freeport Boulevard,Sacramento,CA,95822,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-121.495270000000005,38.532417000000002
+460,29650,IRVINE COMPANY,ELEC,AVBL,860 Spectrum Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.744730000000004,33.649025000000002
+461,29651,IRVINE COMPANY,ELEC,AVBL,810 Spectrum Center Dr,Irvine,CA,92618,888-758-4389,24 hours daily,Public, ,-117.744845999999995,33.649388999999999
+462,29689,ELEVATE,ELEC,AVBL,330 S Cedros Ave,Solana Beach,CA,92075,888-758-4389,24 hours daily,Public, ,-117.269701499999996,32.988721099999999
+463,29818,Northwest Pump - Sacremento,ELEC,AVBL,"3600 industrial blvd, Ste 10",West Sacramento,CA,95691,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-121.564167400000002,38.574047399999998
+464,29952,CT D2,ELEC,AVBL,Unnamed Road,Hornbrook,CA,96044,888-758-4389,24 hours daily,Public, ,-122.570907800000001,41.851290499999998
+465,29953,YREKA TRUCK,ELEC,AVBL,787 Montague Rd,Yreka,CA,96097,888-758-4389,24 hours daily,Public, ,-122.619091999999995,41.738365999999999
+466,30008,CT D2,ELEC,AVBL,Interstate 5 & rte 96,Hornbrook,CA,96044,888-758-4389,24 hours daily,Public, ,-122.571012899999999,41.851264499999999
+467,30024,Panoche Shell,ELEC,AVBL,46331 W Panoche Road,Firebaugh,CA,93622,833-632-2778,24 hours daily,Public, ,-120.625602999999998,36.637692000000001
+468,30102,HCP SAN DIEGO,ELEC,AVBL,4939 Directors Pl,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.209085000000002,32.893942000000003
+469,30103,HCP SAN DIEGO,ELEC,AVBL,11099 N Torrey Pines Rd,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.243576000000004,32.907342999999997
+470,30104,HCP SAN DIEGO,ELEC,AVBL,11011 N Torrey Pines Rd,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.243082999999999,32.904960000000003
+471,30105,HCP SAN DIEGO,ELEC,AVBL,7473 Lusk Blvd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.217316999999994,32.900595000000003
+472,30106,HCP SAN DIEGO,ELEC,AVBL,11025 N Torrey Pines Rd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.242962800000001,32.905936599999997
+473,30107,HCP SAN DIEGO,ELEC,AVBL,11095 Torreyana Rd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.236840999999998,32.906635999999999
+474,30108,HCP SAN DIEGO,ELEC,AVBL,6195 Lusk Blvd,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.194815000000006,32.899332999999999
+475,30109,HCP SAN DIEGO,ELEC,AVBL,10355 Science Center Dr,San Diego,CA,92121,888-758-4389,24 hours daily,Public, ,-117.230159999999998,32.892771000000003
+476,30195,Gateway Unified School District,ELEC,AVBL,4411 Mountain Lakes Blvd,Redding,CA,96003,866-816-7584,24 hours daily; also accepts Paypal,Public,A D M V,-122.387452600000003,40.630352199999997
+477,30197,Volare Hotel,ELEC,AVBL,111 S Avenida De La Estrella,San Clemente,CA,92672,866-816-7584,24 hours daily; also accepts Paypal,Public,A D M V,-117.611257400000000,33.427275600000002
+478,30209,San Joaquin County,ELEC,AVBL,44 N San Joaquin St,Stockton,CA,95202,866-816-7584,24 hours daily; also accepts Paypal,Public,A D M V,-121.286687099999995,37.953917599999997
+479,30210,Caltrans Valencia And North Region,ELEC,AVBL,28820 The Old Rd,Valencia,CA,91355,866-816-7584,24 hours daily; also accepts Paypal,Public,A D M V,-118.606745900000007,34.441980800000003
+480,30232,Best Western,ELEC,AVBL,584 North East Street,Woodland,CA,95776,800-663-5633,MO: Not Specified; TU: Not Specified; WE: Not Specified; TH: Not Specified; FR: Not Specified; SA: Not Specified; SU: Not Specified,Public, ,-121.763578300000006,38.695249500000003
+481,30246,Best Western Plus Villa Del Lago Inn - Tesla Supercharger,ELEC,AVBL,2959 Speno Dr,Patterson,CA,95363,877-798-3752,24 hours daily; for Tesla use only,Public, ,-121.174422000000007,37.466431999999998
+482,30320,SCRIPPS HEALTH,ELEC,AVBL,9902 Genesee Ave,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.224606300000005,32.883168599999998
+483,30321,SCRIPPS HEALTH,ELEC,AVBL,Voigt Dr & Scripps Memorial Hospital,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.224035499999999,32.882714600000000
+484,30322,SCRIPPS HEALTH,ELEC,AVBL,Scripps Hospital Driveway,San Diego,CA,92037,888-758-4389,24 hours daily,Public, ,-117.224723800000007,32.883221599999999

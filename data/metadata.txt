@@ -1,0 +1,5 @@
+From forwarded email from Natalie on 11/8
+Stations.csv is the original stations in the buffer, with the table exported to a CSV file.  The important column is OID_, which will link to two columns in the next file.
+Distances.csv is the table for the lines of the OD cost matrix result.  The OriginID and the DestinationID are the same as the OID_ column in the stations.csv file.  And the distance field is Total_Kilometers.  So on the first row of data, the origin and destination are the same and the distance is zero.  On the second row of data, the origin is 1 (Scripts Green Hosptal) and the destination is 64 (Hilton La Jolla Torre Pines) and the distance between them is 0.85 kilometers.
+
+
