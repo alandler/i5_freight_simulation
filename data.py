@@ -3,19 +3,19 @@ import networkx as nx
 import pandas as pd
 import random
 
-def get_station_G():
-    stations_df = pd.read_csv("data/stations.csv")
-    distances_df = pd.read_csv("data/distances.csv")
+stations_df = pd.read_csv("data/stations.csv")
+distances_df = pd.read_csv("data/distances.csv")
 
-    # add nodes with IDs, charging_rates
+def get_station_G():
+
+    # get positions, add to nodes
+    coords = tuple(zip(stations_df["longitude"], stations_df["latitude"]))
+
+    # add nodes with IDs, charging_rates, pos
     station_G  = nx.Graph()
     station_ID_list = list(stations_df["OID_"])
     for i in range(stations_df.shape[0]):
-        station_G.add_node(station_ID_list[i], charging_rate = random.randrange(5,10))
-
-    # get positions
-    coords = zip(stations_df["longitude"], stations_df["latitude"])
-    positions = dict(zip(stations_df["OID_"],coords))
+        station_G.add_node(station_ID_list[i], charging_rate = random.randrange(5,10), pos = coords[i])
 
     # add edges with weight, length
     # TODO: elevation, avg_speed data

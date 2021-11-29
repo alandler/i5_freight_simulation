@@ -3,21 +3,48 @@ import numpy as np
 # import pandas as pd
 import random
 from data import get_station_G
+from replicate_graph import layer_graph
 
 class Simulation():
     '''Create a class for a simulation'''
     
-    def __init__(self,simulation_length = 24):
-        self.road_G = nx.Graph()
+    def __init__(self, road_G, simulation_length = 24):
+
+        # graphs
+        self.road_G = road_G
+        self.battery_G = layer_graph(road_G)
+
+        # intervals
         self.time_interval = 10 
         self.battery_interval = 25
         self.num_layers = 100//self.battery_interval+1
+        self.battery_layers = [self.battery_interval*l for l in range(self.num_layers)]
+
+        # simulation parameters: static
         self.num_batches = 10 
         self.average_demand = 10
         self.simulation_length = simulation_length
+
+        # simulation data: dynamic
         self.vehicle_list = None
         self.simulation_time = 0
     
+    def get_simulation_interval(self):
+        '''Returns the index of the current simulation interval'''
+        return self.simulation_time//self.time_interval
+    
+    def get_number_vehicles(self, edge_label):
+        '''Get vehicles along a given edge (all battery levels)'''
+        paths = {}
+        i = self.get_simulation_interval()
+        for vehicle in self.vehicle_list: # iterate over all vehicles in the simulation
+            vehicle_location = vehicle.segmented_path[i] 
+            if vehicle_location in paths:
+                paths[vehicle_location]+=1
+            else:
+                paths[vehicle_location]=1
+        return paths[edge_label]
+
     def compute_travel_times():
         '''TODO: Will be used to encode uncertainty into the edge weights
         - include rest stops
@@ -28,12 +55,17 @@ class Simulation():
         '''Takes in the node and edge csv and creates the self.road_G'''
         self.road_G = get_station_G()
     
-    def randomize_demand():
+    def randomize_demand(mu, std):
+        ''''''
         return
     
-    def add_congestion_time(self, G, src, dst, time, battery_interval):
+    def add_road_time(self, G, src, dst, time):
         '''Mutates the graph G to add time along edges _out to _in'''
-        # TODO
+        out_labels = [src+"_"+layer+"_"+"out" for layer in self.battery_layers]
+        for label in out_labels:
+            for edge in G.out_edges(label): # get all outgoing edges
+                if dst in edge[1]: 
+                    G[edge[0]][edge[1]]['weight'] += time
         return G
 
     def run():
@@ -51,12 +83,27 @@ class Simulation():
     
 class Vehicle():
     '''Create a vehicle to store attributes'''
-    def __init__(self, src, dst):
-        self.location = None
-        self.start_time = 0 #between 0 and 24
-        self.path = None
+    def __init__(self, simulation, src, dst, start_time =0):
+
+        # initialized
+        self.start_time = start_time #between 0 and 24
         self.src = src
         self.dst = dst
+        self.simulation = simulation
+
+        # calculated
+        self.path = self.get_shortest_path()
+        self.segmented_path = time_segment_path(self.simulation.battery_G, self.start_time, 
+            self.path, self.simlation.time_interval, self.simulation.simulation_length)
+        
+        # not currently updated
+        self.location = None
+    
+    def get_shortest_path(self):
+        '''Calculate shortest path'''
+        G = self.simulation.battery
+        return nx.shortest_path(G, self.src, self.dst)
+         
 
 def time_segment_path(G, start_time, path, time_interval, end_simulation_time):
     '''Given a vehicle, list its positions at time_interval markings'''
