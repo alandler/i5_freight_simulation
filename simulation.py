@@ -15,8 +15,8 @@ class Simulation():
         self.battery_G = layer_graph(road_G)
 
         # intervals
-        self.time_interval = 10 
-        self.battery_interval = 25
+        self.time_interval = 10 # minutes
+        self.battery_interval = 25 # % charge
         self.num_layers = 100//self.battery_interval+1
         self.battery_layers = [self.battery_interval*l for l in range(self.num_layers)]
 
@@ -27,16 +27,18 @@ class Simulation():
 
         # simulation data: dynamic
         self.vehicle_list = None
-        self.simulation_time = 0
-    
-    def get_simulation_interval(self):
-        '''Returns the index of the current simulation interval'''
-        return self.simulation_time//self.time_interval
+        self.simulation_index = 0
+        self.src_dict = {}
+        self.dst_dict = {}
+
+    def get_simulation_hour(self):
+        '''Returns the hour [0-24] of the time of day at the current simulation index'''
+        return round((self.simulation_index * self.time_interval)/60, 0) % 24
     
     def get_number_vehicles(self, edge_label):
         '''Get vehicles along a given edge (all battery levels)'''
         paths = {}
-        i = self.get_simulation_interval()
+        i = self.get_simulation_index()
         for vehicle in self.vehicle_list: # iterate over all vehicles in the simulation
             vehicle_location = vehicle.segmented_path[i] 
             if vehicle_location in paths:
@@ -68,8 +70,28 @@ class Simulation():
                     G[edge[0]][edge[1]]['weight'] += time
         return G
 
-    def run():
-        return
+    def step(self, h_step):
+        ''' one simulation step '''
+        hour = h_step%24 # get time of day (assuming hour intervals)
+
+        # iterate over all source nodes, release x trucks according to their hourly distribution
+        for src in self.src_dict:
+            demand = self.src_dict[src][hour]
+            dst_list = self.dst_dict.keys()
+            desirability_score_list = self.dst_dict.values()
+            destination_probabilities = list(desirability_score_list/desirability_score_list.sum())
+            np.random.choice(dst_list, p=destination_probabilities)
+
+        return 
+
+    def run(self):
+        ''' Run the simulation; return the statistics '''
+        for hour in range(self.simulation_length): # go for simulation_length in hours
+            for interval in range(60/self.time_interval): # go in interval segments
+                self.step(hour)
+                self.simulation_index += 1
+        
+        return self.statistics
 
     def add_wait_time(self, G, station, time, battery_interval):
         '''Mutates the graph G to add "time" to the edges between the station _in to _out'''
@@ -80,13 +102,27 @@ class Simulation():
                 out_label = station + "_"+ out_battery_level + "_out"
                 G[in_label][out_label] += time
         return G
+
+    def add_dst(self, dst, score):
+        ''' add destination node and desirability score '''
+        self.dst_dict[dst]["dst_score"] = score
+
+    def add_src(self, src, src_distr):
+        ''' Add src node to list and augments the node in station_G with the src'''
+        self.src_dict[src] = src_distr
+
+    def generate_src_dst_nodes(self):
+        ''' Generate src and dst nodes. Assign the hour distribution to the node in G
+        Default 1 and 464, the southernmost and northenmost nodes'''
+        self.add_src(self, 1, [1 for x in range(24)])
+        self.add_dst(self, 464, 4)
     
 class Vehicle():
     '''Create a vehicle to store attributes'''
     def __init__(self, simulation, src, dst, start_time =0):
 
         # initialized
-        self.start_time = start_time #between 0 and 24
+        self.start_time = start_time # TODO: extend 0-24 range
         self.src = src
         self.dst = dst
         self.simulation = simulation
@@ -103,7 +139,44 @@ class Vehicle():
         '''Calculate shortest path'''
         G = self.simulation.battery
         return nx.shortest_path(G, self.src, self.dst)
-         
+    
+    def recalculate_path(self):
+        '''Recalculate path'''
+        raise NotImplementedError
+
+def distance_segment_path(road_G, path, seg_dis):
+    '''Returns a modified road_G including paths segmented into equidistant segments.
+    The splits minimize the difference from seg_dis.'''
+    for i in range(len(path)-1):
+        src = path[i]
+        dst = path[i+1]
+
+        # get (or set) segment_length and num_segments
+        try:
+            segment_length = road_G[src][dst]['segment_length']
+            num_segments = road_G[src][dst]['num_segments']
+        except:
+            total_length = road_G[src][dst]['length']
+            num_segments = round(total_length/seg_dis, 0)
+            segment_length = total_length/num_segments
+            road_G[src][dst]['segment_length'] = segment_length
+            road_G[src][dst]['num_segments'] = num_segments
+
+        # remove src-dst connection
+        road_G.remove_edge(src, dst)
+
+        current_src = src
+        current_dst = dst
+        # connect src->dst via segments
+        for i in range(num_segments):
+            if i == num_segments-1:
+                current_dst = dst
+            else:
+                current_dst = src + "_s" + str(i)
+            road_G.add_edge(current_src,current_dst)
+            current_src = current_dst
+
+    return road_G
 
 def time_segment_path(G, start_time, path, time_interval, end_simulation_time):
     '''Given a vehicle, list its positions at time_interval markings'''
