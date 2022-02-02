@@ -8,6 +8,7 @@ from replicate_graph import layer_graph
 class Simulation():
     '''Create a class for a simulation'''
     
+    #### Init/Graph Mutation #### 
     def __init__(self, road_G, simulation_length = 24):
 
         # graphs
@@ -15,23 +16,43 @@ class Simulation():
         self.battery_G = layer_graph(road_G)
 
         # intervals
-        self.time_interval = 10 # minutes
+        self.time_interval = .2 # hours
         self.battery_interval = 25 # % charge
-        self.num_layers = 100//self.battery_interval+1
-        self.battery_layers = [self.battery_interval*l for l in range(self.num_layers)]
+        self.num_layers = 100//self.battery_interval+1 # minimum 2
+        self.battery_layers = [self.battery_interval*l for l in range(self.num_layers)] # always includes 0 and 100
 
         # simulation parameters: static
         self.num_batches = 10 
-        self.average_demand = 10
-        self.simulation_length = simulation_length
+        self.average_demand = 10 
+        self.simulation_length = simulation_length # in hours 
 
         # simulation data: dynamic
-        self.vehicle_list = None
-        self.simulation_index = 0
-        self.src_dict = {}
-        self.dst_dict = {}
+        self.vehicle_list = None # all vehicles released over the cours of the simulation
+        self.simulation_index = 0 # increments each self.time_interval
+        self.simulation_hour_index = 0 # increments each hour
+        self.src_dict = {} # veh/hr at each hour
+        self.dst_dict = {} # desirabiliy score 0-10
 
-    def get_simulation_hour(self):
+    def create_road_G(self, mph=55):
+        '''Takes in the node and edge csv and creates the self.road_G'''
+        self.road_G = get_station_G()
+
+    def add_dst(self, dst, score):
+        ''' add destination node and desirability score '''
+        self.dst_dict[dst]["dst_score"] = score
+
+    def add_src(self, src, src_distr):
+        ''' Add src node to list and augments the node in station_G with the src'''
+        self.src_dict[src] = src_distr
+    
+    def generate_src_dst_nodes(self):
+        ''' Generate src and dst nodes. Assign the hour distribution to the node in G
+        Default 1 and 464, the southernmost and northenmost nodes'''
+        self.add_src(self, 1, [1 for x in range(24)])
+        self.add_dst(self, 464, 4)
+
+    #### Observers ####
+    def get_simulation_hour_of_day(self):
         '''Returns the hour [0-24] of the time of day at the current simulation index'''
         return round((self.simulation_index * self.time_interval)/60, 0) % 24
     
@@ -45,17 +66,26 @@ class Simulation():
                 paths[vehicle_location]+=1
             else:
                 paths[vehicle_location]=1
+        if edge_label not in paths:
+            return 0 
         return paths[edge_label]
+    
+    def get_random_destination(self, n):
+        ''' Gets random destination according to probability distribution of scores'''
+        dst_list = self.dst_dict.keys()
+        desirability_score_list= self.dst_dict.values()
+        destination_probabilities = list(desirability_score_list/desirability_score_list.sum())
+        random_destinations = np.random.choice(dst_list, size = n, replace = True, p=destination_probabilities)
+        return random_destinations
 
-    def compute_travel_times():
-        '''TODO: Will be used to encode uncertainty into the edge weights
+    #### Augmentation Mutators ####
+    def update_travel_times(self):
+        ''' Based on the number of cars on a given segment, update the travel time on the road according to some formula
+        TODO what formula?? How do we include uncertainty?
         - include rest stops
         - include temporal demand changes'''
-        return
-    
-    def create_road_G(self, mph=55):
-        '''Takes in the node and edge csv and creates the self.road_G'''
-        self.road_G = get_station_G()
+
+        pass
     
     def randomize_demand(mu, std):
         ''''''
@@ -70,29 +100,6 @@ class Simulation():
                     G[edge[0]][edge[1]]['weight'] += time
         return G
 
-    def step(self, h_step):
-        ''' one simulation step '''
-        hour = h_step%24 # get time of day (assuming hour intervals)
-
-        # iterate over all source nodes, release x trucks according to their hourly distribution
-        for src in self.src_dict:
-            demand = self.src_dict[src][hour]
-            dst_list = self.dst_dict.keys()
-            desirability_score_list = self.dst_dict.values()
-            destination_probabilities = list(desirability_score_list/desirability_score_list.sum())
-            np.random.choice(dst_list, p=destination_probabilities)
-
-        return 
-
-    def run(self):
-        ''' Run the simulation; return the statistics '''
-        for hour in range(self.simulation_length): # go for simulation_length in hours
-            for interval in range(60/self.time_interval): # go in interval segments
-                self.step(hour)
-                self.simulation_index += 1
-        
-        return self.statistics
-
     def add_wait_time(self, G, station, time, battery_interval):
         '''Mutates the graph G to add "time" to the edges between the station _in to _out'''
         battery_layers = [battery_interval*l for l in range(self.num_layers)]
@@ -103,19 +110,33 @@ class Simulation():
                 G[in_label][out_label] += time
         return G
 
-    def add_dst(self, dst, score):
-        ''' add destination node and desirability score '''
-        self.dst_dict[dst]["dst_score"] = score
+    #### Simulation Run ####
+    def step(self, h_step, i_step):
+        ''' one simulation step '''
+        hour = h_step%24 # get time of day (assuming hour intervals)
 
-    def add_src(self, src, src_distr):
-        ''' Add src node to list and augments the node in station_G with the src'''
-        self.src_dict[src] = src_distr
+        # iterate over all source nodes, release x trucks according to their hourly distribution
+        for src in self.src_dict:
+            num_trucks_released = round(self.src_dict[src][hour]*self.time_interval, 0) # TODO: inject randomness
+            destinations = self.get_random_destination(num_trucks_released)
+            for truck_i in range(num_trucks_released): # get shortest paths for each truck
+                truck = Vehicle(src, destinations[truck_i], self.simulation_index)
+                shortest_path = nx.shortest_path(self.battery_G, src, destinations[truck_i])
+                truck.path = shortest_path
+                truck.simulation = self
+            # update graph
+            # update congestion, travel times, capacities
+        return 
 
-    def generate_src_dst_nodes(self):
-        ''' Generate src and dst nodes. Assign the hour distribution to the node in G
-        Default 1 and 464, the southernmost and northenmost nodes'''
-        self.add_src(self, 1, [1 for x in range(24)])
-        self.add_dst(self, 464, 4)
+    def run(self):
+        ''' Run the simulation; return the statistics '''
+        for h_step in range(self.simulation_length): # go for simulation_length in hours
+            for i_step in range(int(1/self.time_interval)): # go in interval segments
+                self.step(h_step,i_step)
+                self.simulation_index += 1
+            self.simulation_hour_index += 1
+        
+        return self.statistics
     
 class Vehicle():
     '''Create a vehicle to store attributes'''
@@ -167,13 +188,14 @@ def distance_segment_path(road_G, path, seg_dis):
 
         current_src = src
         current_dst = dst
-        # connect src->dst via segments
+        # connect src->dst via bi-directional segments
         for i in range(num_segments):
             if i == num_segments-1:
                 current_dst = dst
             else:
-                current_dst = src + "_s" + str(i)
+                current_dst = src + "_" + dst +"_s" + str(i) # nomenclature: src_dst_s1, src_dst_s2
             road_G.add_edge(current_src,current_dst)
+            road_G.add_edge(current_dst, current_src)
             current_src = current_dst
 
     return road_G

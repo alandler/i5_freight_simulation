@@ -6,9 +6,9 @@ def find_nearest_increment(n, increment=25):
         curr = 0
         while curr<=n-increment: # runs through levels until hits n (or lower)
             curr+=increment
-        
         return curr 
 
+# TODO: use["charging"] attribute to determine whether the node needs to be layered.
 def layer_graph(graph, increment = 25, km_per_percent = 5):
     '''Creates a duplicated graph, where each node contains all battery levels both in and out. 
     Directed edges exist from out to in and in to out, the former being roads, and the latter being charging.
