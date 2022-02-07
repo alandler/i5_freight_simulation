@@ -1,6 +1,6 @@
-﻿OID_,OBJECTID,station_na,fuel_type_,status_cod,street_add,city,st_prv_cod,zip,station_ph,access_day,groups_wit,cards_acce,longitude,latitude
-1,14,Scripps Green Hospital,ELEC,AVBL,10666 N Torrey Pines Rd,La Jolla,CA,92037,858-554-9100,24 hours daily,Public, ,-117.243,32.89947
-228,24674,CC STATION 1,ELEC,AVBL,24351 El Toro Rd,Laguna Woods,CA,92637,888-758-4389,24 hours daily,Public, ,-117.731017,33.610358
-378,26140,ORCHARD PARKING,ELEC,AVBL,23839-23851 McBean Pkwy,Santa Clarita,CA,91355,888-758-4389,24 hours daily,Public, ,-118.5530548,34.3971427
-447,28934,SACRAMENTO,ELEC,AVBL,City Hall Garage  939 10th Street,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.493004,38.580975
-465,29953,YREKA TRUCK,ELEC,AVBL,787 Montague Rd,Yreka,CA,96097,888-758-4389,24 hours daily,Public, ,-122.619092,41.738366
+﻿OID_,OBJECTID,station_na,fuel_type_,status_cod,street_add,city,st_prv_cod,zip,station_ph,access_day,groups_wit,cards_acce,longitude,latitude,physical_capacity
+1,14,Scripps Green Hospital,ELEC,AVBL,10666 N Torrey Pines Rd,La Jolla,CA,92037,858-554-9100,24 hours daily,Public, ,-117.243,32.89947,5
+228,24674,CC STATION 1,ELEC,AVBL,24351 El Toro Rd,Laguna Woods,CA,92637,888-758-4389,24 hours daily,Public, ,-117.731017,33.610358,4
+378,26140,ORCHARD PARKING,ELEC,AVBL,23839-23851 McBean Pkwy,Santa Clarita,CA,91355,888-758-4389,24 hours daily,Public, ,-118.5530548,34.3971427,5
+447,28934,SACRAMENTO,ELEC,AVBL,City Hall Garage  939 10th Street,Sacramento,CA,95814,888-758-4389,24 hours daily,Public, ,-121.493004,38.580975,4
+465,29953,YREKA TRUCK,ELEC,AVBL,787 Montague Rd,Yreka,CA,96097,888-758-4389,24 hours daily,Public, ,-122.619092,41.738366,3

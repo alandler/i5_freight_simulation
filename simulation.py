@@ -28,11 +28,14 @@ class Simulation():
         self.simulation_length = simulation_length # in hours 
 
         # simulation data: dynamic
-        self.vehicle_list = None # all vehicles released over the cours of the simulation
+        self.vehicle_list = [] # all vehicles released over the cours of the simulation
         self.simulation_index = 0 # increments each self.time_interval
         self.simulation_hour_index = 0 # increments each hour
         self.src_dict = {} # veh/hr at each hour
         self.dst_dict = {} # desirabiliy score 0-10
+
+        # metrics
+        self.metrics = None
 
     def create_road_G(self, mph=55):
         '''Takes in the node and edge csv and creates the self.road_G'''
@@ -119,10 +122,11 @@ class Simulation():
 
         # iterate over all source nodes, release x trucks according to their hourly distribution
         for src in self.src_dict:
-            num_trucks_released = round(self.src_dict[src][hour]*self.time_interval, 0) # TODO: inject randomness
+            num_trucks_released = int(round(self.src_dict[src][hour]*self.time_interval, 0)) # TODO: inject randomness
             destinations = self.get_random_destination(num_trucks_released)
             for truck_i in range(num_trucks_released): # get shortest paths for each truck
-                truck = Vehicle(src, destinations[truck_i], self.simulation_index)
+                truck = Vehicle(self, src, destinations[truck_i], self.simulation_index)
+                self.vehicle_list.append(truck)
                 shortest_path = nx.shortest_path(self.battery_G, src, destinations[truck_i])
                 truck.path = shortest_path
                 truck.simulation = self
@@ -137,7 +141,7 @@ class Simulation():
                 #update metrics?
             self.simulation_hour_index += 1
         
-        return self.statistics
+        return self.metrics
     
 class Vehicle():
     '''Create a vehicle to store attributes'''
@@ -152,14 +156,14 @@ class Vehicle():
         # calculated
         self.path = self.get_shortest_path()
         self.segmented_path = time_segment_path(self.simulation.battery_G, self.start_time, 
-            self.path, self.simlation.time_interval, self.simulation.simulation_length)
+            self.path, self.simulation.time_interval, self.simulation.simulation_length)
         
         # not currently updated
         self.location = None
     
     def get_shortest_path(self):
         '''Calculate shortest path'''
-        G = self.simulation.battery
+        G = self.simulation.battery_G
         return nx.shortest_path(G, self.src, self.dst)
     
     def recalculate_path(self):
