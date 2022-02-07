@@ -8,8 +8,8 @@ def find_nearest_increment(n, increment=25):
             curr+=increment
         return curr 
 
-# TODO: use["charging"] attribute to determine whether the node needs to be layered.
-def layer_graph(graph, increment = 25, km_per_percent = 5):
+# TODO: set node["charging rate"]
+def layer_graph(graph, increment = 25, km_per_percent = 6):
     '''Creates a duplicated graph, where each node contains all battery levels both in and out. 
     Directed edges exist from out to in and in to out, the former being roads, and the latter being charging.
     The size of the graph is 3V + VE^2 '''
@@ -41,8 +41,8 @@ def layer_graph(graph, increment = 25, km_per_percent = 5):
                 # add link to next charging station at current-cost charge
                 battery_cost = road_len/5
                 battery_layer = find_nearest_increment(src_battery-battery_cost, increment)
-                dst_label = str(dst) + "_" + str(battery_layer)+ "_in" # source node is _in
-                output_graph.add_edge(src_label, dst_label, weight = road_weight)
+                dst_label = str(dst) + "_" + str(battery_layer)+ "_in" # dst node is _in
+                output_graph.add_edge(src_label, dst_label, weight = road_weight) # _out to _in
         
     # iterate over nodes and connect _in to _out for all positive battery levels, and _out to sinks
     charging_rates = graph.nodes(data = "charging_rate")
@@ -50,11 +50,19 @@ def layer_graph(graph, increment = 25, km_per_percent = 5):
         node = node_data[0]
         charging_rate = node_data[1]
         for i, src_battery_layer in enumerate(battery_layers):
-            src_label = str(node) + "_" + str(src_battery_layer) + "_in"
-            for dst_battery_layer in battery_layers[i:]:
-                dst_label = str(node) + "_" + str(dst_battery_layer) + "_out"
-                charging_time = (dst_battery_layer-src_battery_layer)/charging_rate
-                output_graph.add_edge(src_label, dst_label, weight = charging_time) # _in to _out
-                output_graph.add_edge(dst_label, str(node), weight = charging_time) # _out to sink
+            src_label = str(node) + "_" + str(src_battery_layer) + "_in" # src node is _in
+            # connect to upper _out only if node is a charging node
+            if charging_rate != None:
+                for dst_battery_layer in battery_layers[i:]:
+                    dst_label = str(node) + "_" + str(dst_battery_layer) + "_out"
+                    charging_time = (dst_battery_layer-src_battery_layer)/charging_rate
+                    output_graph.add_edge(src_label, dst_label, weight = charging_time) # _in to _out
+                    output_graph.add_edge(dst_label, str(node), weight = 0) # _out to sink
+            else:
+                dst_label = str(node) + "_" + str(src_battery_layer) + "_out"
+                output_graph.add_edge(src_label, dst_label, weight = 0)
+                output_graph.add_edge(dst_label, str(node), weight = 0) # _out to sink
+
+            output_graph.add_edge(str(node), src_label, weight = 0) # sink to _in
             
     return output_graph

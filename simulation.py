@@ -4,6 +4,7 @@ import numpy as np
 import random
 from data import get_station_G
 from replicate_graph import layer_graph
+import sys
 
 class Simulation():
     '''Create a class for a simulation'''
@@ -39,7 +40,7 @@ class Simulation():
 
     def add_dst(self, dst, score):
         ''' add destination node and desirability score '''
-        self.dst_dict[dst]["dst_score"] = score
+        self.dst_dict[dst] = score
 
     def add_src(self, src, src_distr):
         ''' Add src node to list and augments the node in station_G with the src'''
@@ -48,7 +49,7 @@ class Simulation():
     def generate_src_dst_nodes(self):
         ''' Generate src and dst nodes. Assign the hour distribution to the node in G
         Default 1 and 464, the southernmost and northenmost nodes'''
-        self.add_src(self, 1, [1 for x in range(24)])
+        self.add_src(self, 1, [10 for x in range(24)])
         self.add_dst(self, 464, 4)
 
     #### Observers ####
@@ -72,9 +73,10 @@ class Simulation():
     
     def get_random_destination(self, n):
         ''' Gets random destination according to probability distribution of scores'''
-        dst_list = self.dst_dict.keys()
-        desirability_score_list= self.dst_dict.values()
-        destination_probabilities = list(desirability_score_list/desirability_score_list.sum())
+        dst_list = list(self.dst_dict.keys())
+        desirability_score_list= list(self.dst_dict.values())
+        total_score = sum(desirability_score_list)
+        destination_probabilities = [desirability_score_list[i]/total_score for i in range(len(desirability_score_list))]
         random_destinations = np.random.choice(dst_list, size = n, replace = True, p=destination_probabilities)
         return random_destinations
 
@@ -84,7 +86,7 @@ class Simulation():
         TODO what formula?? How do we include uncertainty?
         - include rest stops
         - include temporal demand changes'''
-
+        # iterate over all vehicles to determine segment changes TODO: how to save previous state and increase efficiency
         pass
     
     def randomize_demand(mu, std):
@@ -124,8 +126,6 @@ class Simulation():
                 shortest_path = nx.shortest_path(self.battery_G, src, destinations[truck_i])
                 truck.path = shortest_path
                 truck.simulation = self
-            # update graph
-            # update congestion, travel times, capacities
         return 
 
     def run(self):
@@ -134,6 +134,7 @@ class Simulation():
             for i_step in range(int(1/self.time_interval)): # go in interval segments
                 self.step(h_step,i_step)
                 self.simulation_index += 1
+                #update metrics?
             self.simulation_hour_index += 1
         
         return self.statistics
