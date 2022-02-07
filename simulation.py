@@ -47,6 +47,8 @@ class Simulation():
 
     def add_src(self, src, src_distr):
         ''' Add src node to list and augments the node in station_G with the src'''
+        if sum(1 for number in src_distr if number < 0) > 0:
+            return
         self.src_dict[src] = src_distr
     
     def generate_src_dst_nodes(self):
