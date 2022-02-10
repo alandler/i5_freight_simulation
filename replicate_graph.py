@@ -24,7 +24,7 @@ def layer_graph(graph, increment = 25, km_per_percent = 6):
     output_graph.add_nodes_from(nodes)
     output_graph.add_nodes_from([str(node) for node in graph.nodes()]) # add sinks from original
     
-    # iterate over existing roads in the input graph (these form links from _out to _in)
+    # Roads: iterate over existing roads in the input graph (these form links from _out to _in)
     for edge in tqdm(list(graph.edges)):
         src = edge[0]
         dst = edge[1]
@@ -44,7 +44,7 @@ def layer_graph(graph, increment = 25, km_per_percent = 6):
                 dst_label = str(dst) + "_" + str(battery_layer)+ "_in" # dst node is _in
                 output_graph.add_edge(src_label, dst_label, weight = road_weight) # _out to _in
         
-    # iterate over nodes and connect _in to _out for all positive battery levels, and _out to sinks
+    # Charging: iterate over nodes and connect _in to _out for all positive battery levels, and _out to sinks
     charging_rates = graph.nodes(data = "charging_rate")
     for node_data in tqdm(charging_rates):
         node = node_data[0]
@@ -56,11 +56,11 @@ def layer_graph(graph, increment = 25, km_per_percent = 6):
                 for dst_battery_layer in battery_layers[i:]:
                     dst_label = str(node) + "_" + str(dst_battery_layer) + "_out"
                     charging_time = (dst_battery_layer-src_battery_layer)/charging_rate
-                    output_graph.add_edge(src_label, dst_label, weight = charging_time) # _in to _out
+                    output_graph.add_edge(src_label, dst_label, weight = charging_time, time = charging_time) # _in to _out
                     output_graph.add_edge(dst_label, str(node), weight = 0) # _out to sink
             else:
                 dst_label = str(node) + "_" + str(src_battery_layer) + "_out"
-                output_graph.add_edge(src_label, dst_label, weight = 0)
+                output_graph.add_edge(src_label, dst_label, weight = 0, time = charging_time)
                 output_graph.add_edge(dst_label, str(node), weight = 0) # _out to sink
 
             output_graph.add_edge(str(node), src_label, weight = 0) # sink to _in

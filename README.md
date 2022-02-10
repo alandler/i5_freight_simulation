@@ -14,8 +14,8 @@ The repository is set up for the I-5 use case.
 1. Create a simulation <code>sim = Simulation(station_G)</code> where <code>station_G = get_station_G()</code>
 
 > Files required for station_G:
-- data/distances.csv
-- data/stations.csv
+> - data/distances.csv
+> - data/stations.csv
 
 2. Adjust parameters
 - <code> sim.simulation_length </code> defaults to 24 hours.

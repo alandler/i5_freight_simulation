@@ -21,6 +21,7 @@ class GraphTest(unittest.TestCase):
         self.assertTrue(True)
 
 class SimulationTest(unittest.TestCase):
+
     def test_add_src(self):
         station_G = get_station_G()
         sim = Simulation(station_G)
@@ -39,6 +40,32 @@ class SimulationTest(unittest.TestCase):
         sim.add_src(src_node, src_dstr_2)
         self.assertEqual(sim.src_dict[src_node], src_dstr_2) # new calls overwrite existing lists
 
+    def test_add_road_time(self):
+        station_G = get_station_G()
+        sim = Simulation(station_G)
+        src_nodes = ["1_25_out", "1_50_out", "1_75_out", "1_100_out"]
+        sim.add_road_time("1", "228", 2.5)
+        for src in src_nodes:
+            for dst in sim.battery_G.neighbors(src):
+                if "_in" in dst:
+                    self.assertEqual(sim.battery_G[src][dst]['weight'], sim.station_G["1"]["228"]['time'] + 2.5) # all roads +2.5
+                else:
+                    self.assertEqual(sim.battery_G[src][dst]['weight'], 0) # to sink is still 0
+
+    def test_add_charger_wait_time(self):
+        station_G = get_station_G()
+        sim = Simulation(station_G)
+        src_nodes = ["1_0_in", "1_25_in", "1_50_in", "1_75_in", "1_100_in"]
+        dst_nodes = ["1_0_out", "1_25_out", "1_50_out", "1_75_out", "1_100_out"]
+        sim.add_charger_wait_time("1", 2.5)
+        for i, src in enumerate(src_nodes):
+            for j, dst in enumerate(dst_nodes):
+                if j > i:
+                    self.assertEqual(sim.battery_G[src][dst]['weight'], sim.battery_G[src][dst]['time'] + 2.5) # all charging +2.5
+                if j == i:
+                    self.assertEqual(sim.battery_G[src][dst]['weight'], 0) # not stopping remains weight 0
+
+
   
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(SimulationTest())

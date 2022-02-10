@@ -5,16 +5,17 @@ import random
 from data import get_station_G
 from replicate_graph import layer_graph
 import sys
+import re
 
 class Simulation():
     '''Create a class for a simulation'''
     
     #### Init/Graph Mutation #### 
-    def __init__(self, road_G, simulation_length = 24):
+    def __init__(self, station_G, simulation_length = 24):
 
         # graphs
-        self.road_G = road_G
-        self.battery_G = layer_graph(road_G)
+        self.station_G = station_G
+        self.battery_G = layer_graph(station_G)
 
         # intervals
         self.time_interval = .2 # hours
@@ -36,18 +37,21 @@ class Simulation():
 
         # metrics
         self.metrics = None
+        self.state = {}
 
-    def create_road_G(self, mph=55):
-        '''Takes in the node and edge csv and creates the self.road_G'''
-        self.road_G = get_station_G()
+    def create_station_G(self, mph=55):
+        '''Takes in the node and edge csv and creates the self.station_G'''
+        self.station_G = get_station_G()
 
     def add_dst(self, dst, score):
         ''' add destination node and desirability score '''
+        if score<0: # no negative scores
+            return
         self.dst_dict[dst] = score
 
     def add_src(self, src, src_distr):
         ''' Add src node to list and augments the node in station_G with the src'''
-        if sum(1 for number in src_distr if number < 0) > 0:
+        if sum(1 for number in src_distr if number < 0) > 0: # no negative scores
             return
         self.src_dict[src] = src_distr
     
@@ -88,34 +92,55 @@ class Simulation():
     #### Augmentation Mutators ####
     def update_travel_times(self):
         ''' Based on the number of cars on a given segment, update the travel time on the road according to some formula
-        TODO what formula?? How do we include uncertainty?
+        TODO what formula?? How do we include uncertainty? TODO DISTANCE SEGMENT ROADS
         - include rest stops
         - include temporal demand changes'''
-        # iterate over all vehicles to determine segment changes TODO: how to save previous state and increase efficiency
+
+        # iterate over all vehicles to get current locations (would concatenating an array and summming columns be easier here?)
+        new_state = {}
+        for vehicle in self.vehicle_list:
+            location = vehicle.segmented_path[self.simulation_index]
+            if location in new_state:
+                new_state[location]+=1
+            else:
+                new_state[location] = 1
+
+        # check congestion, capacities
+        for location in new_state:
+            if type(location) is tuple: # road
+                time = 5 ############################################## TODO TODO TODO ##############################################
+                self.add_road_time(location[0], location[1], time)
+            else: # station
+                physical_capacity = nx.get_node_attributes(self.station_G,'physical_capacity')[location]
+                if new_state[location] > physical_capacity:
+                    time = (physical_capacity-new_state[location])*2 # add two hours per truck in the line
+                    self.add_charger_wait_time(location[0], location[1]) 
         pass
     
     def randomize_demand(mu, std):
         ''''''
         return
     
-    def add_road_time(self, G, src, dst, time):
-        '''Mutates the graph G to add time along edges _out to _in'''
-        out_labels = [src+"_"+layer+"_"+"out" for layer in self.battery_layers]
-        for label in out_labels:
-            for edge in G.out_edges(label): # get all outgoing edges
-                if dst in edge[1]: 
-                    G[edge[0]][edge[1]]['weight'] += time
-        return G
+    # TODO: MAKE SURE SINKS ALWAYS 0
+    def add_road_time(self, src, dst, time):
+        '''Mutates the graph G to add time (from baseline) along edges _out to _in'''
+        src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
+        for src_label in src_labels:
+            for dst_label in self.battery_G.neighbors(src_label): # get all outgoing edges
+                if "_in" in dst_label:
+                    self.battery_G[src_label][dst_label]['weight'] = self.station_G[src][dst]['time'] + time
+        return self.battery_G
 
-    def add_wait_time(self, G, station, time, battery_interval):
+    # TODO: MAKE SURE SINKS ALWAYS 0
+    def add_charger_wait_time(self, station, time):
         '''Mutates the graph G to add "time" to the edges between the station _in to _out'''
-        battery_layers = [battery_interval*l for l in range(self.num_layers)]
-        for in_battery_level in battery_layers: # all start levels 0 to 100
-            in_label = station + "_"+ in_battery_level + "_in"
-            for out_battery_level in range(in_battery_level, 100+battery_interval,battery_interval): # all ends > start
-                out_label = station + "_"+ out_battery_level + "_out"
-                G[in_label][out_label] += time
-        return G
+        for in_battery_level in self.battery_layers: # all start levels 0 to 100
+            in_label = station + "_"+ str(in_battery_level) + "_in"
+            for out_label in self.battery_G.neighbors(in_label):
+                if "_out" in out_label:
+                    if self.battery_G[in_label][out_label]["weight"] != 0:
+                        self.battery_G[in_label][out_label]["weight"] = self.battery_G[in_label][out_label]["time"] +  time
+        return self.battery_G
 
     #### Simulation Run ####
     def step(self, h_step, i_step):
@@ -172,8 +197,8 @@ class Vehicle():
         '''Recalculate path'''
         raise NotImplementedError
 
-def distance_segment_path(road_G, path, seg_dis):
-    '''Returns a modified road_G including paths segmented into equidistant segments.
+def distance_segment_path(station_G, path, seg_dis):
+    '''Returns a modified station_G including paths segmented into equidistant segments.
     The splits minimize the difference from seg_dis.'''
     for i in range(len(path)-1):
         src = path[i]
@@ -181,17 +206,17 @@ def distance_segment_path(road_G, path, seg_dis):
 
         # get (or set) segment_length and num_segments
         try:
-            segment_length = road_G[src][dst]['segment_length']
-            num_segments = road_G[src][dst]['num_segments']
+            segment_length = station_G[src][dst]['segment_length']
+            num_segments = station_G[src][dst]['num_segments']
         except:
-            total_length = road_G[src][dst]['length']
+            total_length = station_G[src][dst]['length']
             num_segments = round(total_length/seg_dis, 0)
             segment_length = total_length/num_segments
-            road_G[src][dst]['segment_length'] = segment_length
-            road_G[src][dst]['num_segments'] = num_segments
+            station_G[src][dst]['segment_length'] = segment_length
+            station_G[src][dst]['num_segments'] = num_segments
 
         # remove src-dst connection
-        road_G.remove_edge(src, dst)
+        station_G.remove_edge(src, dst)
 
         current_src = src
         current_dst = dst
@@ -201,11 +226,11 @@ def distance_segment_path(road_G, path, seg_dis):
                 current_dst = dst
             else:
                 current_dst = src + "_" + dst +"_s" + str(i) # nomenclature: src_dst_s1, src_dst_s2
-            road_G.add_edge(current_src,current_dst)
-            road_G.add_edge(current_dst, current_src)
+            station_G.add_edge(current_src,current_dst)
+            station_G.add_edge(current_dst, current_src)
             current_src = current_dst
 
-    return road_G
+    return station_G
 
 def time_segment_path(G, start_time, path, time_interval, end_simulation_time):
     '''Given a vehicle, list its positions at time_interval markings'''

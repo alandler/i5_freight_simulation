@@ -14,22 +14,27 @@ def get_station_G():
     TODO: charging_rate must be updated, currently a random number.'''
 
     # get coordinate list to add to the nodes
-    coords = tuple(zip(stations_df["longitude"], stations_df["latitude"]))
+    # coords = tuple(zip(stations_df["longitude"], stations_df["latitude"]))
 
     # add nodes with IDs, charging_rates, positions
     station_G  = nx.DiGraph()
-    station_ID_list = list(stations_df["OID_"])
-    for i in range(stations_df.shape[0]):
-        station_G.add_node(station_ID_list[i], charging_rate = random.randrange(5,10), pos = coords[i])
+    for index, row in stations_df.iterrows():
+        station_G.add_node(str(row["OID_"]), 
+                            charging_rate = random.randrange(5,10), 
+                            pos = (row["longitude"],  row["latitude"]),
+                            physical_capacity = row["physical_capacity"])
 
     # TODO: elevation, avg_speed data
     for index, row in distances_df.iterrows():
-        station_G.add_edge(row["OriginID"],row["DestinationID"],
+        station_G.add_edge(str(row["OriginID"]),str(row["DestinationID"]),
                         weight= row["Total_TravelTime"],
                         time = row["Total_TravelTime"],
                         length= row["Total_Kilometers"],
                         battery_cost = row["Total_Kilometers"]**2/row["Total_TravelTime"]/2) # TODO: this is an arbitrary formula
 
     return station_G
+
+if __name__ == '__main__':
+    get_station_G()
 
 
