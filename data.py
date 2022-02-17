@@ -34,6 +34,9 @@ def get_station_G():
 
     return station_G
 
+def ingest_demand_data():
+    pass
+
 if __name__ == '__main__':
     get_station_G()
 

@@ -58,10 +58,10 @@ class Simulation():
     def generate_src_dst_nodes(self):
         ''' Generate src and dst nodes. Assign the hour distribution to the node in G
         Default 1 and 464, the southernmost and northenmost nodes'''
-        self.add_src(self, 1, [10 for x in range(24)])
-        self.add_dst(self, 464, 4)
+        self.add_src(1, [10 for x in range(24)])
+        self.add_dst(464, 4)
 
-    #### Observers ####
+    #################### Observers ####################
     def get_simulation_hour_of_day(self):
         '''Returns the hour [0-24] of the time of day at the current simulation index'''
         return round((self.simulation_index * self.time_interval)/60, 0) % 24
@@ -89,7 +89,7 @@ class Simulation():
         random_destinations = np.random.choice(dst_list, size = n, replace = True, p=destination_probabilities)
         return random_destinations
 
-    #### Augmentation Mutators ####
+    #################### Augmentation Mutators ####################
     def update_travel_times(self):
         ''' Based on the number of cars on a given segment, update the travel time on the road according to some formula
         TODO what formula?? How do we include uncertainty? TODO DISTANCE SEGMENT ROADS
@@ -142,10 +142,14 @@ class Simulation():
                         self.battery_G[in_label][out_label]["weight"] = self.battery_G[in_label][out_label]["time"] +  time
         return self.battery_G
 
-    #### Simulation Run ####
+    #################### Simulation Run ####################
     def step(self, h_step, i_step):
         ''' one simulation step '''
         hour = h_step%24 # get time of day (assuming hour intervals)
+
+        # step each vehicle progress
+        for vehicle in self.vehicle_list:
+            vehicle.step()
 
         # iterate over all source nodes, release x trucks according to their hourly distribution
         for src in self.src_dict:
@@ -157,7 +161,6 @@ class Simulation():
                 shortest_path = nx.shortest_path(self.battery_G, src, destinations[truck_i])
                 truck.path = shortest_path
                 truck.simulation = self
-        return 
 
     def run(self):
         ''' Run the simulation; return the statistics '''
@@ -172,7 +175,7 @@ class Simulation():
     
 class Vehicle():
     '''Create a vehicle to store attributes'''
-    def __init__(self, simulation, src, dst, start_time =0):
+    def __init__(self, simulation, src, dst, start_time = 0):
 
         # initialized
         self.start_time = start_time # TODO: extend 0-24 range
@@ -186,8 +189,45 @@ class Vehicle():
             self.path, self.simulation.time_interval, self.simulation.simulation_length)
         
         # not currently updated
-        self.location = None
+        self.locations = []
+        self.path_i = 0
+        self.location = self.path[0] # (src, dst)
+        self.distance_along_segment = None # km travelled so far
     
+    def step(self):
+        '''Increment the location tracking'''
+        # time change
+        time_interval = self.simulation.time_interval
+
+        # get current edge travel speed, km length OR charging rate
+        src = self.location[0]
+        dst = self.location[1]
+
+        road_travel_time = self.simulation.battery_G[src][dst]["weight"]
+        road_length = self.simulation.battery_G[src][dst]["length"]
+
+        time_left = road_travel_time * self.distance_along_segment/road_length
+
+        # if km remaining > d, same location
+        if time_left > time_interval:
+            self.locations.apppend(self.location)
+        else: # else transition to next edge with some time remaining
+            over_time = time_interval - time_left
+            self.set_next_location()
+
+            road_travel_time = self.simulation.battery_G[self.location[0]][self.location[1]]["weight"]
+            self.distance_along_segment = over_time/road_travel_time*self.simulation.battery_G[self.location[0]][self.location[1]]["length"]
+
+        self.locations.apppend(self.location)
+    
+    def set_next_location(self, i = None):
+        ''' increment mile location '''
+        if i != None:
+            i = self.path.index(self.location)
+        new_location = self.path[i+1]
+        self.location = new_location
+        return new_location
+
     def get_shortest_path(self):
         '''Calculate shortest path'''
         G = self.simulation.battery_G

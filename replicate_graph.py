@@ -25,7 +25,7 @@ def layer_graph(graph, increment = 25, km_per_percent = 6):
     output_graph.add_nodes_from([str(node) for node in graph.nodes()]) # add sinks from original
     
     # Roads: iterate over existing roads in the input graph (these form links from _out to _in)
-    for edge in tqdm(list(graph.edges)):
+    for edge in list(graph.edges):
         src = edge[0]
         dst = edge[1]
         road_weight = graph.get_edge_data(src, dst)['weight']
@@ -46,7 +46,7 @@ def layer_graph(graph, increment = 25, km_per_percent = 6):
         
     # Charging: iterate over nodes and connect _in to _out for all positive battery levels, and _out to sinks
     charging_rates = graph.nodes(data = "charging_rate")
-    for node_data in tqdm(charging_rates):
+    for node_data in charging_rates:
         node = node_data[0]
         charging_rate = node_data[1]
         for i, src_battery_layer in enumerate(battery_layers):
