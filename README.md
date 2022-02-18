@@ -1,6 +1,18 @@
 # i5_freight_simulation
 Simulate freight demand and electric vehicle charging along the I-5
 
+# Collaboration
+You might need some configuration on your github accounts.
+1. Open the terminal.
+2. <code>cd</code> to navigate to the directory where you want the code to be
+3. <code> git clone git@github.com:alandler/i5_freight_simulation.git </code> to clone the repo. 
+    if this throws an error, follow instructions to configure git
+4. <code> git checkout -b [your_branch_name] </code> to create a new branch.
+5. Once you make edits run 
+    1. <code> git add [filename1] [filename2] ... </code> to add changes. <code> git add -A </code> will add all changes.
+    2. <code> git commit -m [message to describe changes; very short] </code>
+    3. <code> git push origin [your_branch_name] </code> to push to github.
+
 # Objective
 
 This repository uses object-oriented programming to create a customizable simulation framework of vehicle travel. Users can input parameters of their scenario and run unique simulations.
