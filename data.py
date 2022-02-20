@@ -8,6 +8,7 @@ import sys
 stations_df = pd.read_csv("data_test/stations.csv")
 distances_df = pd.read_csv("data_test/distances.csv")
 distances_df = distances_df[distances_df["Total_TravelTime"]!=0]
+elec_df = pd.read_csv("data_test/Demand_for_California_(region)_hourly_-_UTC_time.csv", skiprows=5, names=["time", "MWH"])
 
 def get_station_G():
     ''' Return a networkx graph containing an augmented graph of the physical network.
@@ -36,6 +37,16 @@ def get_station_G():
 
 def ingest_demand_data():
     pass
+
+
+def ingest_electricity_data():
+    ''' Returns 2 arrays of 24, representing hourly MWH demand in CA for the winter and summer.'''
+    elec_df["utc_time"] = pd.to_datetime(elec_df["time"])
+    elec_df["local_time"] = elec_df["utc_time"] + pd.Timedelta(hours=-8)
+    elec_df_2021 = elec_df[elec_df['local_time'].dt.year==2021]
+    winter_mwh = list(elec_df_2021.groupby([elec_df_2021['local_time'].dt.month, elec_df_2021['local_time'].dt.hour]).mean().loc[1]["MWH"])
+    summer_mwh = list(elec_df_2021.groupby([elec_df_2021['local_time'].dt.month, elec_df_2021['local_time'].dt.hour]).mean().loc[8]["MWH"])
+    return (winter_mwh, summer_mwh)
 
 if __name__ == '__main__':
     get_station_G()
