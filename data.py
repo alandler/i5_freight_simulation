@@ -21,7 +21,7 @@ def get_station_G():
     station_G  = nx.DiGraph()
     for index, row in stations_df.iterrows():
         station_G.add_node(str(row["OID_"]), 
-                            charging_rate = random.randrange(5,10), 
+                            charging_rate = random.randrange(5,10), # TODO
                             pos = (row["longitude"],  row["latitude"]),
                             physical_capacity = row["physical_capacity"])
 

@@ -39,7 +39,7 @@ def layer_graph(graph, increment = 25, km_per_percent = 6):
             # check battery sufficient to travel from _out to _in
             if km_per_percent*src_battery > road_len:
                 # add link to next charging station at current-cost charge
-                battery_cost = road_len/5
+                battery_cost = road_len/km_per_percent # TODO: confirm correctness
                 battery_layer = find_nearest_increment(src_battery-battery_cost, increment)
                 dst_label = str(dst) + "_" + str(battery_layer)+ "_in" # dst node is _in
                 output_graph.add_edge(src_label, dst_label, weight = road_weight) # _out to _in

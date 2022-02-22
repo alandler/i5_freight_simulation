@@ -55,7 +55,7 @@ class Simulation():
             return
         self.src_dict[src] = src_distr
     
-    def generate_src_dst_nodes(self):
+    def generate_src_dst_nodes(self): # Arbitrary function for testing - will delete later
         ''' Generate src and dst nodes. Assign the hour distribution to the node in G
         Default 1 and 464, the southernmost and northenmost nodes'''
         self.add_src(1, [10 for x in range(24)])
@@ -80,6 +80,7 @@ class Simulation():
             return 0 
         return paths[edge_label]
     
+    #################### Producers ####################
     def get_random_destination(self, n):
         ''' Gets random destination according to probability distribution of scores'''
         dst_list = list(self.dst_dict.keys())

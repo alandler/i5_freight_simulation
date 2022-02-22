@@ -10,7 +10,7 @@ def set_draw_attributes(G, station_G):
     for node in G.nodes:
         try: # battery layers
             node_str = re.findall(r"(.*)_\d*_.*", node)[0]
-            battery_str = re.findall(r".*_(\d*)_.*", node)[0]
+            battery_str = re.findall(r".*_(\d*)_.*", node)[0] # node.split("_")
             in_or_out = re.findall(r".*_\d*_(.*)", node)[0]
             longitude_shift = -2 if in_or_out == "in" else 2
             latitude = int(battery_str)
