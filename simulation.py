@@ -36,7 +36,10 @@ class Simulation():
         self.dst_dict = {} # desirabiliy score 0-10
 
         # metrics
-        self.metrics = {}
+        self.metrics = {"number_stations_overloaded": [], 
+                        "number_vehicles_waiting":[],
+                        "excess_kwh":[],
+                        "num_vehicles_total":[]}
         self.state = {}
 
     def create_station_G(self, mph=55):
