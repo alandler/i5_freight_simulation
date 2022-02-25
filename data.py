@@ -21,7 +21,7 @@ def get_station_G():
     station_G  = nx.DiGraph()
     for index, row in stations_df.iterrows():
         station_G.add_node(str(row["OID_"]), 
-                            charging_rate = random.randrange(5,10), # TODO
+                            charging_rate = row["charging_rate"],
                             pos = (row["longitude"],  row["latitude"]),
                             physical_capacity = row["physical_capacity"])
 
@@ -35,9 +35,23 @@ def get_station_G():
 
     return station_G
 
-def ingest_demand_data():
+def prune_station_G(max_distance = 500):
+    ''' This should take edges that are clearly redundant and prune them
+    Start by removing all edges with len over 500 km
+    TODO: come up with more refined  pruning methods for local redundancies as well'''
     pass
 
+def ingest_demand_data():
+    ''' TODO: We don't have this data yet '''
+    pass
+
+def ingest_avg_speed_data():
+    ''' TODO: We don't have this data yet '''
+    pass
+
+def apply_avg_speeds():
+    '''TODO: either use travel times as given with presumptions about hourly distributions or do something else'''
+    pass
 
 def ingest_electricity_data():
     ''' Returns 2 arrays of 24, representing hourly MWH demand in CA for the winter and summer.'''

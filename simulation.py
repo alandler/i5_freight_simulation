@@ -36,7 +36,7 @@ class Simulation():
         self.dst_dict = {} # desirabiliy score 0-10
 
         # metrics
-        self.metrics = None
+        self.metrics = {}
         self.state = {}
 
     def create_station_G(self, mph=55):
@@ -169,10 +169,27 @@ class Simulation():
             for i_step in range(int(1/self.time_interval)): # go in interval segments
                 self.step(h_step,i_step)
                 self.simulation_index += 1
-                #update metrics?
+                self.record_metrics() ##### TODO: build out metrics
+
             self.simulation_hour_index += 1
         
         return self.metrics
+
+    def record_metrics(self):
+        ''' Wrapper function for metric checks and recording '''
+        self.record_electric_capacities()
+        self.record_physical_capacities()
+    
+    def record_electric_capacities(self):
+        ''' Using electricity hourly distributions per state, determine if any are exceeded.
+        If the are, impose wait times across all charging nodes based on the amount
+        of excess energy. should RECORD this information'''
+        pass
+
+    def record_physical_capacities(self):
+        ''' Sum vehicle locations to determine excess and RECORD '''
+        pass
+
     
 class Vehicle():
     '''Create a vehicle to store attributes'''
@@ -195,6 +212,8 @@ class Vehicle():
         self.location = self.path[0] # (src, dst)
         self.distance_along_segment = None # km travelled so far
     
+
+    # TODO: handle if on charging edge INCLUDING if over physical capacity + update simulation as needed
     def step(self):
         '''Increment the location tracking'''
         # time change
