@@ -10,9 +10,9 @@ distances_df = pd.read_csv("data_test/distances.csv")
 distances_df = distances_df[distances_df["Total_TravelTime"]!=0]
 elec_df = pd.read_csv("data_test/Demand_for_California_(region)_hourly_-_UTC_time.csv", skiprows=5, names=["time", "MWH"])
 
-def get_station_G():
+def get_station_G(battery_capacity = 215):
     ''' Return a networkx graph containing an augmented graph of the physical network.
-    TODO: charging_rate must be updated, currently a random number.'''
+    '''
 
     # get coordinate list to add to the nodes
     # coords = tuple(zip(stations_df["longitude"], stations_df["latitude"]))
@@ -31,7 +31,7 @@ def get_station_G():
                         weight= row["Total_TravelTime"],
                         time = row["Total_TravelTime"],
                         length= row["Total_Kilometers"],
-                        battery_cost = row["Total_Kilometers"]**2/row["Total_TravelTime"]/2) # TODO: this is an arbitrary formula
+                        battery_cost = row["Total_Kilometers"]*1.9/battery_capacity*100) # battery cost as a percent of total battery capacity consumed (assuming battery capacity of 215kWh)
 
     return station_G
 
