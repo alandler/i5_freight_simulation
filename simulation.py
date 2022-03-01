@@ -2,16 +2,21 @@ import networkx as nx
 import numpy as np
 # import pandas as pd
 import random
-from data import get_station_G
-from replicate_graph import layer_graph
 import sys
 import re
+
+# File imports
+from data import get_station_G, stations_df, ingest_electricity_data
+from replicate_graph import layer_graph
 
 class Simulation():
     '''Create a class for a simulation'''
     
     #### Init/Graph Mutation #### 
     def __init__(self, station_G, simulation_length = 24):
+
+        # electricity_data
+        state_electricity_limits = {"CA": ingest_electricity_data()[1]}
 
         # graphs
         self.station_G = station_G
@@ -41,6 +46,7 @@ class Simulation():
                         "excess_kwh":[],
                         "num_vehicles_total":[]}
         self.state = {}
+        
 
     def create_station_G(self, mph=55):
         '''Takes in the node and edge csv and creates the self.station_G'''
@@ -187,10 +193,44 @@ class Simulation():
         ''' Using electricity hourly distributions per state, determine if any are exceeded.
         If the are, impose wait times across all charging nodes based on the amount
         of excess energy. should RECORD this information'''
+
+        # TODO: this does not account for physical capacities
+        state_total_energy_use = {}
+        for vehicle in self.vehicle_list:
+            if "in" in vehicle.location[0] and "out" in vehicle.location[1]: #charging edge
+                # TODO: add KW of station, or along that edge.
+                charging_station_name = vehicle.location[0].split("_")[0]
+                state_code = stations_df.set_index("OID_")[int(charging_station_name)]["st_prv_cod"] # TODO: change stations_df to string inidices
+                if state_code in state_total_energy_use:
+                    state_total_energy_use[state_code] += 150 #https://insideevs.com/news/486675/electric-trucks-takeover-fast-charging-station/
+                else:
+                    state_total_energy_use[state_code] = 150
+        
+        state_electricity_limits
+
         pass
 
     def record_physical_capacities(self):
         ''' Sum vehicle locations to determine excess and RECORD '''
+        node_car_total = {}
+        for vehicle in self.vehicle_list:
+            if "in" in vehicle.location[0] and "out" in vehicle.location[1]: #charging edge
+                charging_station_name = vehicle.location[0].split("_")[0]
+                if charging_station_name in node_car_total:
+                    node_car_total[charging_station_name] += 1
+                else:
+                    node_car_total[charging_station_name] = 1
+
+        num_cars_waiting = 0
+        num_stations_with_waits = 0
+        electricity_use = 0
+
+        for node in node_car_total:
+            excess = node_car_total[node] - stations_df.set_index("OID_")[int(charging_station_name)]["physical_capacity"]
+            if excess > 0 :
+                num_stations_with_waits+=1
+                num_cars_waiting+=excess
+            electricity_use += (node_car_total[node]-excess)*150
         pass
 
     
