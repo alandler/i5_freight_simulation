@@ -8,18 +8,34 @@ import unittest
 
 test_nodes = ["1", "228", "378", "447", "465"]
   
+######################## TODO ########################
 class DataTest(unittest.TestCase):
-  
-    # Returns True or False. 
     def test(self):        
         self.assertTrue(True)
 
+######################## TODO ########################
 class GraphTest(unittest.TestCase):
   
-    # Returns True or False. 
-    def test(self):        
+    def test_charging_edge_weights(self):        
         self.assertTrue(True)
 
+    def test_non_charging_edges(self):        
+        self.assertTrue(True)
+
+    def test_hourly_road_travel_times(self):
+        # TODO: hourly changing travel times is not yet implemented.
+        self.assertTrue(True)
+    
+    def test_max_distance_pruning(self):
+        self.assertTrue(True)
+    
+    def test_sink_connections(self):
+        self.assertTrue(True)
+
+    def test_source_connections(self):
+        self.assertTrue(True)
+
+######################## TODO ########################
 class SimulationTest(unittest.TestCase):
 
     def test_add_src(self):
