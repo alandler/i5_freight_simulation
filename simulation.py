@@ -41,9 +41,8 @@ class Simulation():
         self.dst_dict = {} # desirabiliy score 0-10
 
         # metrics
-        self.metrics = {"number_stations_overloaded": [], 
-                        "number_vehicles_waiting":[],
-                        "excess_kwh":[],
+        self.metrics = {"num_cars_at_station": [], 
+                        "excess_kwh":[]
                         "num_vehicles_total":[]}
         self.state = {}
         
@@ -172,6 +171,7 @@ class Simulation():
                 truck.path = shortest_path
                 truck.simulation = self
 
+
     def run(self):
         ''' Run the simulation; return the statistics '''
         for h_step in range(self.simulation_length): # go for simulation_length in hours
@@ -212,27 +212,28 @@ class Simulation():
 
     def record_physical_capacities(self):
         ''' Sum vehicle locations to determine excess and RECORD '''
-        node_car_total = {}
+        node_car_total = {node:0 for node in list(station_G.nodes)}
         for vehicle in self.vehicle_list:
             if "in" in vehicle.location[0] and "out" in vehicle.location[1]: #charging edge
                 charging_station_name = vehicle.location[0].split("_")[0]
-                if charging_station_name in node_car_total:
-                    node_car_total[charging_station_name] += 1
-                else:
-                    node_car_total[charging_station_name] = 1
+                node_car_total[charging_station_name] += 1
 
-        num_cars_waiting = 0
-        num_stations_with_waits = 0
+        # num_cars_waiting = 0
+        # num_stations_with_waits = 0
         electricity_use = 0
+        num_cars_at_station = [node_car_total[key] for key in sorted(node_car_total.keys())]
+        num_vehicles_total = sum(num_cars_at_station)
 
         for node in node_car_total:
             excess = node_car_total[node] - stations_df.set_index("OID_")[int(charging_station_name)]["physical_capacity"]
-            if excess > 0 :
-                num_stations_with_waits+=1
-                num_cars_waiting+=excess
+            # if excess > 0 :
+            #     num_stations_with_waits+=1
+            #     num_cars_waiting+=excess
             electricity_use += (node_car_total[node]-excess)*150
-        pass
-
+        
+        # Append to metrics attribute
+        self.metrics["num_vehicles_total"].append(num_vehicles_total)
+        self.metrics["num_cars_at_station"].append(num_cars_at_station)
     
 class Vehicle():
     '''Create a vehicle to store attributes'''
@@ -248,12 +249,15 @@ class Vehicle():
         self.path = self.get_shortest_path()
         self.segmented_path = time_segment_path(self.simulation.battery_G, self.start_time, 
             self.path, self.simulation.time_interval, self.simulation.simulation_length)
-        
+        self.baseline_time = self.get_baseline_travel_time()
+
         # not currently updated
         self.locations = []
         self.path_i = 0
         self.location = self.path[0] # (src, dst)
         self.distance_along_segment = None # km travelled so far
+        self.travel_time = 0 # total time in transit btw origin and destination
+        self.travel_delay = 0 # delay from traveling in an EV
     
 
     # TODO: handle if on charging edge INCLUDING if over physical capacity + update simulation as needed
@@ -265,6 +269,20 @@ class Vehicle():
         # get current edge travel speed, km length OR charging rate
         src = self.location[0]
         dst = self.location[1]
+
+        # If the vehicle has reached its destination store travel time and travel delay
+        if self.dst == dst:
+            if self.travel_time == 0:
+                # End index
+                end_index = self.simulation.simulation_index
+                # Length of travel in iteration units
+                travel_length = end_index - self.start_time
+                # Calculate and store total travel time
+                self.travel_time = self.simulation.time_interval*travel_length
+                # Calculate and store travel delay experienced by the vehicle
+                self.travel_delay = self.travel_time - self.baseline_time
+            else:
+                return
 
         road_travel_time = self.simulation.battery_G[src][dst]["weight"]
         road_length = self.simulation.battery_G[src][dst]["length"]
@@ -295,6 +313,14 @@ class Vehicle():
         '''Calculate shortest path'''
         G = self.simulation.battery_G
         return nx.shortest_path(G, self.src, self.dst)
+
+    def get_baseline_travel_time(self):
+        ''' Calculate the travel time a vehicle would experience if not an electric vehicle '''
+        # Use graph without charging layers
+        G = self.simulation.station_G
+
+        # Return shortest path length
+        return nx.shortest_path_length(G, self.src, self.dst, weight="weight")
     
     def recalculate_path(self):
         '''Recalculate path'''
