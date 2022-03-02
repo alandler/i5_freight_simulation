@@ -18,7 +18,7 @@ def set_draw_attributes(G, station_G):
             node_str = node
             longitude_shift = 0
             latitude = 125
-        pos[node] = (node_columns[int(node_str)]+longitude_shift, latitude)
+        pos[node] = (node_columns[node_str]+longitude_shift, latitude)
         
     # set colors
     edge_colors = {}

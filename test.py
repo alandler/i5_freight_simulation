@@ -1,3 +1,9 @@
+# self.assertTrue(True) indicates TODO test cases
+# tests should be partitioned from each other; hard code values and evaluate each function individually.
+# I cheated a bit with data imports for test data, but that's ok. Use test_add_src in the SimulationTest
+# class as an example.
+# To test functions, you will need to import them (eg. from data import get_station_G)
+
 import networkx as nx
 import numpy as np
 
@@ -7,13 +13,11 @@ from data import get_station_G
 import unittest
 
 test_nodes = ["1", "228", "378", "447", "465"]
-  
-######################## TODO ########################
+
 class DataTest(unittest.TestCase):
     def test(self):        
         self.assertTrue(True)
 
-######################## TODO ########################
 class GraphTest(unittest.TestCase):
   
     def test_charging_edge_weights(self):        
@@ -23,7 +27,6 @@ class GraphTest(unittest.TestCase):
         self.assertTrue(True)
 
     def test_hourly_road_travel_times(self):
-        # TODO: hourly changing travel times is not yet implemented.
         self.assertTrue(True)
     
     def test_max_distance_pruning(self):
@@ -35,7 +38,6 @@ class GraphTest(unittest.TestCase):
     def test_source_connections(self):
         self.assertTrue(True)
 
-######################## TODO ########################
 class SimulationTest(unittest.TestCase):
 
     def test_add_src(self):
@@ -81,6 +83,14 @@ class SimulationTest(unittest.TestCase):
                 if j == i:
                     self.assertEqual(sim.battery_G[src][dst]['weight'], 0) # not stopping remains weight 0
 
+
+class PathTest(unittest.TestCase):
+
+    def test_time_segment_path(self):
+        self.assertTrue(True)
+    
+    def test_distance_segment_path(self):
+        self.assertTrue(True)
 
   
 if __name__ == '__main__':

@@ -8,19 +8,21 @@ import re
 # File imports
 from data import get_station_G, stations_df, ingest_electricity_data
 from replicate_graph import layer_graph
+from vehicle import Vehicle
 
 class Simulation():
     '''Create a class for a simulation'''
     
     #### Init/Graph Mutation #### 
-    def __init__(self, station_G, simulation_length = 24):
+    def __init__(self, station_G, simulation_length = 24, battery_interval = 25, km_per_percent = 1.15):
 
         # electricity_data
+        # TODO: currently simulation sums over full grid, rather than per state
         state_electricity_limits = {"CA": ingest_electricity_data()[1]}
 
         # graphs
         self.station_G = station_G
-        self.battery_G = layer_graph(station_G)
+        self.battery_G = layer_graph(station_G, battery_interval, km_per_percent)
 
         # intervals
         self.time_interval = .2 # hours
@@ -29,8 +31,6 @@ class Simulation():
         self.battery_layers = [self.battery_interval*l for l in range(self.num_layers)] # always includes 0 and 100
 
         # simulation parameters: static
-        self.num_batches = 10 
-        self.average_demand = 10 
         self.simulation_length = simulation_length # in hours 
 
         # simulation data: dynamic
@@ -41,9 +41,10 @@ class Simulation():
         self.dst_dict = {} # desirabiliy score 0-10
 
         # metrics
-        self.metrics = {"num_cars_at_station": [], 
-                        "excess_kwh":[]
+        self.data = {"num_cars_at_station": [], 
+                        "total_kw":[],
                         "num_vehicles_total":[]}
+        self.metrics = None
         self.state = {}
         
 
@@ -129,8 +130,7 @@ class Simulation():
     def randomize_demand(mu, std):
         ''''''
         return
-    
-    # TODO: MAKE SURE SINKS ALWAYS 0
+
     def add_road_time(self, src, dst, time):
         '''Mutates the graph G to add time (from baseline) along edges _out to _in'''
         src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
@@ -140,7 +140,6 @@ class Simulation():
                     self.battery_G[src_label][dst_label]['weight'] = self.station_G[src][dst]['time'] + time
         return self.battery_G
 
-    # TODO: MAKE SURE SINKS ALWAYS 0
     def add_charger_wait_time(self, station, time):
         '''Mutates the graph G to add "time" to the edges between the station _in to _out'''
         for in_battery_level in self.battery_layers: # all start levels 0 to 100
@@ -178,256 +177,37 @@ class Simulation():
             for i_step in range(int(1/self.time_interval)): # go in interval segments
                 self.step(h_step,i_step)
                 self.simulation_index += 1
-                self.record_metrics() ##### TODO: build out metrics
+                self.record_data() ##### TODO: build out metrics
 
             self.simulation_hour_index += 1
         
         return self.metrics
 
-    def record_metrics(self):
-        ''' Wrapper function for metric checks and recording '''
-        self.record_electric_capacities()
-        self.record_physical_capacities()
-    
-    def record_electric_capacities(self):
-        ''' Using electricity hourly distributions per state, determine if any are exceeded.
-        If the are, impose wait times across all charging nodes based on the amount
-        of excess energy. should RECORD this information'''
-
-        # TODO: this does not account for physical capacities
-        state_total_energy_use = {}
-        for vehicle in self.vehicle_list:
-            if "in" in vehicle.location[0] and "out" in vehicle.location[1]: #charging edge
-                # TODO: add KW of station, or along that edge.
-                charging_station_name = vehicle.location[0].split("_")[0]
-                state_code = stations_df.set_index("OID_")[int(charging_station_name)]["st_prv_cod"] # TODO: change stations_df to string inidices
-                if state_code in state_total_energy_use:
-                    state_total_energy_use[state_code] += 150 #https://insideevs.com/news/486675/electric-trucks-takeover-fast-charging-station/
-                else:
-                    state_total_energy_use[state_code] = 150
-        
-        state_electricity_limits
-
-        pass
-
-    def record_physical_capacities(self):
+    def record_data(self):
         ''' Sum vehicle locations to determine excess and RECORD '''
-        node_car_total = {node:0 for node in list(station_G.nodes)}
+        node_car_total = {node:0 for node in list(self.station_G.nodes)}
         for vehicle in self.vehicle_list:
             if "in" in vehicle.location[0] and "out" in vehicle.location[1]: #charging edge
                 charging_station_name = vehicle.location[0].split("_")[0]
                 node_car_total[charging_station_name] += 1
 
-        # num_cars_waiting = 0
-        # num_stations_with_waits = 0
         electricity_use = 0
         num_cars_at_station = [node_car_total[key] for key in sorted(node_car_total.keys())]
         num_vehicles_total = sum(num_cars_at_station)
 
         for node in node_car_total:
-            excess = node_car_total[node] - stations_df.set_index("OID_")[int(charging_station_name)]["physical_capacity"]
-            # if excess > 0 :
-            #     num_stations_with_waits+=1
-            #     num_cars_waiting+=excess
+            excess = node_car_total[node] - stations_df.set_index("OID_").loc[int(node)]["physical_capacity"]
             electricity_use += (node_car_total[node]-excess)*150
         
         # Append to metrics attribute
-        self.metrics["num_vehicles_total"].append(num_vehicles_total)
-        self.metrics["num_cars_at_station"].append(num_cars_at_station)
-    
-class Vehicle():
-    '''Create a vehicle to store attributes'''
-    def __init__(self, simulation, src, dst, start_time = 0):
+        self.data["num_vehicles_total"].append(num_vehicles_total)
+        self.data["num_cars_at_station"].append(num_cars_at_station)
+        self.data["total_kw"].append(electricity_use)
 
-        # initialized
-        self.start_time = start_time # TODO: extend 0-24 range
-        self.src = src
-        self.dst = dst
-        self.simulation = simulation
-
-        # calculated
-        self.path = self.get_shortest_path()
-        self.segmented_path = time_segment_path(self.simulation.battery_G, self.start_time, 
-            self.path, self.simulation.time_interval, self.simulation.simulation_length)
-        self.baseline_time = self.get_baseline_travel_time()
-
-        # not currently updated
-        self.locations = []
-        self.path_i = 0
-        self.location = self.path[0] # (src, dst)
-        self.distance_along_segment = None # km travelled so far
-        self.travel_time = 0 # total time in transit btw origin and destination
-        self.travel_delay = 0 # delay from traveling in an EV
-    
-
-    # TODO: handle if on charging edge INCLUDING if over physical capacity + update simulation as needed
-    def step(self):
-        '''Increment the location tracking'''
-        # time change
-        time_interval = self.simulation.time_interval
-
-        # get current edge travel speed, km length OR charging rate
-        src = self.location[0]
-        dst = self.location[1]
-
-        # If the vehicle has reached its destination store travel time and travel delay
-        if self.dst == dst:
-            if self.travel_time == 0:
-                # End index
-                end_index = self.simulation.simulation_index
-                # Length of travel in iteration units
-                travel_length = end_index - self.start_time
-                # Calculate and store total travel time
-                self.travel_time = self.simulation.time_interval*travel_length
-                # Calculate and store travel delay experienced by the vehicle
-                self.travel_delay = self.travel_time - self.baseline_time
-            else:
-                return
-
-        road_travel_time = self.simulation.battery_G[src][dst]["weight"]
-        road_length = self.simulation.battery_G[src][dst]["length"]
-
-        time_left = road_travel_time * self.distance_along_segment/road_length
-
-        # if km remaining > d, same location
-        if time_left > time_interval:
-            self.locations.apppend(self.location)
-        else: # else transition to next edge with some time remaining
-            over_time = time_interval - time_left
-            self.set_next_location()
-
-            road_travel_time = self.simulation.battery_G[self.location[0]][self.location[1]]["weight"]
-            self.distance_along_segment = over_time/road_travel_time*self.simulation.battery_G[self.location[0]][self.location[1]]["length"]
-
-        self.locations.apppend(self.location)
-    
-    def set_next_location(self, i = None):
-        ''' increment mile location '''
-        if i != None:
-            i = self.path.index(self.location)
-        new_location = self.path[i+1]
-        self.location = new_location
-        return new_location
-
-    def get_shortest_path(self):
-        '''Calculate shortest path'''
-        G = self.simulation.battery_G
-        return nx.shortest_path(G, self.src, self.dst)
-
-    def get_baseline_travel_time(self):
-        ''' Calculate the travel time a vehicle would experience if not an electric vehicle '''
-        # Use graph without charging layers
-        G = self.simulation.station_G
-
-        # Return shortest path length
-        return nx.shortest_path_length(G, self.src, self.dst, weight="weight")
-    
-    def recalculate_path(self):
-        '''Recalculate path'''
-        raise NotImplementedError
-
-def distance_segment_path(station_G, path, seg_dis):
-    '''Returns a modified station_G including paths segmented into equidistant segments.
-    The splits minimize the difference from seg_dis.'''
-    for i in range(len(path)-1):
-        src = path[i]
-        dst = path[i+1]
-
-        # get (or set) segment_length and num_segments
-        try:
-            segment_length = station_G[src][dst]['segment_length']
-            num_segments = station_G[src][dst]['num_segments']
-        except:
-            total_length = station_G[src][dst]['length']
-            num_segments = round(total_length/seg_dis, 0)
-            segment_length = total_length/num_segments
-            station_G[src][dst]['segment_length'] = segment_length
-            station_G[src][dst]['num_segments'] = num_segments
-
-        # remove src-dst connection
-        station_G.remove_edge(src, dst)
-
-        current_src = src
-        current_dst = dst
-        # connect src->dst via bi-directional segments
-        for i in range(num_segments):
-            if i == num_segments-1:
-                current_dst = dst
-            else:
-                current_dst = src + "_" + dst +"_s" + str(i) # nomenclature: src_dst_s1, src_dst_s2
-            station_G.add_edge(current_src,current_dst)
-            station_G.add_edge(current_dst, current_src)
-            current_src = current_dst
-
-    return station_G
-
-def time_segment_path(G, start_time, path, time_interval, end_simulation_time):
-    '''Given a vehicle, list its positions at time_interval markings'''
-    
-    # initialize 
-    simulation_time = 0
-    total_path_time = start_time
-    segment_locations = []
-    
-    # record None for simulation time during which vehicle hasn't left
-    while start_time>simulation_time:
-        segment_locations.append(None)
-        simulation_time+=time_interval
-    
-    # iterate over whole path
-    for i in range(len(path)-1):
-        #intialize variables
-        src = path[i]
-        dst = path[i+1]
-        edge_time = G.get_edge_data(src, dst)['weight']
-        
-        # has not started traversing current edge
-        curr_edge_time = 0
-        
-        # if the next simulation interval falls on the edge, record it
-        while simulation_time <= total_path_time + edge_time:
-            
-            # charging: src_in to dst_out
-            if src[-3:]=="_in" and src[:-3]!=dst[:-4]:
-                charging_node = src.split("_")[0]
-                segment_locations.append(charging_node)
-            # road: src_out to dst_in
-            else:
-                src_node = src.split("_")[0]
-                dst_node = dst.split("_")[0]
-                segment_locations.append((src_node, dst_node))
-            
-            # increment the simulation interval 
-            simulation_time += time_interval
-            
-        # update total path time after edge is traversed (and recorded, if needed)
-        total_path_time += edge_time
-    
-    # add None's once at destination
-    while simulation_time <= end_simulation_time:
-        segment_locations.append(None)
-        simulation_time+=time_interval
-    
-    # return the locations and the time to traverse the path (not including empty simulation time)
-    return (segment_locations, total_path_time-start_time)
-
-def single_route_simulation(G, source, destination, num_batches, average_demand):
-    '''Runs a simulation of demand caused by vehicles trying to travel from source to destination.
-    There will be num_batches of groups leaving at the same time. The size of the group is generated
-    by a poisson distribution with average_demand'''
-    all_time_segments = []
-    for batch_index, batch in enumerate(range(num_batches)): # a batch is released every 15 minutes
-        demand = np.random(average_demand) # random amount of trucks released at the same time in the batch
-        for vehicle_index, vehicle in enumerate(range(demand)):
-            starting_battery = random.random.choice([50, 100]) # TODO: parameterize the battery level choices
-            starting_label = source + "_" + starting_battery + "_in" # TODO: do we always start at a charging station?
-            nx.shortest_path(G,starting_label,destination)
-            leading_zero_time_segmentation = [0 for x in range(batch_index)]
-            time_segmentation = leading_zero_time_segmentation + time_segment_path(G,path)
-            # TODO: path segmentation?
-            all_time_segments.append(time_segmentation)
-        # TODO post-batch actions
-        # assess physical capacities (add weights to charging times)
-        # assess congestion
-        # assess electrical capacities (add weights to charinging times)
-    return all_time_segments
+if __name__ == "__main__":
+    station_G = get_station_G()
+    sim = Simulation(station_G, 24, 20, 6)
+    sim.add_dst("465",5)
+    src_dstr = [10,20,30,40,50,60,50,40,30,20,30,40,50,60,50,40,30,20,10,5,0,0,0,0]
+    sim.add_src("1",src_dstr)
+    sim.run()
