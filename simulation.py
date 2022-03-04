@@ -170,7 +170,6 @@ class Simulation():
                 truck.path = shortest_path
                 truck.simulation = self
 
-
     def run(self):
         ''' Run the simulation; return the statistics '''
         for h_step in range(self.simulation_length): # go for simulation_length in hours
@@ -184,7 +183,8 @@ class Simulation():
         return self.metrics
 
     def record_data(self):
-        ''' Sum vehicle locations to determine excess and RECORD '''
+        ''' Record vehicles at each charging node.
+        TODO Determine if we want to record vehicles at each road '''
         node_car_total = {node:0 for node in list(self.station_G.nodes)}
         for vehicle in self.vehicle_list:
             if "in" in vehicle.location[0] and "out" in vehicle.location[1]: #charging edge

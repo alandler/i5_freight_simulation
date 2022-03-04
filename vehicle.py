@@ -1,3 +1,4 @@
+from calendar import c
 import networkx as nx
 
 class Vehicle():
@@ -24,9 +25,6 @@ class Vehicle():
         self.travel_time = 0 # total time in transit btw origin and destination
         self.travel_delay = 0 # delay from traveling in an EV
     
-
-    # TODO: handle if on charging edge INCLUDING if over physical capacity + update simulation as needed
-    # TODO: handle moving over multiple edges (while loop)
     def step(self):
         '''Increment the location tracking'''
 
@@ -40,6 +38,21 @@ class Vehicle():
                 self.travel_time = self.simulation.time_interval*travel_length # calculate and store total travel time
                 self.travel_delay = self.travel_time - self.baseline_time # calculate and store travel delay experienced by the vehicle
                 return
+
+            # If entering a charging node, add the car to the queue
+            if "_in" in self.location[0] and "_out" in self.location[1] and self.distance_along_segment == 0:
+                sink_node_label = self.location[0].split("_")[0]
+                sink_node = self.simulation.battery_G.nodes[sink_node_label]
+                queue = sink_node["queue"]
+                if self in queue: # if in queue, check if at front and with open spots
+                    if self == queue[0] and sink_node["num_vehicles_charging"] < sink_node["physical_capacity"]:
+                        del queue[0]
+                        sink_node["num_vehicles_charging"] += 1
+                    else:
+                        break # wait until time has passed
+                else: # if not in queue, add it
+                    queue.append(self)
+                    continue
 
             road_travel_time = self.simulation.battery_G[self.location[0]][self.location[1]]["weight"]
             road_length = self.simulation.battery_G[self.location[0]][self.location[1]]["length"]
@@ -56,8 +69,12 @@ class Vehicle():
                 self.distance_along_segment += time_interval/road_travel_time*self.simulation.battery_G[self.location[0]][self.location[1]]["length"]
             else: # move to next segment, update parameters
                 time_interval -= time_left 
+                if "_out" in self.location[1]: # if leaving a charging station, decrement number of vehicles charging at that station
+                    sink_node_label = self.location[0].split("_")[0]
+                    self.simulation.battery_G.nodes[sink_node_label]["num_vehicles_charging"]-=1
                 self.set_next_location()
                 time_left = self.simulation.battery_G[self.location[0]][self.location[1]]["weight"] # time_left is now the length of the next segment
+                self.distance_along_segment = 0
 
         self.locations.append(self.location)
     

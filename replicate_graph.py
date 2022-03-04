@@ -25,8 +25,9 @@ def layer_graph(graph, increment= 25, km_per_percent = 1.15):
                  "_out" for layer in range(num_layers) for vertex in list(graph)]
     nodes = in_nodes + out_nodes
     output_graph.add_nodes_from(nodes)
+
     # add sinks from original
-    output_graph.add_nodes_from([str(node) for node in graph.nodes()])
+    output_graph.add_nodes_from([(str(node),{"queue": [], "num_vehicles_charging": 0, "physical_capacity": graph.nodes[node]["physical_capacity"]}) for node in graph.nodes()])
 
     # Roads: iterate over existing roads in the input graph (these form links from _out to _in)
     for edge in list(graph.edges):
