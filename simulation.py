@@ -98,7 +98,54 @@ class Simulation():
         destination_probabilities = [desirability_score_list[i]/total_score for i in range(len(desirability_score_list))]
         random_destinations = np.random.choice(dst_list, size = n, replace = True, p=destination_probabilities)
         return random_destinations
-
+    
+    def get_station_utilization_disp_of_avg(self):
+        ''' Uses average cars in each station at each timestep to produce utilization metric
+        - uses average cars in each station (over all timesteps).
+        - takes difference in average utilization of the top 20% and lower 20% stations'''
+        
+        #get the average # of cars at each station
+        cars_avg = np.average(np.array(self.data["num_cars_at_station"]), axis=0)
+        
+        #get the capacity of each station (sorted by station, just in case)
+        physical_capacity_dict = nx.get_node_attributes(self.station_G,'physical_capacity')
+        physical_capacity = [i for _,i in sorted(zip(physical_capacity_dict.keys(),physical_capacity_dict.values()))]
+        
+        #get the average utilization rate of each station
+        utilization = [i / j for i, j in zip(cars_avg, physical_capacity)].sort()
+        
+        #Get average usage of the top 20% most used and the lower 20% lest used.
+        u_lower_20 = np.mean(utilization[:np.floor(len(utilization)*1/5)])
+        u_upper_20 = np.mean(utilization[np.ceil(len(utilization)*4/5):])
+        
+        #return dispersion of average use
+        return u_upper_20 - u_lower_20
+        
+    def get_station_utilization_avg_of_disp(self):
+        ''' Uses average cars in each station at each timestep to produce utilization metric
+        - takes difference in average utilization of the top 20% and lower 20% stations (called dispersion) for each timestep 
+        - takes average dispersion (over all timesteps)'''
+        
+        #get number of cars at each station
+        cars_at_station = np.array(self.data["num_cars_at_station"])
+            
+        #get physical capacity of each station
+        physical_capacity_dict = nx.get_node_attributes(self.station_G,'physical_capacity')
+        physical_capacity = [i for _,i in sorted(zip(physical_capacity_dict.keys(),physical_capacity_dict.values()))]
+        
+        #get the dispersion (top20%-bottom20%) for each time step
+        disp = []
+        for time in range(0,len(cars_at_station)):
+            this_usage = [i / j for i, j in zip(cars_at_station[time], physical_capacity)].sort()
+            u_lower_20 = np.mean(this_usage[:np.floor(len(this_usage)*1/5)])
+            u_upper_20 = np.mean(this_usage[np.ceil(len(this_usage)*4/5):])
+            disp.append(u_upper_20 - u_lower_20)
+            
+        #return the average of those dispersions
+        return np.mean(disp)
+              
+        
+        ------------------------------------------------------------------------------------------------------------------------
     #################### Augmentation Mutators ####################
     def update_travel_times(self):
         ''' Based on the number of cars on a given segment, update the travel time on the road according to some formula
