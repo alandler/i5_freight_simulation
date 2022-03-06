@@ -6,7 +6,7 @@ import sys
 import re
 
 # File imports
-from data import get_station_G, stations_df, ingest_electricity_data
+from data import get_station_G, stations_df, ingest_electricity_data, distances_df
 from replicate_graph import layer_graph
 from vehicle import Vehicle
 
@@ -131,14 +131,41 @@ class Simulation():
         ''''''
         return
 
-    def add_road_time(self, src, dst, time):
-        '''Mutates the graph G to add time (from baseline) along edges _out to _in'''
+    # def add_road_time(self, src, dst, time):
+    #     '''Mutates the graph G to add time (from baseline) along edges _out to _in'''
+    #     src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
+    #     for src_label in src_labels:
+    #         for dst_label in self.battery_G.neighbors(src_label): # get all outgoing edges
+    #             if "_in" in dst_label:
+    #                 self.battery_G[src_label][dst_label]['weight'] = self.station_G[src][dst]['time'] + time
+    #     return self.battery_G
+
+    def change_hourly_road_time(self, src, dst, h_index):
+        '''Mutates the graph G to update time (from baseline) along edges _out to _in'''
+        # Access table with speeds for the src, dst pair 
+        src_dest_df = distances_df[(distances_df['OriginID']==src) & (distances_df['DestinationID']==dst)]
+        # Get speed at time-of-day = h_index (use "speed_"+h_index) 
+        avg_speed = src_dest_df["speed_"+str(h_index)][0]
+        # Convert to time
+        time = avg_speed*src_dest_df["Total_Kilometers"][0]
+
         src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
         for src_label in src_labels:
             for dst_label in self.battery_G.neighbors(src_label): # get all outgoing edges
                 if "_in" in dst_label:
-                    self.battery_G[src_label][dst_label]['weight'] = self.station_G[src][dst]['time'] + time
-        return self.battery_G
+                    self.battery_G[src_label][dst_label]['weight'] = time
+                    self.battery_G[src_label][dst_label]['time'] = time
+                    
+        self.station_G[src][dst]['weight'] = time
+
+        return self.battery_G, self.station_G
+
+    def update_hourly_road_time(self, h_index):
+        ''' For each _out to _in edge in the graph update edge time '''
+        for src in list(self.station_G.nodes):
+            for dst in list(self.station_G.nodes):
+                self.change_hourly_road_time(src, dst, h_index)
+        
 
     def add_charger_wait_time(self, station, time):
         '''Mutates the graph G to add "time" to the edges between the station _in to _out'''
@@ -177,8 +204,11 @@ class Simulation():
                 self.step(h_step,i_step)
                 self.simulation_index += 1
                 self.record_data() ##### TODO: build out metrics
+                self.update_hourly_road_time(h_step)
 
             self.simulation_hour_index += 1
+
+            # for each src dst pair 
         
         return self.metrics
 
