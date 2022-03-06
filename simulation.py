@@ -18,7 +18,9 @@ class Simulation():
 
         # electricity_data
         # TODO: currently simulation sums over full grid, rather than per state
-        state_electricity_limits = {"CA": ingest_electricity_data()[1]}
+                # Update the ingest_electricity_data (in data.py), get_electricity_metric (in simulation.py), and record_data (in simulation.py) once this is updated. - this requires a way to see what region each station is in.
+                #Also include posibility to change the seasons... right now it is just always summer
+        self.state_electricity_limits = {"CA": ingest_electricity_data()[1]}
 
         # graphs
         self.station_G = station_G
@@ -143,8 +145,15 @@ class Simulation():
             
         #return the average of those dispersions
         return np.mean(disp)
-              
-        
+    
+    def get_electricity_metric(self):
+        ''' takes the electricity data and limits to create the electricity metric'''
+       
+        #get total demanded electricity in the area
+        total_electricity = self.data["total_kw"] + self.state_electricity_limits['CA']
+        #see if the electricity is above 1.2 * peak of regular demand (without the trucks)
+        return np.size(np.where(np.array(total_electricity) >= max(self.state_electricity_limits['CA'])*1.2))
+            
         ------------------------------------------------------------------------------------------------------------------------
     #################### Augmentation Mutators ####################
     def update_travel_times(self):
@@ -273,8 +282,10 @@ class Simulation():
         num_vehicles_total = sum(num_cars_at_station)
 
         for node in node_car_total:
-            excess = node_car_total[node] - stations_df.set_index("OID_").loc[int(node)]["physical_capacity"]
-            electricity_use += (node_car_total[node]-excess)*150
+#             excess = node_car_total[node] - stations_df.set_index("OID_").loc[int(node)]["physical_capacity"]
+#             electricity_use += (node_car_total[node]-excess)*150
+            
+            electricity_use += min(node_car_total[node],stations_df.set_index("OID_").loc[int(node)]["physical_capacity"])*150
         
         # Append to metrics attribute
         self.data["num_vehicles_total"].append(num_vehicles_total)
