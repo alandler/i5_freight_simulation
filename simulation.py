@@ -155,12 +155,17 @@ class Simulation():
                 if "_in" in dst_label:
                     self.battery_G[src_label][dst_label]['weight'] = time
                     self.battery_G[src_label][dst_label]['time'] = time
-                    self.station_G[src_label][dst_label]['weight'] = time
+                    
+        self.station_G[src][dst]['weight'] = time
+
         return self.battery_G, self.station_G
 
     def update_hourly_road_time(self, h_index):
         ''' For each _out to _in edge in the graph update edge time '''
-        pass
+        for src in list(self.station_G.nodes):
+            for dst in list(self.station_G.nodes):
+                self.change_hourly_road_time(src, dst, h_index)
+        
 
     def add_charger_wait_time(self, station, time):
         '''Mutates the graph G to add "time" to the edges between the station _in to _out'''
@@ -199,6 +204,7 @@ class Simulation():
                 self.step(h_step,i_step)
                 self.simulation_index += 1
                 self.record_data() ##### TODO: build out metrics
+                self.update_hourly_road_time(h_step)
 
             self.simulation_hour_index += 1
 
