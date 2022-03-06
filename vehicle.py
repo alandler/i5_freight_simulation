@@ -76,7 +76,7 @@ class Vehicle():
                 time_left = self.simulation.battery_G[self.location[0]][self.location[1]]["weight"] # time_left is now the length of the next segment
                 self.distance_along_segment = 0
 
-        self.locations.append(self.location)
+        self.locations.append(self.location) # only set the location at the end of the simulation_index (even if multiple are traversed)
     
     def set_next_location(self):
         ''' increment mile location '''
