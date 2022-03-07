@@ -56,3 +56,44 @@ def single_route_simulation(G, source, destination, num_batches, average_demand)
         # assess electrical capacities (add weights to charinging times)
     return all_time_segments
 
+    def update_travel_times(self):
+        ''' Based on the number of cars on a given segment, update the travel time on the road according to some formula
+        TODO what formula?? How do we include uncertainty? TODO DISTANCE SEGMENT ROADS
+        - include rest stops
+        - include temporal demand changes'''
+
+        # iterate over all vehicles to get current locations (would concatenating an array and summming columns be easier here?)
+        new_state = {}
+        for vehicle in self.vehicle_list:
+            location = vehicle.segmented_path[self.simulation_index]
+            if location in new_state:
+                new_state[location]+=1
+            else:
+                new_state[location] = 1
+
+        # check congestion, capacities
+        for location in new_state:
+            if type(location) is tuple: # road
+                time = 5 ############################################## TODO TODO TODO ##############################################
+                self.add_road_time(location[0], location[1], time)
+            else: # station
+                physical_capacity = nx.get_node_attributes(self.station_G,'physical_capacity')[location]
+                if new_state[location] > physical_capacity:
+                    time = (physical_capacity-new_state[location])*2 # add two hours per truck in the line
+                    self.add_charger_wait_time(location[0], location[1]) 
+        pass
+    
+    def randomize_demand(mu, std):
+        ''''''
+        return
+
+    # def add_road_time(self, src, dst, time):
+    #     '''Mutates the graph G to add time (from baseline) along edges _out to _in'''
+    #     src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
+    #     for src_label in src_labels:
+    #         for dst_label in self.battery_G.neighbors(src_label): # get all outgoing edges
+    #             if "_in" in dst_label:
+    #                 self.battery_G[src_label][dst_label]['weight'] = self.station_G[src][dst]['time'] + time
+    #     return self.battery_G
+
+    

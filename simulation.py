@@ -6,7 +6,7 @@ import sys
 import re
 
 # File imports
-from data import get_station_G, stations_df, ingest_electricity_data, distances_df
+from data import get_station_G, stations_df, ingest_electricity_data, distances_df, set_random_speed_columns
 from replicate_graph import layer_graph
 from vehicle import Vehicle
 
@@ -28,7 +28,7 @@ class Simulation():
 
         # intervals
         self.time_interval = .2 # hours
-        self.battery_interval = 25 # % charge
+        self.battery_interval = battery_interval # % charge
         self.num_layers = 100//self.battery_interval+1 # minimum 2
         self.battery_layers = [self.battery_interval*l for l in range(self.num_layers)] # always includes 0 and 100
 
@@ -43,7 +43,7 @@ class Simulation():
         self.dst_dict = {} # desirabiliy score 0-10
 
         # metrics
-        self.data = {"num_cars_at_station": [], 
+        self.data = {"num_cars_at_station": [],
                         "total_kw":[],
                         "num_vehicles_total":[]}
         self.metrics = None
@@ -153,84 +153,48 @@ class Simulation():
         total_electricity = self.data["total_kw"] + self.state_electricity_limits['CA']
         #see if the electricity is above 1.2 * peak of regular demand (without the trucks)
         return np.size(np.where(np.array(total_electricity) >= max(self.state_electricity_limits['CA'])*1.2))
-            
-        ------------------------------------------------------------------------------------------------------------------------
+
     #################### Augmentation Mutators ####################
-    def update_travel_times(self):
-        ''' Based on the number of cars on a given segment, update the travel time on the road according to some formula
-        TODO what formula?? How do we include uncertainty? TODO DISTANCE SEGMENT ROADS
-        - include rest stops
-        - include temporal demand changes'''
-
-        # iterate over all vehicles to get current locations (would concatenating an array and summming columns be easier here?)
-        new_state = {}
-        for vehicle in self.vehicle_list:
-            location = vehicle.segmented_path[self.simulation_index]
-            if location in new_state:
-                new_state[location]+=1
-            else:
-                new_state[location] = 1
-
-        # check congestion, capacities
-        for location in new_state:
-            if type(location) is tuple: # road
-                time = 5 ############################################## TODO TODO TODO ##############################################
-                self.add_road_time(location[0], location[1], time)
-            else: # station
-                physical_capacity = nx.get_node_attributes(self.station_G,'physical_capacity')[location]
-                if new_state[location] > physical_capacity:
-                    time = (physical_capacity-new_state[location])*2 # add two hours per truck in the line
-                    self.add_charger_wait_time(location[0], location[1]) 
-        pass
-    
-    def randomize_demand(mu, std):
-        ''''''
-        return
-
-    # def add_road_time(self, src, dst, time):
-    #     '''Mutates the graph G to add time (from baseline) along edges _out to _in'''
-    #     src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
-    #     for src_label in src_labels:
-    #         for dst_label in self.battery_G.neighbors(src_label): # get all outgoing edges
-    #             if "_in" in dst_label:
-    #                 self.battery_G[src_label][dst_label]['weight'] = self.station_G[src][dst]['time'] + time
-    #     return self.battery_G
 
     def change_hourly_road_time(self, src, dst, h_index):
         '''Mutates the graph G to update time (from baseline) along edges _out to _in'''
-        # Access table with speeds for the src, dst pair 
-        src_dest_df = distances_df[(distances_df['OriginID']==src) & (distances_df['DestinationID']==dst)]
-        # Get speed at time-of-day = h_index (use "speed_"+h_index) 
-        avg_speed = src_dest_df["speed_"+str(h_index)][0]
-        # Convert to time
-        time = avg_speed*src_dest_df["Total_Kilometers"][0]
 
+        src_dest_df = distances_df[(distances_df['OriginID']==int(src)) & (distances_df['DestinationID']==int(dst))] # Access table with speeds for the src, dst pair 
+        if len(src_dest_df)==0:
+            print(src, dst, h_index)
+        avg_speed = src_dest_df.iloc[0]["speed_"+str(h_index)] # Get speed at time-of-day = h_index (use "speed_"+h_index) 
+        time = src_dest_df.iloc[0]["Total_Kilometers"]/avg_speed # Convert to time
+
+        # update battery graph
         src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
         for src_label in src_labels:
             for dst_label in self.battery_G.neighbors(src_label): # get all outgoing edges
-                if "_in" in dst_label:
+                if "_in" in dst_label: # exclude sinks
                     self.battery_G[src_label][dst_label]['weight'] = time
                     self.battery_G[src_label][dst_label]['time'] = time
-                    
+        
+        # store in station graph just in case
         self.station_G[src][dst]['weight'] = time
 
-        return self.battery_G, self.station_G
+        return self.battery_G, self.station_G # redundant
 
     def update_hourly_road_time(self, h_index):
-        ''' For each _out to _in edge in the graph update edge time '''
-        for src in list(self.station_G.nodes):
-            for dst in list(self.station_G.nodes):
-                self.change_hourly_road_time(src, dst, h_index)
-        
+         ''' For each _out to _in edge in the graph update edge time '''
+         for edge in self.station_G.edges:
+            self.change_hourly_road_time(edge[0], edge[1], h_index)
 
+    def update_charging_times(self):
+        for node in self.station_G.nodes:
+            additional_wait_time = len(self.battery_G.nodes[node]["queue"]) * random.gauss(100/self.station_G.nodes[node]["charging_rate"], .5)
+            self.add_charger_wait_time(node, additional_wait_time)
+        
     def add_charger_wait_time(self, station, time):
         '''Mutates the graph G to add "time" to the edges between the station _in to _out'''
         for in_battery_level in self.battery_layers: # all start levels 0 to 100
             in_label = station + "_"+ str(in_battery_level) + "_in"
             for out_label in self.battery_G.neighbors(in_label):
-                if "_out" in out_label:
-                    if self.battery_G[in_label][out_label]["weight"] != 0:
-                        self.battery_G[in_label][out_label]["weight"] = self.battery_G[in_label][out_label]["time"] +  time
+                if "_out" in out_label and self.battery_G[in_label][out_label]["time"] != 0: # not sink and doesn't go straight through without charging
+                    self.battery_G[in_label][out_label]["weight"] = self.battery_G[in_label][out_label]["time"] +  time
         return self.battery_G
 
     #################### Simulation Run ####################
@@ -259,18 +223,22 @@ class Simulation():
             for i_step in range(int(1/self.time_interval)): # go in interval segments
                 self.step(h_step,i_step)
                 self.simulation_index += 1
-                self.record_data() ##### TODO: build out metrics
+                self.record_data()
                 self.update_hourly_road_time(h_step)
+                self.update_charging_times()
+                # self.print_debug()
 
             self.simulation_hour_index += 1
 
             # for each src dst pair 
         
         return self.metrics
+    
+    def print_debug(self):
+        print([self.battery_G.nodes[node]["queue"] for node in self.station_G.nodes])
 
     def record_data(self):
-        ''' Record vehicles at each charging node.
-        TODO Determine if we want to record vehicles at each road '''
+        ''' Record vehicles at each charging node, electricity grid total usage, and queues'''
         node_car_total = {node:0 for node in list(self.station_G.nodes)}
         for vehicle in self.vehicle_list:
             if "in" in vehicle.location[0] and "out" in vehicle.location[1]: #charging edge
@@ -282,9 +250,6 @@ class Simulation():
         num_vehicles_total = sum(num_cars_at_station)
 
         for node in node_car_total:
-#             excess = node_car_total[node] - stations_df.set_index("OID_").loc[int(node)]["physical_capacity"]
-#             electricity_use += (node_car_total[node]-excess)*150
-            
             electricity_use += min(node_car_total[node],stations_df.set_index("OID_").loc[int(node)]["physical_capacity"])*150
         
         # Append to metrics attribute
@@ -293,8 +258,9 @@ class Simulation():
         self.data["total_kw"].append(electricity_use)
 
 if __name__ == "__main__":
+    set_random_speed_columns()
     station_G = get_station_G()
-    sim = Simulation(station_G, 24, 20, 6)
+    sim = Simulation(station_G, 24, 20, 10)
     sim.add_dst("465",5)
     src_dstr = [10,20,30,40,50,60,50,40,30,20,30,40,50,60,50,40,30,20,10,5,0,0,0,0]
     sim.add_src("1",src_dstr)

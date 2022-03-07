@@ -29,8 +29,7 @@ class Vehicle():
         '''Increment the location tracking'''
 
         time_interval = self.simulation.time_interval # start out with entire interval to travel
-        time_left = -1 # guaranteed always to enter the while loop
-        while time_left < time_interval:
+        while time_interval>0:
             # If the vehicle has reached its destination store travel time and travel delay
             if self.dst == self.location[1]:
                 end_index = self.simulation.simulation_index # end simulation index
@@ -39,41 +38,48 @@ class Vehicle():
                 self.travel_delay = self.travel_time - self.baseline_time # calculate and store travel delay experienced by the vehicle
                 return
 
-            # If entering a charging node, add the car to the queue
+            # If entering a charging node (and not just passing through), add the car to the queue
             if "_in" in self.location[0] and "_out" in self.location[1] and self.distance_along_segment == 0:
+                if (self.location[0][:-2] == self.location[1][:-3]): # passing through
+                    self.set_next_location()
+                    self.distance_along_segment = 0
+                    continue
                 sink_node_label = self.location[0].split("_")[0]
                 sink_node = self.simulation.battery_G.nodes[sink_node_label]
                 queue = sink_node["queue"]
                 if self in queue: # if in queue, check if at front and with open spots
                     if self == queue[0] and sink_node["num_vehicles_charging"] < sink_node["physical_capacity"]:
-                        del queue[0]
-                        sink_node["num_vehicles_charging"] += 1
+                        del self.simulation.battery_G.nodes[sink_node_label]["queue"][0]
+                        self.simulation.battery_G.nodes[sink_node_label]["num_vehicles_charging"] += 1
                     else:
                         break # wait until time has passed
                 else: # if not in queue, add it
-                    queue.append(self)
+                    self.simulation.battery_G.nodes[sink_node_label]["queue"].append(self)
                     continue
-
+            
             road_travel_time = self.simulation.battery_G[self.location[0]][self.location[1]]["weight"]
+            if "_in" in self.location[0] and "_out" in self.location[1]: # don't use weight for charging: queue takes care of this, use time
+                 road_travel_time = self.simulation.battery_G[self.location[0]][self.location[1]]["time"]
             road_length = self.simulation.battery_G[self.location[0]][self.location[1]]["length"]
 
             # get time_left on current segment
             if road_length == 0: # segment of length 0 could be moving through without charging or going to a sink
                 time_left = 0
             else:
-                time_left = road_travel_time * self.distance_along_segment/road_length
+                time_left = road_travel_time - (road_travel_time * self.distance_along_segment/road_length)
 
             # determine if staying on same segment or moving to next
             if time_left > time_interval: # if km remaining > d, same segment, increment distance along
-                self.locations.apppend(self.location)
-                self.distance_along_segment += time_interval/road_travel_time*self.simulation.battery_G[self.location[0]][self.location[1]]["length"]
+                self.locations.append(self.location)
+                speed = road_length/road_travel_time #km or % / hr
+                self.distance_along_segment += time_interval * speed
+                time_interval = 0
             else: # move to next segment, update parameters
                 time_interval -= time_left 
                 if "_out" in self.location[1]: # if leaving a charging station, decrement number of vehicles charging at that station
                     sink_node_label = self.location[0].split("_")[0]
                     self.simulation.battery_G.nodes[sink_node_label]["num_vehicles_charging"]-=1
                 self.set_next_location()
-                time_left = self.simulation.battery_G[self.location[0]][self.location[1]]["weight"] # time_left is now the length of the next segment
                 self.distance_along_segment = 0
 
         self.locations.append(self.location) # only set the location at the end of the simulation_index (even if multiple are traversed)
