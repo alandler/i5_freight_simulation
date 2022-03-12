@@ -5,8 +5,8 @@ import random
 import sys
 
 # TODO if logic controlling testing or real environment 
-stations_df = pd.read_csv("data_test/stations.csv")
-distances_df = pd.read_csv("data_test/distances.csv")
+stations_df = pd.read_csv("data/stations.csv")
+distances_df = pd.read_csv("data/distances.csv")
 distances_df = distances_df[distances_df["Total_TravelTime"]!=0]
 elec_df = pd.read_csv("data_test/Demand_for_California_(region)_hourly_-_UTC_time.csv", skiprows=5, names=["time", "MWH"])
 
@@ -38,11 +38,13 @@ def get_station_G(battery_capacity = 215):
 
     return station_G
 
-def prune_station_G(max_distance = 500):
+def prune_station_G(station_G, max_distance = 500):
     ''' This should take edges that are clearly redundant and prune them
     Start by removing all edges with len over 500 km
     TODO: come up with more refined  pruning methods for local redundancies as well'''
-    pass
+    for edge in station_G.edges:
+        if station_G.edges[edge]["length"] >= max_distance:
+            station_G.remove_edge(*edge)
 
 def ingest_demand_data():
     ''' TODO: We don't have this data yet '''
@@ -54,6 +56,7 @@ def ingest_avg_speed_data():
 
 def apply_avg_speeds():
     '''TODO: either use travel times as given with presumptions about hourly distributions or do something else'''
+    
     pass
 
 def ingest_electricity_data():

@@ -3,5 +3,5 @@ Modified Dijkstra.ipynb
 __pycache__/data.cpython-37.pyc
 __pycache__/simulation.cpython-37.pyc
 __pycache__/*
-
+pems_ingest/*
 *.pyc
