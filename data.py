@@ -5,8 +5,8 @@ import random
 import sys
 
 # TODO if logic controlling testing or real environment 
-stations_df = pd.read_csv("data/stations.csv")
-distances_df = pd.read_csv("data/distances.csv")
+stations_df = pd.read_csv("data_test/stations.csv")
+distances_df = pd.read_csv("data_test/distances.csv")
 distances_df = distances_df[distances_df["Total_TravelTime"]!=0]
 elec_df = pd.read_csv("data_test/Demand_for_California_(region)_hourly_-_UTC_time.csv", skiprows=5, names=["time", "MWH"])
 

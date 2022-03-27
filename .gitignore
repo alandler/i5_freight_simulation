@@ -5,3 +5,5 @@ __pycache__/simulation.cpython-37.pyc
 __pycache__/*
 pems_ingest/*
 *.pyc
+data/coord_distances.csv
+
