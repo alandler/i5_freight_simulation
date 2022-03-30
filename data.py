@@ -1,8 +1,10 @@
 import networkx as nx
-# import numpy as np
+import numpy as np
 import pandas as pd
 import random
 import sys
+from scipy import spatial
+from tqdm import tqdm
 
 # TODO if logic controlling testing or real environment 
 stations_df = pd.read_csv("data_test/stations.csv")
@@ -50,9 +52,65 @@ def ingest_demand_data():
     ''' TODO: We don't have this data yet '''
     pass
 
-def ingest_avg_speed_data():
-    ''' TODO: We don't have this data yet '''
-    pass
+def ingest_avg_speed_data(stations_df, distances_df):
+    ''' Ingest PEMS data and extract speeds at road endpoints 
+    Requires: longitude, latitude as columns in stations_df'''
+
+    def nearest_speed(x):
+        lon = x["longitude"]
+        lat = x["latitude"]
+        d_lon = x["longitude_dst"]
+        d_lat = x["latitude_dst"]
+        src_res = tree.query([(lat,lon)])
+        dst_res = tree.query([(d_lat,d_lon)])
+        src_speed = df_h.iloc[src_res[1][0]]["avg_speed"]
+        dst_speed = df_h.iloc[dst_res[1][0]]["avg_speed"]
+        return (src_speed+dst_speed)/2
+
+    columns = ['time', 'station', 'district', 'route', 'direction_of_travel', 
+           'lane_type', 'station_length', 'samples', 'percent_observed', 
+           'total_flow', 'avg_occupancy', 'avg_speed', 'delay_35', 'delay_40', 
+           'delay_45', 'delay_50', 'delay_55', 'delay_60']
+    meta_csvs = {'3': 'd03_text_meta_2022_03_05.txt',
+    '4':'d04_text_meta_2022_03_25.txt',
+    '5':'d05_text_meta_2021_03_26.txt',
+    '6':'d06_text_meta_2022_03_08.txt',
+    '7':'d07_text_meta_2022_03_12.txt',
+    '8':'d08_text_meta_2022_03_25.txt',
+    '10':'d10_text_meta_2022_02_24.txt',
+    '11':'d11_text_meta_2022_03_16.txt',
+    '12':'d12_text_meta_2021_05_18.txt'}
+
+    df = pd.DataFrame()
+
+    for i in ['3', '4', '5', '6', '7', '8', '10', '11', '12']:
+        num = i
+        if int(i) < 10:
+            num = "0" + i
+        speed_df = speed_df = pd.read_csv("pems_ingest/station_data/d"+num+"_text_station_hour_2022_02.txt", sep = ',', header = None)
+        speed_df = speed_df.iloc[: , :len(columns)]
+        speed_df = speed_df.rename(columns = {i:columns[i] for i in range(len(columns))})
+        speed_df["time"] = pd.to_datetime(speed_df['time'])
+        speed_df["hour"] = speed_df["time"].dt.hour
+        meta_df = pd.read_csv("pems_ingest/station_data/" + meta_csvs[i], sep = "\t")
+        meta_df = meta_df[["ID", "Latitude", "Longitude"]]
+        meta_df = meta_df.set_index("ID")
+        speed_df = speed_df.join(meta_df, on = "station")
+        df = pd.concat([df, speed_df])
+        df = df.dropna(axis="index", how="any", subset=["Latitude", "Longitude"])
+    
+    coord_distances_df = distances_df.join(stations_df.set_index("OID_")[["longitude", "latitude"]], on= "OriginID", rsuffix="_origin")
+    coord_distances_df = coord_distances_df.join(stations_df.set_index("OID_")[["longitude", "latitude"]], on= "DestinationID", rsuffix="_dst")
+
+    for h in tqdm(range(24)):
+        df_h = df[df["hour"]==h]
+        df_h = df_h.groupby(by=['station']).mean()
+        df_h = df_h.dropna(axis="index", how="any", subset=["avg_speed", "Latitude", "Longitude"])
+        coords = df_h[["Latitude", "Longitude"]].to_numpy()
+        tree = spatial.KDTree(coords)
+        coord_distances_df["speed_" + str(h)] = coord_distances_df.apply(nearest_speed, 1)
+
+    coord_distances_df.to_csv("coord_distances.csv")
 
 def apply_avg_speeds():
     '''TODO: either use travel times as given with presumptions about hourly distributions or do something else'''
