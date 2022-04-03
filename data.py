@@ -9,7 +9,7 @@ from tqdm import tqdm
 # TODO: use this data
 elec_df = pd.read_csv("data_test/Demand_for_California_(region)_hourly_-_UTC_time.csv", skiprows=5, names=["time", "MWH"])
 
-def select_dataset(dataset, test=False):
+def select_dataset(dataset):
     datasets = {
         "test": ["stations.csv", "distances.csv"],
         "wcctci": ["wcctci_stations-updated.csv", "wcctci_coord_distances.csv"],
@@ -17,7 +17,7 @@ def select_dataset(dataset, test=False):
         "parking": ["stations.csv", "distances.csv"],
     }
     directory = "data/"
-    if test == True:
+    if dataset == "test":
         directory = "data_test/"
 
     stations_df = pd.read_csv(directory + datasets[dataset][0])

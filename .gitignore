@@ -6,4 +6,5 @@ __pycache__/*
 pems_ingest/*
 *.pyc
 data/coord_distances.csv
-
+trials/
+.DS_Store

@@ -3,6 +3,8 @@ import numpy as np
 import random
 
 from tqdm import tqdm
+from datetime import datetime
+import pickle
 
 # File imports
 from data import select_dataset, get_station_g, ingest_electricity_data, set_random_speed_columns
@@ -13,7 +15,7 @@ class Simulation():
     '''Create a class for a simulation'''
     
     #### Init/Graph Mutation #### 
-    def __init__(self, stations_df, distances_df, simulation_length = 24, battery_interval = 25, km_per_percent = 1.15):
+    def __init__(self, dataset, simulation_length = 24, battery_interval = 25, km_per_percent = 1.15):
 
         # electricity_data
         # TODO: currently simulation sums over full grid, rather than per state
@@ -22,8 +24,8 @@ class Simulation():
         self.state_electricity_limits = {"CA": ingest_electricity_data()[1]}
         
         # data
-        self.stations_df = stations_df
-        self.distances_df = distances_df
+        self.dataset = dataset
+        self.stations_df, self.distances_df = select_dataset(dataset)
 
         # graphs
         self.station_g = get_station_g(stations_df, distances_df)
@@ -71,6 +73,7 @@ class Simulation():
             hour_factors += np.random.normal(0,.07,24)
             flow = np.random.normal(flow_mean,flow_std,1)
             source_distribution = flow[0]*hour_factors
+            source_distribution = source_distribution.astype(int)
             self.add_src(node, source_distribution)
     
     def random_dsts(self):
@@ -235,16 +238,21 @@ class Simulation():
                 self.record_data()
                 self.update_hourly_road_time(h_step)
                 self.update_charging_times()
-                # self.print_debug()
 
             self.simulation_hour_index += 1
 
             # for each src dst pair 
-        
         return self.metrics
-    
-    def print_debug(self):
-        print([self.battery_g.nodes[node]["queue"] for node in self.station_g.nodes])
+
+    def save_simulation(self):
+        ''' Saves the simulation object as a pickle file.
+        The nomenclature is the dataset plus the current datetime'''
+        def save_object(obj, filename):
+            with open(filename, 'wb') as outp:  # Overwrites any existing file.
+                pickle.dump(obj, outp, pickle.HIGHEST_PROTOCOL)
+        
+        file = self.dataset + "_" + datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
+        save_object(self, file + ".pkl")
 
     def record_data(self):
         ''' Record vehicles at each charging node, electricity grid total usage, and queues'''
@@ -272,7 +280,7 @@ if __name__ == "__main__":
     simulation_length = 24
     battery_interval = 20
     km_per_percent = 10
-    sim = Simulation(stations_df, distances_df, simulation_length, battery_interval, km_per_percent)
+    sim = Simulation("wcctci", simulation_length, battery_interval, km_per_percent)
     sim.random_srcs()
     sim.random_dsts()
-    sim.run()
+    metrics = sim.run()
