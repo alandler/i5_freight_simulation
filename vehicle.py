@@ -13,7 +13,7 @@ class Vehicle():
 
         # calculated
         self.path = self.get_shortest_path()
-        # self.segmented_path = time_segment_path(self.simulation.battery_G, self.start_time, 
+        # self.segmented_path = time_segment_path(self.simulation.battery_g, self.start_time, 
         #     self.path, self.simulation.time_interval, self.simulation.simulation_length)
         self.baseline_time = self.get_baseline_travel_time()
 
@@ -45,22 +45,22 @@ class Vehicle():
                     self.distance_along_segment = 0
                     continue
                 sink_node_label = self.location[0].split("_")[0]
-                sink_node = self.simulation.battery_G.nodes[sink_node_label]
+                sink_node = self.simulation.battery_g.nodes[sink_node_label]
                 queue = sink_node["queue"]
                 if self in queue: # if in queue, check if at front and with open spots
                     if self == queue[0] and sink_node["num_vehicles_charging"] < sink_node["physical_capacity"]:
-                        del self.simulation.battery_G.nodes[sink_node_label]["queue"][0]
-                        self.simulation.battery_G.nodes[sink_node_label]["num_vehicles_charging"] += 1
+                        del self.simulation.battery_g.nodes[sink_node_label]["queue"][0]
+                        self.simulation.battery_g.nodes[sink_node_label]["num_vehicles_charging"] += 1
                     else:
                         break # wait until time has passed
                 else: # if not in queue, add it
-                    self.simulation.battery_G.nodes[sink_node_label]["queue"].append(self)
+                    self.simulation.battery_g.nodes[sink_node_label]["queue"].append(self)
                     continue
             
-            road_travel_time = self.simulation.battery_G[self.location[0]][self.location[1]]["weight"]
+            road_travel_time = self.simulation.battery_g[self.location[0]][self.location[1]]["weight"]
             if "_in" in self.location[0] and "_out" in self.location[1]: # don't use weight for charging: queue takes care of this, use time
-                 road_travel_time = self.simulation.battery_G[self.location[0]][self.location[1]]["time"]
-            road_length = self.simulation.battery_G[self.location[0]][self.location[1]]["length"]
+                 road_travel_time = self.simulation.battery_g[self.location[0]][self.location[1]]["time"]
+            road_length = self.simulation.battery_g[self.location[0]][self.location[1]]["length"]
 
             # get time_left on current segment
             if road_length == 0: # segment of length 0 could be moving through without charging or going to a sink
@@ -78,7 +78,7 @@ class Vehicle():
                 time_interval -= time_left 
                 if "_out" in self.location[1]: # if leaving a charging station, decrement number of vehicles charging at that station
                     sink_node_label = self.location[0].split("_")[0]
-                    self.simulation.battery_G.nodes[sink_node_label]["num_vehicles_charging"]-=1
+                    self.simulation.battery_g.nodes[sink_node_label]["num_vehicles_charging"]-=1
                 self.set_next_location()
                 self.distance_along_segment = 0
 
@@ -93,13 +93,13 @@ class Vehicle():
 
     def get_shortest_path(self):
         '''Calculate shortest path'''
-        G = self.simulation.battery_G
+        G = self.simulation.battery_g
         return nx.shortest_path(G, self.src, self.dst)
 
     def get_baseline_travel_time(self):
         ''' Calculate the travel time a vehicle would experience if not an electric vehicle '''
         # Use graph without charging layers
-        G = self.simulation.station_G
+        G = self.simulation.station_g
 
         # Return shortest path length
         return nx.shortest_path_length(G, self.src, self.dst, weight="weight")

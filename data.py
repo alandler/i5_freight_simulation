@@ -6,50 +6,65 @@ import sys
 from scipy import spatial
 from tqdm import tqdm
 
-# TODO if logic controlling testing or real environment 
-stations_df = pd.read_csv("data_test/stations.csv")
-distances_df = pd.read_csv("data_test/distances.csv")
-distances_df = distances_df[distances_df["Total_TravelTime"]!=0]
+# TODO: use this data
 elec_df = pd.read_csv("data_test/Demand_for_California_(region)_hourly_-_UTC_time.csv", skiprows=5, names=["time", "MWH"])
 
-def set_random_speed_columns():
+def select_dataset(dataset, test=False):
+    datasets = {
+        "test": ["stations.csv", "distances.csv"],
+        "wcctci": ["wcctci_stations-updated.csv", "wcctci_coord_distances.csv"],
+        "wcctci+parking": [],
+        "parking": ["stations.csv", "distances.csv"],
+    }
+    directory = "data/"
+    if test == True:
+        directory = "data_test/"
+
+    stations_df = pd.read_csv(directory + datasets[dataset][0])
+    distances_df = pd.read_csv(directory + datasets[dataset][1])
+    distances_df = distances_df[distances_df["Total_TravelTime"]!=0]
+    return stations_df, distances_df
+
+def set_random_speed_columns(distances_df):
+    ''' Use rush hour estimates to adjust free flow speeds temporally '''
     free_flow_speed = distances_df["Total_Kilometers"]/(distances_df["Total_TravelTime"]/60)
     hour_factors = {0: 1, 1:1, 2:1, 3:1, 4:1, 5:.95, 6:.95, 7:.87, 8:.75, 9:.8, 10: .85, 11:.9, 12:.85, 
                     13: .9, 14:.9, 15:.9, 16:.85, 17:.75, 18: .7, 19: .75, 20:.8, 21: .85, 22: .95, 23: 1, 24:1}
     for i in range(24):
         distances_df["speed_"+str(i)] = free_flow_speed*random.gauss(hour_factors[i],.05)
+    return distances_df
 
-def get_station_G(battery_capacity = 215):
+def get_station_g(stations_df, distances_df, battery_capacity = 215):
     ''' Return a networkx graph containing an augmented graph of the physical network.
     '''
     # add nodes with IDs, charging_rates, positions
-    station_G  = nx.DiGraph()
+    station_g  = nx.DiGraph()
     for index, row in stations_df.iterrows():
-        station_G.add_node(str(row["OID_"]), 
+        station_g.add_node(str(row["OID_"]), 
                             charging_rate = row["charging_rate"],
                             pos = (row["longitude"],  row["latitude"]),
                             physical_capacity = row["physical_capacity"])
 
     # TODO: elevation, avg_speed data
     for index, row in distances_df.iterrows():
-        station_G.add_edge(str(row["OriginID"]),str(row["DestinationID"]),
+        station_g.add_edge(str(row["OriginID"]),str(row["DestinationID"]),
                         weight= row["Total_TravelTime"]/60,
                         time = row["Total_TravelTime"]/60,
                         length= row["Total_Kilometers"],
                         battery_cost = row["Total_Kilometers"]*1.9/battery_capacity*100) # battery cost as a percent of total battery capacity consumed (assuming battery capacity of 215kWh)
 
-    return station_G
+    return station_g
 
-def prune_station_G(station_G, max_distance = 500):
+def prune_station_g(station_g, max_distance = 500):
     ''' This should take edges that are clearly redundant and prune them
     Start by removing all edges with len over 500 km
     TODO: come up with more refined  pruning methods for local redundancies as well'''
-    for edge in station_G.edges:
-        if station_G.edges[edge]["length"] >= max_distance:
-            station_G.remove_edge(*edge)
+    for edge in station_g.edges:
+        if station_g.edges[edge]["length"] >= max_distance:
+            station_g.remove_edge(*edge)
 
 def ingest_demand_data():
-    ''' TODO: We don't have this data yet '''
+    ''' TODO: USE PEMMS'''
     pass
 
 def ingest_avg_speed_data(stations_df, distances_df):
@@ -112,11 +127,6 @@ def ingest_avg_speed_data(stations_df, distances_df):
 
     coord_distances_df.to_csv("coord_distances.csv")
 
-def apply_avg_speeds():
-    '''TODO: either use travel times as given with presumptions about hourly distributions or do something else'''
-    
-    pass
-
 def ingest_electricity_data():
     ''' Returns 2 arrays of 24, representing hourly MWH demand in CA for the winter and summer.'''
     elec_df["utc_time"] = pd.to_datetime(elec_df["time"])
@@ -127,7 +137,6 @@ def ingest_electricity_data():
     return (winter_mwh, summer_mwh)
 
 if __name__ == '__main__':
-    get_station_G()
-    set_random_speed_columns()
+    select_dataset("wcctci")
 
 
