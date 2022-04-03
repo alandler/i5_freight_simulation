@@ -113,6 +113,11 @@ class Simulation():
         random_destinations = np.random.choice(dst_list, size = n, replace = True, p=destination_probabilities)
         return random_destinations
     
+    def calculate_metrics(self):
+        self.metrics = {"station_utilization_disp_of_avg": self.get_station_utilization_disp_of_avg(),
+        "station_utilization_avg_of_disp": self.get_station_utilization_avg_of_disp(),
+        "electricity": self.get_electricity_metric()}
+
     def get_station_utilization_disp_of_avg(self):
         ''' Uses average cars in each station at each timestep to produce utilization metric
         - uses average cars in each station (over all timesteps).
@@ -242,6 +247,7 @@ class Simulation():
             self.simulation_hour_index += 1
 
             # for each src dst pair 
+        self.calculate_metrics()
         return self.metrics
 
     def save_simulation(self):
