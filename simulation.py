@@ -290,8 +290,8 @@ if __name__ == "__main__":
     stations_df, distances_df = select_dataset("wcctci")
     simulation_length = 24
     battery_interval = 20
-    km_per_percent = 15
+    km_per_percent = 3.13
     sim = Simulation("wcctci", simulation_length, battery_interval, km_per_percent)
-    sim.random_srcs(50,10)
+    sim.random_srcs(55,12)
     sim.random_dsts()
     metrics = sim.run()

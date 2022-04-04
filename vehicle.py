@@ -22,6 +22,8 @@ class Vehicle():
         self.travel_time = 0 # total time in transit btw origin and destination
         self.travel_delay = 0 # delay from traveling in an EV
 
+        self.queue_time = 0
+
         self.finished = False
     
     def step(self):
@@ -55,6 +57,7 @@ class Vehicle():
                         del self.simulation.battery_g.nodes[sink_node_label]["queue"][0] # remove from queue
                         self.simulation.battery_g.nodes[sink_node_label]["num_vehicles_charging"] += 1 # add to charging count at node
                     else:
+                        self.queue_time += 1
                         break # wait until time has passed
                 else: # if not in queue, add it
                     self.simulation.battery_g.nodes[sink_node_label]["queue"].append(self)
