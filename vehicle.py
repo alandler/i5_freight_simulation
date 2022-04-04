@@ -13,11 +13,8 @@ class Vehicle():
 
         # calculated
         self.path = self.get_shortest_path()
-        # self.segmented_path = time_segment_path(self.simulation.battery_g, self.start_time, 
-        #     self.path, self.simulation.time_interval, self.simulation.simulation_length)
         self.baseline_time = self.get_baseline_travel_time()
 
-        # not currently updated
         self.locations = []
         self.path_i = 0
         self.location = (self.path[0],self.path[1]) # (src, dst)
@@ -49,14 +46,15 @@ class Vehicle():
                 queue = sink_node["queue"]
                 if self in queue: # if in queue, check if at front and with open spots
                     if self == queue[0] and sink_node["num_vehicles_charging"] < sink_node["physical_capacity"]:
-                        del self.simulation.battery_g.nodes[sink_node_label]["queue"][0]
-                        self.simulation.battery_g.nodes[sink_node_label]["num_vehicles_charging"] += 1
+                        del self.simulation.battery_g.nodes[sink_node_label]["queue"][0] # remove from queue
+                        self.simulation.battery_g.nodes[sink_node_label]["num_vehicles_charging"] += 1 # add to charging count at node
                     else:
                         break # wait until time has passed
                 else: # if not in queue, add it
                     self.simulation.battery_g.nodes[sink_node_label]["queue"].append(self)
                     continue
             
+            # case that it is on either a road or charging edge and has time left
             road_travel_time = self.simulation.battery_g[self.location[0]][self.location[1]]["weight"]
             if "_in" in self.location[0] and "_out" in self.location[1]: # don't use weight for charging: queue takes care of this, use time
                  road_travel_time = self.simulation.battery_g[self.location[0]][self.location[1]]["time"]
@@ -66,14 +64,14 @@ class Vehicle():
             if road_length == 0: # segment of length 0 could be moving through without charging or going to a sink
                 time_left = 0
             else:
-                time_left = road_travel_time - (road_travel_time * self.distance_along_segment/road_length)
+                time_left = road_travel_time*(1 - self.distance_along_segment/road_length)
 
             # determine if staying on same segment or moving to next
             if time_left > time_interval: # if km remaining > d, same segment, increment distance along
-                self.locations.append(self.location)
-                speed = road_length/road_travel_time #km or % / hr
+                speed = road_length/road_travel_time #km or % / hr # TODO: access speed and charging rate directly
                 self.distance_along_segment += time_interval * speed
                 time_interval = 0
+                break # step is over
             else: # move to next segment, update parameters
                 time_interval -= time_left 
                 if "_out" in self.location[1]: # if leaving a charging station, decrement number of vehicles charging at that station

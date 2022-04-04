@@ -64,6 +64,7 @@ def layer_graph(graph, increment= 25, km_per_percent = 1.15):
             if charging_rate != 0:
                 for dst_battery_layer in battery_layers[i:]:
                     dst_label = str(node) + "_" + str(dst_battery_layer) + "_out"
+                    battery_difference = int(dst_battery_layer) - int(src_battery_layer)
 
                     # Charging between 0 and 75% is at the charging rate, charging above 75% is at charging_rate/2
                     if src_battery_layer > 75:
@@ -76,9 +77,9 @@ def layer_graph(graph, increment= 25, km_per_percent = 1.15):
                     if src_battery_layer==dst_battery_layer:
                         output_graph.add_edge(src_label, dst_label, weight = 0, time = 0, length = 0)
                     else:
-                        output_graph.add_edge(src_label, dst_label, weight = charging_time, time = charging_time, length = charging_time) # _in to _out
+                        output_graph.add_edge(src_label, dst_label, weight = charging_time, time = charging_time, length = battery_difference) # _in to _out
                     output_graph.add_edge(dst_label, str(node), weight = 0, length = 0) # _out to sink
-            else:
+            else: # is a node without a charging station
                 dst_label = str(node) + "_" + str(src_battery_layer) + "_out"
                 output_graph.add_edge(src_label, dst_label, weight=0, length=0)
                 output_graph.add_edge(dst_label, str(node), weight=0, length=0)  # _out to sink

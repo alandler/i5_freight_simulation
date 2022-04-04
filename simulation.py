@@ -66,7 +66,7 @@ class Simulation():
             return
         self.src_dict[src] = src_distr
 
-    def random_srcs(self, flow_mean=75, flow_std=25):
+    def random_srcs(self, flow_mean=50, flow_std=20):
         for node in self.station_g.nodes:
             hour_factors = np.array([.1, .1, .1, .1, .2, .4, .5, .8, .9, 1, .9, .8,
                             .7, .6, .8, .8, .7, .6, .5, .4, .3, .2, .1, .1])
@@ -113,6 +113,7 @@ class Simulation():
         random_destinations = np.random.choice(dst_list, size = n, replace = True, p=destination_probabilities)
         return random_destinations
     
+    #################### Metrics ####################
     def calculate_metrics(self):
         self.metrics = {"station_utilization_disp_of_avg": self.get_station_utilization_disp_of_avg(),
         "station_utilization_avg_of_disp": self.get_station_utilization_avg_of_disp(),
@@ -131,7 +132,8 @@ class Simulation():
         physical_capacity = [i for _,i in sorted(zip(physical_capacity_dict.keys(),physical_capacity_dict.values()))]
         
         #get the average utilization rate of each station
-        utilization = [i / j for i, j in zip(cars_avg, physical_capacity)].sort()
+        utilization = [i / j for i, j in zip(cars_avg, physical_capacity)]
+        utilization.sort()
         
         #Get average usage of the top 20% most used and the lower 20% lest used.
         u_lower_20 = np.mean(utilization[:np.floor(len(utilization)*1/5)])
@@ -155,7 +157,8 @@ class Simulation():
         #get the dispersion (top20%-bottom20%) for each time step
         disp = []
         for time in range(0,len(cars_at_station)):
-            this_usage = [i / j for i, j in zip(cars_at_station[time], physical_capacity)].sort()
+            this_usage = [i / j for i, j in zip(cars_at_station[time], physical_capacity)]
+            this_usage.sort()
             u_lower_20 = np.mean(this_usage[:np.floor(len(this_usage)*1/5)])
             u_upper_20 = np.mean(this_usage[np.ceil(len(this_usage)*4/5):])
             disp.append(u_upper_20 - u_lower_20)
@@ -180,7 +183,7 @@ class Simulation():
         if len(src_dest_df)==0:
             print(src, dst, h_index)
         avg_speed = src_dest_df.iloc[0]["speed_"+str(h_index)] # Get speed at time-of-day = h_index (use "speed_"+h_index) 
-        time = src_dest_df.iloc[0]["Total_Kilometers"]/avg_speed # Convert to time
+        time = src_dest_df.iloc[0]["Total_Kilometers"]/avg_speed # Convert to time... d=rt t=d/r
 
         # update battery graph
         src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
@@ -202,7 +205,7 @@ class Simulation():
 
     def update_charging_times(self):
         for node in self.station_g.nodes:
-            additional_wait_time = len(self.battery_g.nodes[node]["queue"]) * random.gauss(100/self.station_g.nodes[node]["charging_rate"], .5)
+            additional_wait_time = len(self.battery_g.nodes[node]["queue"]) * random.gauss(75/self.station_g.nodes[node]["charging_rate"], .5)
             self.add_charger_wait_time(node, additional_wait_time)
         
     def add_charger_wait_time(self, station, time):
@@ -237,17 +240,17 @@ class Simulation():
     def run(self):
         ''' Run the simulation; return the statistics '''
         for h_step in tqdm(range(self.simulation_length)): # go for simulation_length in hours
+            self.update_hourly_road_time(h_step)
             for i_step in range(int(1/self.time_interval)): # go in interval segments
                 self.step(h_step,i_step)
                 self.simulation_index += 1
                 self.record_data()
-                self.update_hourly_road_time(h_step)
                 self.update_charging_times()
-
             self.simulation_hour_index += 1
 
             # for each src dst pair 
-        self.calculate_metrics()
+        # self.calculate_metrics()
+        self.save_simulation()
         return self.metrics
 
     def save_simulation(self):
@@ -270,7 +273,7 @@ class Simulation():
 
         electricity_use = 0
         num_cars_at_station = [node_car_total[key] for key in sorted(node_car_total.keys())]
-        num_vehicles_total = sum(num_cars_at_station)
+        num_vehicles_total = len([v for v in self.vehicle_list if v.travel_time == 0])
 
         for node in node_car_total:
             electricity_use += min(node_car_total[node],self.stations_df.set_index("OID_").loc[int(node)]["physical_capacity"])*150
@@ -282,11 +285,10 @@ class Simulation():
 
 if __name__ == "__main__":
     stations_df, distances_df = select_dataset("wcctci")
-    stations_df.head(1)
-    simulation_length = 24
+    simulation_length = 2
     battery_interval = 20
     km_per_percent = 10
     sim = Simulation("wcctci", simulation_length, battery_interval, km_per_percent)
-    sim.random_srcs()
+    sim.random_srcs(25,1)
     sim.random_dsts()
     metrics = sim.run()
