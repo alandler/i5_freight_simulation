@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 import networkx as nx
 import numpy as np
 import random
@@ -83,7 +84,6 @@ class Simulation():
                 score = np.random.normal(5,2,1)[0]
             self.add_dst(node, score)
             
-
     #################### Observers ####################
     def get_simulation_hour_of_day(self):
         '''Returns the hour [0-24] of the time of day at the current simulation index'''
@@ -186,12 +186,15 @@ class Simulation():
         time = src_dest_df.iloc[0]["Total_Kilometers"]/avg_speed # Convert to time... d=rt t=d/r
 
         # update battery graph
+        # with open("test.txt", "a") as myfile:
         src_labels = [src+"_"+str(layer)+"_"+"out" for layer in self.battery_layers]
         for src_label in src_labels:
-            for dst_label in self.battery_g.neighbors(src_label): # get all outgoing edges
-                if "_in" in dst_label: # exclude sinks
+            for dst_label in [str(dst) + "_" + str(battery_layer)+ "_in" for battery_layer in self.battery_layers]:
+                try:
+                    # myfile.write(src_label + "," + dst_label + "," + str(time) + "," +  str(self.station_g[src][dst]['weight']) + "\n")
                     self.battery_g[src_label][dst_label]['weight'] = time
-                    self.battery_g[src_label][dst_label]['time'] = time
+                except:
+                    continue
         
         # store in station graph just in case
         self.station_g[src][dst]['weight'] = time
@@ -285,10 +288,10 @@ class Simulation():
 
 if __name__ == "__main__":
     stations_df, distances_df = select_dataset("wcctci")
-    simulation_length = 2
+    simulation_length = 24
     battery_interval = 20
-    km_per_percent = 10
+    km_per_percent = 15
     sim = Simulation("wcctci", simulation_length, battery_interval, km_per_percent)
-    sim.random_srcs(25,1)
+    sim.random_srcs(50,10)
     sim.random_dsts()
     metrics = sim.run()

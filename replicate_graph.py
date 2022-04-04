@@ -49,7 +49,7 @@ def layer_graph(graph, increment= 25, km_per_percent = 1.15):
                 # battery_cost = road_len/km_per_percent
                 battery_layer = find_nearest_increment(src_battery-battery_cost, increment)
                 dst_label = str(dst) + "_" + str(battery_layer)+ "_in" # dst node is _in
-                output_graph.add_edge(src_label, dst_label, weight = road_weight, length = road_len) # _out to _in
+                output_graph.add_edge(src_label, dst_label, weight = road_weight, length = road_len, time = road_weight) # _out to _in
         
 
     # Charging: iterate over nodes and connect _in to _out for all positive battery levels, and _out to sinks

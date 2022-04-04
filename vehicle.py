@@ -21,14 +21,20 @@ class Vehicle():
         self.distance_along_segment = 0 # km or battery % travelled so far
         self.travel_time = 0 # total time in transit btw origin and destination
         self.travel_delay = 0 # delay from traveling in an EV
+
+        self.finished = False
     
     def step(self):
         '''Increment the location tracking'''
+
+        if self.finished == True: # previously reached destination
+            return
 
         time_interval = self.simulation.time_interval # start out with entire interval to travel
         while time_interval>0:
             # If the vehicle has reached its destination store travel time and travel delay
             if self.dst == self.location[1]:
+                self.finished = True
                 end_index = self.simulation.simulation_index # end simulation index
                 travel_length = end_index - self.start_time # length of travel in iteration units
                 self.travel_time = self.simulation.time_interval*travel_length # calculate and store total travel time
