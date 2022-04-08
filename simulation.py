@@ -130,14 +130,14 @@ class Simulation():
         #get the capacity of each station (sorted by station, just in case)
         physical_capacity_dict = nx.get_node_attributes(self.station_g,'physical_capacity')
         physical_capacity = [i for _,i in sorted(zip(physical_capacity_dict.keys(),physical_capacity_dict.values()))]
-        
+
         #get the average utilization rate of each station
         utilization = [i / j for i, j in zip(cars_avg, physical_capacity)]
         utilization.sort()
-        
-        #Get average usage of the top 20% most used and the lower 20% lest used.
-        u_lower_20 = np.mean(utilization[:np.floor(len(utilization)*1/5)])
-        u_upper_20 = np.mean(utilization[np.ceil(len(utilization)*4/5):])
+
+        #Get average usage of the top 20% most used and the lower 20% least used.
+        u_lower_20 = np.mean(utilization[:int(np.floor(len(utilization)*1/5))])
+        u_upper_20 = np.mean(utilization[int(np.ceil(len(utilization)*4/5)):])
         
         #return dispersion of average use
         return u_upper_20 - u_lower_20
@@ -159,8 +159,8 @@ class Simulation():
         for time in range(0,len(cars_at_station)):
             this_usage = [i / j for i, j in zip(cars_at_station[time], physical_capacity)]
             this_usage.sort()
-            u_lower_20 = np.mean(this_usage[:np.floor(len(this_usage)*1/5)])
-            u_upper_20 = np.mean(this_usage[np.ceil(len(this_usage)*4/5):])
+            u_lower_20 = np.mean(this_usage[:int(np.floor(len(this_usage)*1/5))])
+            u_upper_20 = np.mean(this_usage[int(np.ceil(len(this_usage)*4/5)):])
             disp.append(u_upper_20 - u_lower_20)
             
         #return the average of those dispersions
@@ -252,8 +252,8 @@ class Simulation():
             self.simulation_hour_index += 1
 
             # for each src dst pair 
-        # self.calculate_metrics()
-        self.save_simulation()
+        self.calculate_metrics()
+        # self.save_simulation()
         return self.metrics
 
     def save_simulation(self):
@@ -288,7 +288,7 @@ class Simulation():
 
 if __name__ == "__main__":
     stations_df, distances_df = select_dataset("wcctci")
-    simulation_length = 24
+    simulation_length = 12
     battery_interval = 20
     km_per_percent = 3.13
     sim = Simulation("wcctci", simulation_length, battery_interval, km_per_percent)
