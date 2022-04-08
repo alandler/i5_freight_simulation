@@ -96,4 +96,27 @@ def single_route_simulation(G, source, destination, num_batches, average_demand)
     #                 self.battery_G[src_label][dst_label]['weight'] = self.station_G[src][dst]['time'] + time
     #     return self.battery_G
 
-    
+def get_location_breakdown(locations):
+    road = 0
+    queue = 0
+    for location in locations:
+        if "in" in location[0] and "out" in location[1]:
+            queue+=1
+        if "out" in location[0] and "in" in location[1]:
+            road+=1
+    return (road, queue)
+
+percent_time_in_queues = []
+raw_time_in_queues = []
+for v in res.vehicle_list:
+    if v.locations != []:
+        road, queue = get_location_breakdown(v.locations)
+        percent_queue = queue/(road+queue)
+        raw_time_in_queues.append(queue)
+    else:
+        percent_queue = None
+    percent_time_in_queues.append(percent_queue)
+percent_time_in_queues = np.array(percent_time_in_queues)
+percent_time_in_queues = percent_time_in_queues[percent_time_in_queues != np.array(None)]
+percent_time_in_queues.mean()
+np.array(raw_time_in_queues).mean()/5

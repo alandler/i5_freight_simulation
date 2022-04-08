@@ -15,7 +15,7 @@ from vehicle import Vehicle
 class Simulation():
     '''Create a class for a simulation'''
     
-    #### Init/Graph Mutation #### 
+    #################### Initialization #################### 
     def __init__(self, dataset, simulation_length = 24, battery_interval = 25, km_per_percent = 1.15):
 
         # electricity_data
@@ -117,7 +117,13 @@ class Simulation():
     def calculate_metrics(self):
         self.metrics = {"station_utilization_disp_of_avg": self.get_station_utilization_disp_of_avg(),
         "station_utilization_avg_of_disp": self.get_station_utilization_avg_of_disp(),
-        "electricity": self.get_electricity_metric()}
+        "electricity": self.get_electricity_metric(),
+        "percent_delay": self.get_percent_delay(),
+        "hours_spent_in_queues": self.get_hours_spent_in_queues(),
+        "hours_spent_charging": self.get_hours_spent_charging()}
+
+    def helper_min_med_max_avg_std(self, np_array):
+        return (np.min(np_array), np.median(np_array), np.max(np_array), np.mean(np_array), np.std(np_array))
 
     def get_station_utilization_disp_of_avg(self):
         ''' Uses average cars in each station at each timestep to produce utilization metric
@@ -173,6 +179,36 @@ class Simulation():
         total_electricity = self.data["total_kw"] + self.state_electricity_limits['CA']
         #see if the electricity is above 1.2 * peak of regular demand (without the trucks)
         return np.size(np.where(np.array(total_electricity) >= max(self.state_electricity_limits['CA'])*1.2))
+
+    def get_percent_delay(self):
+        '''TODO: This could be much more efficient with np'''
+        baselines = []
+        delays = []
+        for v in self.vehicle_list:
+            if v.travel_time == 0: # exclude cars that haven't finished
+                continue
+            elif v.travel_delay < 0: # coerce negative delays to 0 
+                delays.append(0)
+                baselines.append(v.baseline_time)
+            else: # add remaining real delays
+                delays.append(v.travel_delay)
+                baselines.append(v.baseline_time)
+        percent_delays = (np.array(baselines)+np.array(delays))/np.array(baselines)
+        return self.helper_min_med_max_avg_std(percent_delays)
+    
+    def get_hours_spent_in_queues(self):
+        ''' Get average hours spent in any queue over all cars over all timesteps '''
+        np_queue_times = np.array([v.queue_time/5 for v in self.vehicle_list if v.travel_time != 0])
+        return self.helper_min_med_max_avg_std(np_queue_times)
+    
+    def get_hours_spent_charging(self):
+        ''' Get average hours spent charging'''
+        charging_times = []
+        for v in self.vehicle_list:
+            if v.travel_time != 0:
+                charging_times.append(len([l for l in v.locations if "in" in l[0] and "out" in l[1]]) - v.queue_time)
+        np_charging_times = np.array(charging_times)
+        return self.helper_min_med_max_avg_std(np_charging_times)
 
     #################### Augmentation Mutators ####################
 
