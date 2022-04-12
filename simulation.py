@@ -120,11 +120,32 @@ class Simulation():
         "electricity": self.get_electricity_metric(),
         "percent_delay": self.get_percent_delay(),
         "hours_spent_in_queues": self.get_hours_spent_in_queues(),
-        "hours_spent_charging": self.get_hours_spent_charging()}
+        "hours_spent_charging": self.get_hours_spent_charging(),
+        "station_utilization": self.get_station_utilization()}
 
     def helper_min_med_max_avg_std(self, np_array):
         return (np.min(np_array), np.median(np_array), np.max(np_array), np.mean(np_array), np.std(np_array))
 
+    
+    def get_station_utilization(self):
+        ''' Uses average cars in each station at each timestep to produce utilization metric
+        - uses average cars in each station (over all timesteps).
+        - takes difference in average utilization of the top 20% and lower 20% stations'''
+        
+        #get the average # of cars at each station
+        cars_avg = np.average(np.array(self.data["num_cars_at_station"]), axis=0)
+        
+        #get the capacity of each station (sorted by station, just in case)
+        physical_capacity_dict = nx.get_node_attributes(self.station_g,'physical_capacity')
+        physical_capacity = [i for _,i in sorted(zip(physical_capacity_dict.keys(),physical_capacity_dict.values()))]
+
+        #get the average utilization rate of each station
+        utilization = [i / j for i, j in zip(cars_avg, physical_capacity)]
+        
+        #save for average utilization rate data
+        return utilization
+        
+       
     def get_station_utilization_disp_of_avg(self):
         ''' Uses average cars in each station at each timestep to produce utilization metric
         - uses average cars in each station (over all timesteps).
@@ -139,14 +160,17 @@ class Simulation():
 
         #get the average utilization rate of each station
         utilization = [i / j for i, j in zip(cars_avg, physical_capacity)]
+        
+        #sort so that we can get the top and bottom 
         utilization.sort()
-
+        
         #Get average usage of the top 20% most used and the lower 20% least used.
         u_lower_20 = np.mean(utilization[:int(np.floor(len(utilization)*1/5))])
         u_upper_20 = np.mean(utilization[int(np.ceil(len(utilization)*4/5)):])
         
         #return dispersion of average use
         return u_upper_20 - u_lower_20
+    
         
     def get_station_utilization_avg_of_disp(self):
         ''' Uses average cars in each station at each timestep to produce utilization metric
