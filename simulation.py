@@ -313,17 +313,17 @@ class Simulation():
 
             # for each src dst pair 
         self.calculate_metrics()
-        # self.save_simulation()
+        self.save_simulation()
         return self.metrics
 
     def save_simulation(self):
         ''' Saves the simulation object as a pickle file.
-        The nomenclature is the dataset plus the current datetime'''
+        The nomenclature is the name plus the current datetime'''
         def save_object(obj, filename):
             with open(filename, 'wb') as outp:  # Overwrites any existing file.
                 pickle.dump(obj, outp, pickle.HIGHEST_PROTOCOL)
         
-        file = self.dataset + "_" + datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
+        file = self.name + "_" + datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
         save_object(self, file + ".pkl")
 
     def record_data(self):
