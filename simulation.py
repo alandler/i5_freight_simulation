@@ -16,7 +16,7 @@ class Simulation():
     '''Create a class for a simulation'''
     
     #################### Initialization #################### 
-    def __init__(self, dataset, simulation_length = 24, battery_interval = 25, km_per_percent = 1.15):
+    def __init__(self, name, stations_csv_path, distances_csv_path, simulation_length = 24, battery_interval = 25, km_per_percent = 1.15):
 
         # electricity_data
         # TODO: currently simulation sums over full grid, rather than per state
@@ -25,8 +25,8 @@ class Simulation():
         self.state_electricity_limits = {"CA": ingest_electricity_data()[1]}
         
         # data
-        self.dataset = dataset
-        self.stations_df, self.distances_df = select_dataset(dataset)
+        self.name = name
+        self.stations_df, self.distances_df = select_dataset(stations_csv_path, distances_csv_path)
 
         # graphs
         self.station_g = get_station_g(stations_df, distances_df)
@@ -351,7 +351,8 @@ if __name__ == "__main__":
     simulation_length = 12
     battery_interval = 20
     km_per_percent = 3.13
-    sim = Simulation("wcctci", simulation_length, battery_interval, km_per_percent)
+    #TODO: redo paths
+    sim = Simulation("wcctci", PATH, PATH, simulation_length, battery_interval, km_per_percent)
     sim.random_srcs(55,12)
     sim.random_dsts()
     metrics = sim.run()

@@ -9,19 +9,9 @@ from tqdm import tqdm
 # TODO: use this data
 elec_df = pd.read_csv("data_test/Demand_for_California_(region)_hourly_-_UTC_time.csv", skiprows=5, names=["time", "MWH"])
 
-def select_dataset(dataset):
-    datasets = {
-        "test": ["stations.csv", "distances.csv"],
-        "wcctci": ["wcctci_stations-updated.csv", "wcctci_coord_distances.csv"],
-        "wcctci+parking": [],
-        "parking": ["stations.csv", "distances.csv"],
-    }
-    directory = "data/"
-    if dataset == "test":
-        directory = "data_test/"
-
-    stations_df = pd.read_csv(directory + datasets[dataset][0])
-    distances_df = pd.read_csv(directory + datasets[dataset][1])
+def select_dataset(stations_csv_path, distances_csv_path):
+    stations_df = pd.read_csv(stations_csv_path)
+    distances_df = pd.read_csv(distances_csv_path)
     distances_df = distances_df[distances_df["Total_TravelTime"]!=0]
     return stations_df, distances_df
 
