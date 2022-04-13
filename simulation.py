@@ -30,8 +30,9 @@ class Simulation():
         self.stations_df, self.distances_df = select_dataset(stations_csv_path, distances_csv_path)
 
         # graphs
-        self.station_g = get_station_g(stations_df, distances_df)
+        self.station_g = get_station_g(self.stations_df, self.distances_df)
         self.battery_g = layer_graph(self.station_g, battery_interval, km_per_percent)
+        self.station_demand_g = self.station_g.copy()
 
         # intervals
         self.time_interval = .2 # hours
@@ -91,6 +92,7 @@ class Simulation():
         # Add the nodes to the graph, and add as sources/dsts
         for index, row in demand_df.iterrows():
             self.battery_g.add_node(str(row["Name"]), pos = (row["longitude"], row["latitude"]), demand=True)
+            self.station_demand_g.add_node(str(row["Name"]), pos = (row["longitude"], row["latitude"]), demand=True)
             self.add_src(str(row["Name"]), row[-24:].to_numpy())
             self.add_dst(str(row["Name"]), row["dst_score"])
         
@@ -100,8 +102,11 @@ class Simulation():
             degree_limit = km_limit*0.009009009
             stations_coords = stations_df[['longitude', 'latitude']].to_numpy()
             stations_df["euclidean_distance"] = np.sqrt((stations_coords[:,0] - coord[0])**2 + (stations_coords[:,1] - coord[1])**2)
-            nearby_stations = list(stations_df[stations_df["euclidean_distance"]<=degree_limit]["OID_"])
-            nearby_stations_distances = list(stations_df[stations_df["euclidean_distance"]<=degree_limit]["euclidean_distance"])
+            nearby_stations = []
+            while len(nearby_stations) == 0:
+                nearby_stations = list(stations_df[stations_df["euclidean_distance"]<=degree_limit]["OID_"])
+                nearby_stations_distances = list(stations_df[stations_df["euclidean_distance"]<=degree_limit]["euclidean_distance"])
+                degree_limit += 10*0.009009009 # increase radius by 10km until the graph is connected
             return (nearby_stations, nearby_stations_distances)
         
         # Add edges from the demand nodes to the src/sink nodes
@@ -109,11 +114,15 @@ class Simulation():
         coords = list(zip(demand_df['longitude'], demand_df['latitude']))
         for index, row in demand_df.iterrows():
             # get stations that should connect to a demand node
-            nearby_stations, nearby_stations_distances = get_stations_within_euclidean(coords[index], stations_df)
+            nearby_stations, nearby_stations_distances = get_stations_within_euclidean(coords[index], self.stations_df)
             # connect to the source/sink nodes in battery_g (TODO: is it necessary to add to station_g?)
             for i, station in enumerate(nearby_stations):
-                travel_time = nearby_stations_distances[i]/100 # assume 100 km/h
-                self.battery_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = nearby_stations_distances[i], battery_cost = (nearby_stations_distances[i]*1.9/battery_capacity*100)) 
+                km_distance = nearby_stations_distances[i]*111
+                travel_time = km_distance/100 # assume 100 km/h
+                self.battery_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
+                self.battery_g.add_edge(str(station), row["Name"], weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
+                self.station_demand_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
+                self.station_demand_g.add_edge(str(station), row["Name"], weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
 
             
     #################### Observers ####################
@@ -379,14 +388,11 @@ class Simulation():
         self.data["total_kw"].append(electricity_use)
 
 if __name__ == "__main__":
-    stations_df, distances_df = select_dataset("wcctci")
     simulation_length = 12
     battery_interval = 20
     km_per_percent = 3.13
-    #TODO: redo paths
-    stations_path = "data/stations_updated.csv"
-    distances_path = "data/distances_csv"
+    stations_path = "data/wcctci_stations-updated.csv"
+    distances_path = "data/wcctci_coord_distances.csv"
     sim = Simulation("wcctci", stations_path, distances_path, simulation_length, battery_interval, km_per_percent)
-    sim.random_srcs(55,12)
-    sim.random_dsts()
+    sim.add_demand_nodes()
     metrics = sim.run()

@@ -106,7 +106,7 @@ class Vehicle():
     def get_baseline_travel_time(self):
         ''' Calculate the travel time a vehicle would experience if not an electric vehicle '''
         # Use graph without charging layers
-        G = self.simulation.station_g
+        G = self.simulation.station_demand_g
 
         # Return shortest path length
         return nx.shortest_path_length(G, self.src, self.dst, weight="weight")
