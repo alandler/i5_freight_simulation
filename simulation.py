@@ -2,6 +2,7 @@ from multiprocessing.sharedctypes import Value
 import networkx as nx
 import numpy as np
 import random
+import pandas as pd
 
 from tqdm import tqdm
 from datetime import datetime
@@ -83,6 +84,37 @@ class Simulation():
             while score < 0 or score > 10:
                 score = np.random.normal(5,2,1)[0]
             self.add_dst(node, score)
+
+    def add_demand_nodes(self, demand_csv_path="data/demand_nodes.csv"):
+        demand_df = pd.read_csv(demand_csv_path)
+
+        # Add the nodes to the graph, and add as sources/dsts
+        for index, row in demand_df.iterrows():
+            self.battery_g.add_node(str(row["Name"]), pos = (row["longitude"], row["latitude"]), demand=True)
+            self.add_src(str(row["Name"]), row[-24:].to_numpy())
+            self.add_dst(str(row["Name"]), row["dst_score"])
+        
+        # Helper function to connect demand nodes to stations
+        def get_stations_within_euclidean(coord, stations_df, km_limit = 50):
+            '''Returns a list of OID_'s of stations within km_limit of the given coordinate '''
+            degree_limit = km_limit*0.009009009
+            stations_coords = stations_df[['longitude', 'latitude']].to_numpy()
+            stations_df["euclidean_distance"] = np.sqrt((stations_coords[:,0] - coord[0])**2 + (stations_coords[:,1] - coord[1])**2)
+            nearby_stations = list(stations_df[stations_df["euclidean_distance"]<=degree_limit]["OID_"])
+            nearby_stations_distances = list(stations_df[stations_df["euclidean_distance"]<=degree_limit]["euclidean_distance"])
+            return (nearby_stations, nearby_stations_distances)
+        
+        # Add edges from the demand nodes to the src/sink nodes
+        battery_capacity = 215 # TODO: this does not update; parameterize
+        coords = list(zip(demand_df['longitude'], demand_df['latitude']))
+        for index, row in demand_df.iterrows():
+            # get stations that should connect to a demand node
+            nearby_stations, nearby_stations_distances = get_stations_within_euclidean(coords[index], stations_df)
+            # connect to the source/sink nodes in battery_g (TODO: is it necessary to add to station_g?)
+            for i, station in enumerate(nearby_stations):
+                travel_time = nearby_stations_distances[i]/100 # assume 100 km/h
+                self.battery_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = nearby_stations_distances[i], battery_cost = (nearby_stations_distances[i]*1.9/battery_capacity*100)) 
+
             
     #################### Observers ####################
     def get_simulation_hour_of_day(self):
@@ -352,7 +384,9 @@ if __name__ == "__main__":
     battery_interval = 20
     km_per_percent = 3.13
     #TODO: redo paths
-    sim = Simulation("wcctci", PATH, PATH, simulation_length, battery_interval, km_per_percent)
+    stations_path = "data/stations_updated.csv"
+    distances_path = "data/distances_csv"
+    sim = Simulation("wcctci", stations_path, distances_path, simulation_length, battery_interval, km_per_percent)
     sim.random_srcs(55,12)
     sim.random_dsts()
     metrics = sim.run()

@@ -2,7 +2,6 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import random
-import sys
 from scipy import spatial
 from tqdm import tqdm
 
@@ -125,6 +124,139 @@ def ingest_electricity_data():
     winter_mwh = list(elec_df_2021.groupby([elec_df_2021['local_time'].dt.month, elec_df_2021['local_time'].dt.hour]).mean().loc[1]["MWH"])
     summer_mwh = list(elec_df_2021.groupby([elec_df_2021['local_time'].dt.month, elec_df_2021['local_time'].dt.hour]).mean().loc[8]["MWH"])
     return (winter_mwh, summer_mwh)
+
+def ingest_pems():
+    ''' Obtains preliminary PEMS dataframe, combined with latitudes and longitudes frmo stations'''
+    def nearest_speed(x):
+        lon = x["longitude"]
+        lat = x["latitude"]
+        d_lon = x["longitude_dst"]
+        d_lat = x["latitude_dst"]
+        src_res = tree.query([(lat,lon)])
+        dst_res = tree.query([(d_lat,d_lon)])
+        src_speed = df_h.iloc[src_res[1][0]]["avg_speed"]
+        dst_speed = df_h.iloc[dst_res[1][0]]["avg_speed"]
+        return (src_speed+dst_speed)/2
+
+    stations_df = pd.read_csv("data/wcctci_stations-updated.csv")
+    distances_df = pd.read_csv("data/wcctci_distances.csv")
+
+    columns = ['time', 'station', 'district', 'route', 'direction_of_travel', 
+           'lane_type', 'station_length', 'samples', 'percent_observed', 
+           'total_flow', 'avg_occupancy', 'avg_speed', 'delay_35', 'delay_40', 
+           'delay_45', 'delay_50', 'delay_55', 'delay_60']
+    meta_csvs = {'3': 'd03_text_meta_2022_03_05.txt',
+    '4':'d04_text_meta_2022_03_25.txt',
+    '5':'d05_text_meta_2021_03_26.txt',
+    '6':'d06_text_meta_2022_03_08.txt',
+    '7':'d07_text_meta_2022_03_12.txt',
+    '8':'d08_text_meta_2022_03_25.txt',
+    '10':'d10_text_meta_2022_02_24.txt',
+    '11':'d11_text_meta_2022_03_16.txt',
+    '12':'d12_text_meta_2021_05_18.txt'}
+
+    df = pd.DataFrame()
+
+    for i in ['3', '4', '5', '6', '7', '8', '10', '11', '12']:
+        num = i
+        if int(i) < 10:
+            num = "0" + i
+        speed_df = speed_df = pd.read_csv("pems_ingest/station_data/d"+num+"_text_station_hour_2022_02.txt", sep = ',', header = None)
+        speed_df = speed_df.iloc[: , :len(columns)]
+        speed_df = speed_df.rename(columns = {i:columns[i] for i in range(len(columns))})
+        speed_df["time"] = pd.to_datetime(speed_df['time'])
+        speed_df["hour"] = speed_df["time"].dt.hour
+        meta_df = pd.read_csv("pems_ingest/station_data/" + meta_csvs[i], sep = "\t")
+        meta_df = meta_df[["ID", "Latitude", "Longitude"]]
+        meta_df = meta_df.set_index("ID")
+        speed_df = speed_df.join(meta_df, on = "station")
+        df = pd.concat([df, speed_df])
+    df = df.dropna(axis="index", how="any", subset=["Latitude", "Longitude"])
+
+    coord_distances_df = distances_df.join(stations_df.set_index("OID_")[["longitude", "latitude"]], on= "OriginID", rsuffix="_origin")
+    coord_distances_df = coord_distances_df.join(stations_df.set_index("OID_")[["longitude", "latitude"]], on= "DestinationID", rsuffix="_dst")
+
+    for h in tqdm(range(24)):
+        df_h = df[df["hour"]==h]
+        df_h = df_h.groupby(by=['station']).mean()
+        df_h = df_h.dropna(axis="index", how="any", subset=["avg_speed", "Latitude", "Longitude"])
+        coords = df_h[["Latitude", "Longitude"]].to_numpy()
+        tree = spatial.KDTree(coords)
+        coord_distances_df["speed_" + str(h)] = coord_distances_df.apply(nearest_speed, 1)
+    
+    coord_distances_df.to_csv("wcctci_coord_distances.csv")
+
+    return (df , coord_distances_df)
+
+def save_hourly_pems(df):
+    for h in tqdm(range(24)):
+        df_h = df[df["hour"]==h]
+        df_h_str = df_h.groupby(by=['station']).agg({'direction_of_travel': 'first', 'lane_type': 'first'})
+        df_h = df_h.groupby(by=['station']).mean()
+        df_h = df_h.join(df_h_str)
+        df_h = df_h.dropna(axis="index", how="any", subset=["avg_speed", "total_flow", "Latitude", "Longitude"])
+        df_h.to_csv("pems_hourly/pems_" + str(h) + ".csv")
+
+def pems_demand_scores():
+    # Get normalization of flows for destination demand scoring
+    for h in tqdm(range(24)):
+        df_h = pd.read_csv("pems_hourly/pems_" + str(h) + ".csv")
+        df_h["total_flow_normalization"]=(df_h["total_flow"]-df_h["total_flow"].min())/(df_h["total_flow"].max()-df_h["total_flow"].min())
+        df_h["dst_score"] = df_h["total_flow_normalization"]*10
+        df_h.to_csv("pems_hourly/pems_" + str(h) + ".csv")
+    
+    # average the scores per station over all hours
+    df_scores = pd.DataFrame()
+    for h in tqdm(range(24)):
+        df_h = pd.read_csv("pems_hourly/pems_" + str(h) + ".csv")
+        df_h_subset = df_h[["station", "dst_score"]].set_index("station")
+        df_scores = df_scores.join(df_h_subset, how="outer", rsuffix="_"+str(h))
+    df_avg_scores = df_scores.mean(1).rename("scores").to_frame()
+    df_avg_scores = df_avg_scores.join(df_h.set_index("station")[["Latitude", "Longitude"]])
+    df_avg_scores.to_csv("pems_demand/station_scores.csv")
+
+    # average the scores per station over all hours (update scores to normalize only i5 flows)
+    df_scores = pd.DataFrame()
+    for h in tqdm(range(24)):
+        df_h = pd.read_csv("pems_hourly/pems_" + str(h) + ".csv")
+        df_h = df_h[df_h["route"]==5]
+        df_h["total_flow_normalization"]=(df_h["total_flow"]-df_h["total_flow"].min())/(df_h["total_flow"].max()-df_h["total_flow"].min())
+        df_h["dst_score"] = df_h["total_flow_normalization"]*10
+        df_h_subset = df_h[["station", "dst_score"]].set_index("station")
+        df_scores = df_scores.join(df_h_subset, how="outer", rsuffix="_"+str(h))
+    df_avg_scores = df_scores.mean(1).rename("dst_score").to_frame()
+    df_avg_scores = df_avg_scores.join(df_h.set_index("station")[["total_flow", "Latitude", "Longitude"]])
+    df_avg_scores.to_csv("pems_demand/station_scores_i5_only.csv")
+
+def final_station_scores_and_flows(score_or_flow="score"):
+    df_i5_avg_scores = pd.read_csv("pems_demand/station_scores_i5_only.csv")
+    coords = df_i5_avg_scores[["Latitude", "Longitude"]].to_numpy()
+    tree = spatial.KDTree(coords)
+
+    def agg_dst_score(x):
+        lon = x["longitude"]
+        lat = x["latitude"]
+        src_res = tree.query([(lat,lon)], 2)
+        closest = df_i5_avg_scores.iloc[src_res[1][0][0]]["dst_score"]
+        next_closest = df_i5_avg_scores.iloc[src_res[1][0][1]]["dst_score"]
+        return (closest+next_closest)/2
+
+    def agg_flow(x):
+        lon = x["longitude"]
+        lat = x["latitude"]
+        src_res = tree.query([(lat,lon)], 2)
+        closest = df_i5_avg_scores.iloc[src_res[1][0][0]]["total_flow"]
+        next_closest = df_i5_avg_scores.iloc[src_res[1][0][1]]["total_flow"]
+        return (closest+next_closest)/2
+
+    stations_df = pd.read_csv("data/wcctci_stations-updated.csv")
+    
+    if score_or_flow == "score":
+        stations_df["dst_score"] = stations_df.apply(agg_dst_score, 1)
+        stations_df.to_csv("data/stations_with_scores.csv")
+    else:
+        stations_df["dst_score"] = stations_df.apply(agg_flow, 1)
+        stations_df.to_csv("data/stations_with_flows.csv")
 
 if __name__ == '__main__':
     select_dataset("wcctci")
