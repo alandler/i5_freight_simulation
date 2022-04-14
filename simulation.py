@@ -388,11 +388,11 @@ class Simulation():
         self.data["total_kw"].append(electricity_use)
 
 if __name__ == "__main__":
-    simulation_length = 12
+    simulation_length = 24
     battery_interval = 20
     km_per_percent = 3.13
     stations_path = "data/wcctci_stations-updated.csv"
     distances_path = "data/wcctci_coord_distances.csv"
-    sim = Simulation("wcctci", stations_path, distances_path, simulation_length, battery_interval, km_per_percent)
+    sim = Simulation("wcctci_updated_paths", stations_path, distances_path, simulation_length, battery_interval, km_per_percent)
     sim.add_demand_nodes()
     metrics = sim.run()

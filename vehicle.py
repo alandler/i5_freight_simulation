@@ -6,7 +6,7 @@ class Vehicle():
     def __init__(self, simulation, src, dst, start_time = 0):
 
         # initialized
-        self.start_time = start_time # TODO: extend 0-24 range
+        self.start_time = start_time # misnomer: is actually start_index
         self.src = src
         self.dst = dst
         self.simulation = simulation
@@ -15,7 +15,7 @@ class Vehicle():
         self.path = self.get_shortest_path()
         self.baseline_time = self.get_baseline_travel_time()
 
-        self.locations = []
+        self.locations = [(self.path[0],self.path[1])]
         self.path_i = 0
         self.location = (self.path[0],self.path[1]) # (src, dst)
         self.distance_along_segment = 0 # km or battery % travelled so far
@@ -41,6 +41,7 @@ class Vehicle():
                 travel_length = end_index - self.start_time # length of travel in iteration units
                 self.travel_time = self.simulation.time_interval*travel_length # calculate and store total travel time
                 self.travel_delay = self.travel_time - self.baseline_time # calculate and store travel delay experienced by the vehicle
+                self.locations.append(self.location)
                 return
 
             # If entering a charging node (and not just passing through), add the car to the queue
