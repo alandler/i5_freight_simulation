@@ -1,0 +1,6 @@
+Meta:
+simulation_length = 24
+battery_interval = 20
+km_per_percent = 3.13
+stations_path = "data/wcctci_stations-updated.csv"
+distances_path = "data/wcctci_coord_distances.csv"
