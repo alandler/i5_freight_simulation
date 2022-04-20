@@ -125,7 +125,7 @@ def ingest_electricity_data():
     summer_mwh = list(elec_df_2021.groupby([elec_df_2021['local_time'].dt.month, elec_df_2021['local_time'].dt.hour]).mean().loc[8]["MWH"])
     return (winter_mwh, summer_mwh)
 
-def ingest_pems():
+def ingest_pems(stations_csv_path, distances_csv_path):
     ''' Obtains preliminary PEMS dataframe, combined with latitudes and longitudes frmo stations'''
     def nearest_speed(x):
         lon = x["longitude"]
@@ -138,8 +138,8 @@ def ingest_pems():
         dst_speed = df_h.iloc[dst_res[1][0]]["avg_speed"]
         return (src_speed+dst_speed)/2
 
-    stations_df = pd.read_csv("data/wcctci_stations-updated.csv")
-    distances_df = pd.read_csv("data/wcctci_distances.csv")
+    stations_df = pd.read_csv(stations_csv_path)
+    distances_df = pd.read_csv(distances_csv_path)
 
     columns = ['time', 'station', 'district', 'route', 'direction_of_travel', 
            'lane_type', 'station_length', 'samples', 'percent_observed', 
@@ -161,12 +161,12 @@ def ingest_pems():
         num = i
         if int(i) < 10:
             num = "0" + i
-        speed_df = speed_df = pd.read_csv("pems_ingest/station_data/d"+num+"_text_station_hour_2022_02.txt", sep = ',', header = None)
+        speed_df = speed_df = pd.read_csv("data/pems_managed/pems_ingest/station_data/d"+num+"_text_station_hour_2022_02.txt", sep = ',', header = None)
         speed_df = speed_df.iloc[: , :len(columns)]
         speed_df = speed_df.rename(columns = {i:columns[i] for i in range(len(columns))})
         speed_df["time"] = pd.to_datetime(speed_df['time'])
         speed_df["hour"] = speed_df["time"].dt.hour
-        meta_df = pd.read_csv("pems_ingest/station_data/" + meta_csvs[i], sep = "\t")
+        meta_df = pd.read_csv("data/pems_managed/pems_ingest/station_data/" + meta_csvs[i], sep = "\t")
         meta_df = meta_df[["ID", "Latitude", "Longitude"]]
         meta_df = meta_df.set_index("ID")
         speed_df = speed_df.join(meta_df, on = "station")
@@ -184,7 +184,7 @@ def ingest_pems():
         tree = spatial.KDTree(coords)
         coord_distances_df["speed_" + str(h)] = coord_distances_df.apply(nearest_speed, 1)
     
-    coord_distances_df.to_csv("wcctci_coord_distances.csv")
+    #coord_distances_df.to_csv("wcctci_coord_distances.csv")
 
     return (df , coord_distances_df)
 
