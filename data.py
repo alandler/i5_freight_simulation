@@ -23,7 +23,7 @@ def set_random_speed_columns(distances_df):
         distances_df["speed_"+str(i)] = free_flow_speed*random.gauss(hour_factors[i],.05)
     return distances_df
 
-def get_station_g(stations_df, distances_df, battery_capacity = 215):
+def get_station_g(stations_df, distances_df, km_per_percent = 1.15):
     ''' Return a networkx graph containing an augmented graph of the physical network.
     '''
     # add nodes with IDs, charging_rates, positions
@@ -40,7 +40,7 @@ def get_station_g(stations_df, distances_df, battery_capacity = 215):
                         weight= row["Total_TravelTime"]/60,
                         time = row["Total_TravelTime"]/60,
                         length= row["Total_Kilometers"],
-                        battery_cost = row["Total_Kilometers"]*1.9/battery_capacity*100) # battery cost as a percent of total battery capacity consumed (assuming battery capacity of 215kWh)
+                        battery_cost = row["Total_Kilometers"]/km_per_percent) # battery cost as a percent of total battery capacity consumed (assuming battery capacity of 215kWh)
 
     return station_g
 
