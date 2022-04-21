@@ -1,17 +1,12 @@
 # i5_freight_simulation
 Simulate freight demand and electric vehicle charging along the I-5
 
-# Collaboration
+# Cloning
 You might need some configuration on your github accounts.
 1. Open the terminal.
 2. <code>cd</code> to navigate to the directory where you want the code to be
 3. <code> git clone git@github.com:alandler/i5_freight_simulation.git </code> to clone the repo. 
     if this throws an error, follow instructions to configure git
-4. <code> git checkout -b [your_branch_name] </code> to create a new branch.
-5. Once you make edits run 
-    1. <code> git add [filename1] [filename2] ... </code> to add changes. <code> git add -A </code> will add all changes.
-    2. <code> git commit -m [message to describe changes; very short] </code>
-    3. <code> git push origin [your_branch_name] </code> to push to github.
 
 # Objective
 
@@ -23,22 +18,26 @@ The repository is set up for the I-5 use case.
 
 * Use the interactive jupyter notebook.
 
-1. Create a simulation <code>sim = Simulation(station_G)</code> where <code>station_G = get_station_G()</code>
-
-> Files required for station_G:
-> - data/distances.csv
-> - data/stations.csv
-
-2. Adjust parameters
-- <code> sim.simulation_length </code> defaults to 24 hours.
-- <code> sim.time_interval </code> defaults to .2 hours.
-- <code> sim.battery_interval </code> defaults to 25%.
-
-3. Create source and destination demands
-- <code>sim.add_dst(dst, score)</code> where 0 is least desiriable and 10 is most.
-- <code>sim.add_src(src, src_distr)</code> where <code>src_distr</code> is a length-24 array with each item is a demand in trucks per hour at that hour of day (12am, 1am, ...).
-
-4. Call <code>res = sim.run()</code> to run the simulation. <code> res </code> will be the returned metrics.
+1. Declare variables
+    <code> simulation_length = 24
+        battery_interval = 20
+        km_per_percent = 3.13
+        stations_path = "data/wcctci_stations-updated.csv"
+        distances_path = "data/wcctci_coord_distances.csv"
+     </code>
+2. Create a simmulation object: 
+    <code> sim = Simulation("wcctci_updated_paths", stations_path, distances_path, simulation_length, battery_interval, km_per_percent) </code>
+3. Add demand modeling in one of two ways:
+    1. <code>sim.add_demand_nodes()</code> will add demand with supernodes at I-5 popular locations (LA, SF, etc)
+    2. Create source and destination demands
+        - <code>sim.add_dst(dst, score)</code> where 0 is least desiriable and 10 is most.
+        - <code>sim.add_src(src, src_distr)</code> where <code>src_distr</code> is a length-24 array with each item is a demand in trucks per hour at that          hour of day (12am, 1am, ...).
+4. Call <code> metrics = sim.run()</code> to run the simulation. 
+5. Load a saved simulation from a pickle using: 
+            <code> 
+            with open('trials/' + pickle_file, 'rb') as inp:
+            res= pickle.load(inp)
+            </code> 
 
 # Testing
 

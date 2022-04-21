@@ -17,7 +17,7 @@ class Simulation():
     '''Create a class for a simulation'''
     
     #################### Initialization #################### 
-    def __init__(self, name, stations_csv_path, distances_csv_path, simulation_length = 24, battery_interval = 25, km_per_percent = 1.15):
+    def __init__(self, name, stations_csv_path, distances_csv_path, simulation_length = 24, battery_interval = 25, kwh_per_km = 1.9, battery_capacity = 215):
 
         # electricity_data
         # TODO: currently simulation sums over full grid, rather than per state
@@ -31,7 +31,8 @@ class Simulation():
 
         # graphs
         self.station_g = get_station_g(self.stations_df, self.distances_df)
-        self.battery_g = layer_graph(self.station_g, battery_interval, km_per_percent)
+        self.km_per_percent = battery_capacity/(100*kwh_per_km)
+        self.battery_g = layer_graph(self.station_g, battery_interval, km_per_percent= self.km_per_percent)
         self.station_demand_g = self.station_g.copy()
 
         # intervals
@@ -388,11 +389,12 @@ class Simulation():
         self.data["total_kw"].append(electricity_use)
 
 if __name__ == "__main__":
-    simulation_length = 24
-    battery_interval = 20
-    km_per_percent = 3.13
-    stations_path = "data/wcctci_stations-updated.csv"
-    distances_path = "data/wcctci_coord_distances.csv"
-    sim = Simulation("wcctci_updated_paths", stations_path, distances_path, simulation_length, battery_interval, km_per_percent)
-    sim.add_demand_nodes()
-    metrics = sim.run()
+    for i in tqdm(range(10)):
+        simulation_length = 24
+        battery_interval = 20
+        km_per_percent = 3.13
+        stations_path = "data/wcctci_stations-updated.csv"
+        distances_path = "data/wcctci_coord_distances.csv"
+        sim = Simulation("wcctci_updated_paths", stations_path, distances_path, simulation_length, battery_interval, km_per_percent)
+        sim.add_demand_nodes()
+        metrics = sim.run()
