@@ -54,7 +54,8 @@ class Simulation():
         # metrics
         self.data = {"num_cars_at_station": [],
                         "total_kw":[],
-                        "num_vehicles_total":[]}
+                        "num_vehicles_total":[],
+                        "failed_paths": []}
         self.metrics = None
         self.state = {}
 
@@ -336,6 +337,17 @@ class Simulation():
             num_trucks_released = int(round(self.src_dict[src][hour]*self.time_interval, 0)) # TODO: inject randomness
             destinations = self.get_random_destination(num_trucks_released, src)
             for truck_i in range(num_trucks_released): # get shortest paths for each truck
+                # if path DNE record and add a different src,dst
+                path_ok = False
+                dst = destinations[truck_i]
+                while path_ok==False:
+                    try: 
+                        nx.shortest_path(self.battery_g, self.src, dst)
+                        path_ok = True
+                    except:
+                        self.data["failed_paths"].append((src, dst))
+                        dst = self.get_random_destination(1, src)
+                # proceed with adding vehicle
                 truck = Vehicle(self, src, destinations[truck_i], self.simulation_index)
                 self.vehicle_list.append(truck)
                 shortest_path = nx.shortest_path(self.battery_g, src, destinations[truck_i])
