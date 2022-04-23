@@ -342,11 +342,13 @@ class Simulation():
                 dst = destinations[truck_i]
                 while path_ok==False:
                     try: 
-                        nx.shortest_path(self.battery_g, self.src, dst)
+                        nx.shortest_path(self.battery_g, src, dst)
                         path_ok = True
+                        break
                     except:
                         self.data["failed_paths"].append((src, dst))
-                        dst = self.get_random_destination(1, src)
+                        dst = self.get_random_destination(1, src)[0]
+                       
                 # proceed with adding vehicle
                 truck = Vehicle(self, src, destinations[truck_i], self.simulation_index)
                 self.vehicle_list.append(truck)
