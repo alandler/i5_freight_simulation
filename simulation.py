@@ -30,8 +30,8 @@ class Simulation():
         self.stations_df, self.distances_df = select_dataset(stations_csv_path, distances_csv_path)
 
         # graphs
-        self.station_g = get_station_g(self.stations_df, self.distances_df)
         self.km_per_percent = battery_capacity/(100*kwh_per_km)
+        self.station_g = get_station_g(self.stations_df, self.distances_df, self.km_per_percent)
         self.battery_g = layer_graph(self.station_g, battery_interval, km_per_percent= self.km_per_percent)
         self.station_demand_g = self.station_g.copy()
 
@@ -117,10 +117,11 @@ class Simulation():
         for index, row in demand_df.iterrows():
             # get stations that should connect to a demand node
             nearby_stations, nearby_stations_distances = get_stations_within_euclidean(coords[index], self.stations_df)
-            # connect to the source/sink nodes in battery_g (TODO: is it necessary to add to station_g?)
+            # connect to the source/sink nodes in battery_g and station_demand_g
             for i, station in enumerate(nearby_stations):
                 km_distance = nearby_stations_distances[i]*111
                 travel_time = km_distance/100 # assume 100 km/h
+                # print("src: ", row["Name"], " to ", str(station)) # For Debugging
                 self.battery_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
                 self.battery_g.add_edge(str(station), row["Name"], weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
                 self.station_demand_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
@@ -147,9 +148,11 @@ class Simulation():
         return paths[edge_label]
     
     #################### Producers ####################
-    def get_random_destination(self, n, src):
+    def get_random_destination(self, n, src, removed_dsts = []):
         ''' Gets random destination according to probability distribution of scores'''
-        dst_list = [key for key in self.dst_dict if key != src]
+        dst_list = [key for key in self.dst_dict if key != src and key not in removed_dsts]
+        if len(dst_list) == 0:
+            raise ValueError
         desirability_score_list= [self.dst_dict[key] for key in self.dst_dict if key != src]
         total_score = sum(desirability_score_list)
         destination_probabilities = [desirability_score_list[i]/total_score for i in range(len(desirability_score_list))]
@@ -286,7 +289,8 @@ class Simulation():
         if len(src_dest_df)==0:
             print(src, dst, h_index)
         avg_speed = src_dest_df.iloc[0]["speed_"+str(h_index)] # Get speed at time-of-day = h_index (use "speed_"+h_index) 
-        time = src_dest_df.iloc[0]["Total_Kilometers"]/avg_speed # Convert to time... d=rt t=d/r
+        randomized_avg_speed = np.random.normal(avg_speed, 2)
+        time = src_dest_df.iloc[0]["Total_Kilometers"]/randomized_avg_speed # Convert to time... d=rt t=d/r
 
         # update battery graph
         # with open("test.txt", "a") as myfile:
@@ -311,7 +315,7 @@ class Simulation():
 
     def update_charging_times(self):
         for node in self.station_g.nodes:
-            additional_wait_time = len(self.battery_g.nodes[node]["queue"]) * random.gauss(75/self.station_g.nodes[node]["charging_rate"], .5)
+            additional_wait_time = len(self.battery_g.nodes[node]["queue"]) * np.random.normal(75/self.station_g.nodes[node]["charging_rate"], .5)
             self.add_charger_wait_time(node, additional_wait_time)
         
     def add_charger_wait_time(self, station, time):
@@ -334,12 +338,17 @@ class Simulation():
 
         # iterate over all source nodes, release x trucks according to their hourly distribution
         for src in self.src_dict:
-            num_trucks_released = int(round(self.src_dict[src][hour]*self.time_interval, 0)) # TODO: inject randomness
+            num_trucks_released_average = int(round(self.src_dict[src][hour]*self.time_interval, 0))
+            num_trucks_released = int(np.random.normal(num_trucks_released_average, 5))
+            if num_trucks_released < 0: #can't be negative releases
+                num_trucks_released = 0
             destinations = self.get_random_destination(num_trucks_released, src)
+            src_failed = False
             for truck_i in range(num_trucks_released): # get shortest paths for each truck
                 # if path DNE record and add a different src,dst
                 path_ok = False
                 dst = destinations[truck_i]
+                removed_dsts = []
                 while path_ok==False:
                     try: 
                         nx.shortest_path(self.battery_g, src, dst)
@@ -347,8 +356,12 @@ class Simulation():
                         break
                     except:
                         self.data["failed_paths"].append((src, dst))
-                        dst = self.get_random_destination(1, src)[0]
-                       
+                        removed_dsts.append(dst)
+                        dst = self.get_random_destination(1, src, removed_dsts)[0]
+                        if dst == None:
+                            src_failed = True
+                if src_failed == True:
+                    continue
                 # proceed with adding vehicle
                 truck = Vehicle(self, src, dst, self.simulation_index)
                 self.vehicle_list.append(truck)
@@ -356,6 +369,11 @@ class Simulation():
 
     def run(self):
         ''' Run the simulation; return the statistics '''
+        # check for connected graph first
+        if nx.number_strongly_connected_components(self.battery_g) > 1:
+            print("Strongly connected components:", nx.number_strongly_connected_components(self.battery_g))
+            print("Weakly connected components:", nx.number_weakly_connected_components(self.battery_g))
+            print("Weakly connected?:", nx.is_weakly_connected(self.battery_g))
         for h_step in tqdm(range(self.simulation_length)): # go for simulation_length in hours
             self.update_hourly_road_time(h_step)
             for i_step in range(int(1/self.time_interval)): # go in interval segments
@@ -404,9 +422,11 @@ if __name__ == "__main__":
     for i in tqdm(range(10)):
         simulation_length = 24
         battery_interval = 20
-        km_per_percent = 3.13
-        stations_path = "data/wcctci_stations-updated.csv"
-        distances_path = "data/wcctci_coord_distances.csv"
-        sim = Simulation("wcctci_updated_paths", stations_path, distances_path, simulation_length, battery_interval, km_per_percent)
+        kwh_per_km = 1.15
+        battery_capacity = 215
+        name = "random_trials_wcctci"
+        stations_csv_path = "data/wcctci_stations-updated.csv"
+        distances_csv_path = "data/wcctci_coord_distances.csv"
+        sim = Simulation(name, stations_csv_path, distances_csv_path, simulation_length, battery_interval, kwh_per_km, battery_capacity)
         sim.add_demand_nodes()
         metrics = sim.run()

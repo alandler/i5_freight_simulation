@@ -10,7 +10,7 @@ def find_nearest_increment(n, increment=25):
         curr += increment
     return curr
 
-def layer_graph(graph, increment= 25, km_per_percent = 3.13):
+def layer_graph(graph, increment= 25, km_per_percent = 1.15):
     '''Creates a duplicated graph, where each node contains all battery levels both in and out. 
     Directed edges exist from out to in and in to out, the former being roads, and the latter being charging.
     The size of the graph is 3V + VE^2 '''
