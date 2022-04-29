@@ -56,6 +56,10 @@ class Simulation():
                         "total_kw":[],
                         "num_vehicles_total":[],
                         "failed_paths": []}
+        self.updated_data = {"num_cars_at_station": [],
+                        "total_kw":[],
+                        "num_vehicles_total":[],
+                        "failed_paths": []}
         self.metrics = None
         self.state = {}
 
