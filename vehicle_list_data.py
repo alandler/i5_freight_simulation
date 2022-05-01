@@ -1,16 +1,16 @@
 import numpy as np
 
 def get_array(sim):
-    locations = np.full((len(sim.vehicle_list),int(sim.simulation_length/sim.time_interval+1)), fill_value="").tolist()
+    locations = np.full((len(sim.vehicle_list),int(sim.simulation_length/sim.time_interval)), fill_value="").tolist()
     for row, vehicle in enumerate(sim.vehicle_list):
         i = vehicle.start_time
-        j = vehicle.start_time + len(vehicle.locations)+1
+        j = vehicle.start_time + len(vehicle.locations)
         str_locations = [loc[0]+":"+loc[1] for loc in vehicle.locations]
         locations[row][i:j] = str_locations
     return np.array(locations)
 
-def get_edge_totals(sim):
-    arr = get_array(sim)
+def get_edge_totals(arr):
+#     arr = get_array(sim)
     edges={}
     for entry in arr:
         loc = entry.split(":")
@@ -26,11 +26,12 @@ def get_edge_totals(sim):
     return edges
 
 def get_index_edge_totals(sim):
-    return np.apply_along_axis(get_edge_totals, 1, sim)
+    locations = get_array(sim)
+    return np.apply_along_axis(get_edge_totals, 1, locations.T)
 
 def get_node_totals(sim):
     sim_edge_totals = get_index_edge_totals(sim)
-    sim_length_indices = int(sim.simulation_length/sim.time_interval+1)
+    sim_length_indices = int(sim.simulation_length/sim.time_interval)
     node_totals = {}
     for sim_index in range(sim_length_indices):
         node_totals[sim_index] = {node: sim_edge_totals[sim_index][(node, node)] if (node, node) in sim_edge_totals[sim_index] else 0 for node in sim.station_g.nodes}
@@ -38,7 +39,7 @@ def get_node_totals(sim):
 
 def get_road_totals(sim):
     sim_edge_totals = get_index_edge_totals(sim)
-    sim_length_indices = int(sim.simulation_length/sim.time_interval+1)
+    sim_length_indices = int(sim.simulation_length/sim.time_interval)
     road_totals = {}
     for sim_index in range(sim_length_indices):
         road_totals[sim_index] = {edge: sim_edge_totals[sim_index][edge] if edge in sim_edge_totals[sim_index] else 0 for edge in sim.station_g.edges}
@@ -47,7 +48,7 @@ def get_road_totals(sim):
 def get_node_queue_lengths(sim):
     charging_and_queue_totals = get_node_totals(sim)
     queue_totals = {}
-    sim_length_indices = int(sim.simulation_length/sim.time_interval+1)
+    sim_length_indices = int(sim.simulation_length/sim.time_interval)
     for sim_index in range(sim_length_indices):
         for node in charging_and_queue_totals:
             total_minus_capacity = charging_and_queue_totals[sim_index][node] - sim.station_g.nodes[node]['physical_capacity']
@@ -57,7 +58,7 @@ def get_node_queue_lengths(sim):
 def get_vehicles_charging(sim):
     charging_and_queue_totals = get_node_totals(sim)
     charging_totals = {}
-    sim_length_indices = int(sim.simulation_length/sim.time_interval+1)
+    sim_length_indices = int(sim.simulation_length/sim.time_interval)
     for sim_index in range(sim_length_indices):
         for node in charging_and_queue_totals:
             total_minus_capacity = charging_and_queue_totals[sim_index][node] - sim.station_g.nodes[node]['physical_capacity']
@@ -77,6 +78,9 @@ def get_utilization(sim):
     sim_length_indices = int(sim.simulation_length/sim.time_interval+1)
     for sim_index in range(sim_length_indices):
         for node in charging_and_queue_totals:
-            utilization_totals[sim_index][node] = charging_and_queue_totals[sim_index][node]/sim.station_g.nodes[node]['physical_capacity']
+            if sim_index in utilization_totals:
+                utilization_totals[sim_index]= {}
+            else:
+                utilization_totals[sim_index][node] = charging_and_queue_totals[sim_index][node]/sim.station_g.nodes[node]['physical_capacity']
     return utilization_totals
 
