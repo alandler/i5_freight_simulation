@@ -75,10 +75,10 @@ def get_total_vehicles_in_queues(sim):
 def get_utilization(sim):
     charging_and_queue_totals = get_node_totals(sim)
     utilization_totals = {}
-    sim_length_indices = int(sim.simulation_length/sim.time_interval+1)
+    sim_length_indices = int(sim.simulation_length/sim.time_interval)
     for sim_index in range(sim_length_indices):
-        for node in charging_and_queue_totals:
-            if sim_index in utilization_totals:
+        for node in charging_and_queue_totals[sim_index]:
+            if sim_index not in utilization_totals:
                 utilization_totals[sim_index]= {}
             else:
                 utilization_totals[sim_index][node] = charging_and_queue_totals[sim_index][node]/sim.station_g.nodes[node]['physical_capacity']
