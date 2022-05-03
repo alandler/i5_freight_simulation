@@ -97,7 +97,7 @@ class Simulation():
         self.demand_df = pd.read_csv(demand_csv_path)
 
         # Add the nodes to the graph, and add as sources/dsts
-        for index, row in demand_df.iterrows():
+        for index, row in self.demand_df.iterrows():
             self.battery_g.add_node(str(row["Name"])+"_src", pos = (row["longitude"], row["latitude"]), demand=True)
             self.battery_g.add_node(str(row["Name"])+"_dst", pos = (row["longitude"], row["latitude"]), demand=True)
             self.station_demand_g.add_node(str(row["Name"]), pos = (row["longitude"], row["latitude"]), demand=True)
@@ -119,8 +119,8 @@ class Simulation():
         
         # Add edges from the demand nodes to the src/sink nodes
         battery_capacity = 215 # TODO: this does not update; parameterize
-        coords = list(zip(demand_df['longitude'], demand_df['latitude']))
-        for index, row in demand_df.iterrows():
+        coords = list(zip(self.demand_df['longitude'], self.demand_df['latitude']))
+        for index, row in self.demand_df.iterrows():
             # get stations that should connect to a demand node
             nearby_stations, nearby_stations_distances = get_stations_within_euclidean(coords[index], self.stations_df)
             # connect to the source/sink nodes in battery_g and station_demand_g
@@ -326,7 +326,9 @@ class Simulation():
 
     def update_charging_times(self):
         for node in self.station_g.nodes:
-            additional_wait_time = len(self.battery_g.nodes[node]["queue"]) * np.random.normal(75/self.station_g.nodes[node]["charging_rate"], .5)
+            avg_time = np.random.normal(75/self.station_g.nodes[node]["charging_rate"], .25) 
+            avg_time = avg_time if avg_time > 0 else .25
+            additional_wait_time = len(self.battery_g.nodes[node]["queue"]) * avg_time
             self.add_charger_wait_time(node, additional_wait_time)
         
     def add_charger_wait_time(self, station, time):
@@ -397,12 +399,18 @@ class Simulation():
                 self.simulation_index += 1
                 self.record_data()
                 self.update_charging_times()
+                self.validation_checks()
             self.simulation_hour_index += 1
 
             # for each src dst pair 
         self.calculate_metrics()
         self.save_simulation()
         return self.metrics
+
+    def validation_checks(self):
+        for edge in self.battery_g.edges:
+            if self.battery_g.edges[edge]["weight"]<0:
+                raise ValueError("Negative weight on edge: ", str(edge))
 
     def save_simulation(self):
         ''' Saves the simulation object as a pickle file.
@@ -418,7 +426,7 @@ class Simulation():
         ''' Record vehicles at each charging node, electricity grid total usage, and queues'''
         node_car_total = {node:0 for node in list(self.station_g.nodes)}
         for vehicle in self.vehicle_list:
-            if "in" in vehicle.location[0] and "out" in vehicle.location[1]: #charging edge
+            if "_in" in vehicle.location[0] and "_out" in vehicle.location[1]: #charging edge
                 charging_station_name = vehicle.location[0].split("_")[0]
                 node_car_total[charging_station_name] += 1
 
