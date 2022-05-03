@@ -97,7 +97,8 @@ class Simulation():
 
         # Add the nodes to the graph, and add as sources/dsts
         for index, row in demand_df.iterrows():
-            self.battery_g.add_node(str(row["Name"]), pos = (row["longitude"], row["latitude"]), demand=True)
+            self.battery_g.add_node(str(row["Name"])+"_src", pos = (row["longitude"], row["latitude"]), demand=True)
+            self.battery_g.add_node(str(row["Name"])+"_dst", pos = (row["longitude"], row["latitude"]), demand=True)
             self.station_demand_g.add_node(str(row["Name"]), pos = (row["longitude"], row["latitude"]), demand=True)
             self.add_src(str(row["Name"]), row[-24:].to_numpy())
             self.add_dst(str(row["Name"]), row["dst_score"])
@@ -125,11 +126,16 @@ class Simulation():
             for i, station in enumerate(nearby_stations):
                 km_distance = nearby_stations_distances[i]*111
                 travel_time = km_distance/100 # assume 100 km/h
-                # print("src: ", row["Name"], " to ", str(station)) # For Debugging
-                self.battery_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
-                self.battery_g.add_edge(str(station), row["Name"], weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
-                self.station_demand_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
-                self.station_demand_g.add_edge(str(station), row["Name"], weight = travel_time, time = travel_time, length = km_distance, battery_cost = (km_distance*1.9/battery_capacity*100), demand=True) 
+                battery_cost = (km_distance*1.9/battery_capacity*100)
+
+                # build into battery graph with layers (divide demand _src and _dst nodes)
+                self.battery_g.add_edge(row["Name"]+"_src", str(station)+"_100_out", weight = travel_time, time = travel_time, length = km_distance, battery_cost = battery_cost, demand=True) # demand_src to node_100_out
+                for battery_layer in self.battery_layers: # all node_{}_out to demand_dst
+                    self.battery_g.add_edge(str(station)+"_"+str(battery_layer)+"_in", row["Name"]+"_dst", weight = travel_time, time = travel_time, length = km_distance, battery_cost = battery_cost, demand=True) 
+                
+                # no src, dst in non-layered graph
+                self.station_demand_g.add_edge(row["Name"], str(station), weight = travel_time, time = travel_time, length = km_distance, battery_cost = battery_cost, demand=True) 
+                self.station_demand_g.add_edge(str(station), row["Name"], weight = travel_time, time = travel_time, length = km_distance, battery_cost = battery_cost, demand=True) 
 
             
     #################### Observers ####################
@@ -157,7 +163,7 @@ class Simulation():
         dst_list = [key for key in self.dst_dict if key != src and key not in removed_dsts]
         if len(dst_list) == 0:
             raise ValueError
-        desirability_score_list= [self.dst_dict[key] for key in self.dst_dict if key != src]
+        desirability_score_list= [self.dst_dict[key] for key in dst_list]
         total_score = sum(desirability_score_list)
         destination_probabilities = [desirability_score_list[i]/total_score for i in range(len(desirability_score_list))]
         random_destinations = np.random.choice(dst_list, size = n, replace = True, p=destination_probabilities)
@@ -328,9 +334,14 @@ class Simulation():
             in_label = station + "_"+ str(in_battery_level) + "_in"
             for out_label in self.battery_g.neighbors(in_label):
                 if "_out" in out_label and self.battery_g[in_label][out_label]["time"] != 0: # not sink and doesn't go straight through without charging
+                    prev = self.battery_g[in_label][out_label]["weight"]
                     self.battery_g[in_label][out_label]["weight"] = self.battery_g[in_label][out_label]["time"] +  time
         return self.battery_g
 
+    def append_file(self, file, s):
+        f = open(file, 'a')
+        f.write(s)
+        f.close()
     #################### Simulation Run ####################
     def step(self, h_step, i_step):
         ''' one simulation step '''
@@ -355,7 +366,7 @@ class Simulation():
                 removed_dsts = []
                 while path_ok==False:
                     try: 
-                        nx.shortest_path(self.battery_g, src, dst)
+                        nx.shortest_path(self.battery_g, src+"_src", dst+"_dst")
                         path_ok = True
                         break
                     except:
@@ -423,14 +434,13 @@ class Simulation():
         self.data["total_kw"].append(electricity_use)
 
 if __name__ == "__main__":
-    for i in tqdm(range(10)):
-        simulation_length = 24
-        battery_interval = 20
-        kwh_per_km = 1.15
-        battery_capacity = 215
-        name = "random_trials_wcctci"
-        stations_csv_path = "data/wcctci_stations-updated.csv"
-        distances_csv_path = "data/wcctci_coord_distances.csv"
-        sim = Simulation(name, stations_csv_path, distances_csv_path, simulation_length, battery_interval, kwh_per_km, battery_capacity)
-        sim.add_demand_nodes()
-        metrics = sim.run()
+    simulation_length = 7
+    battery_interval = 20
+    kwh_per_km = 1.15
+    battery_capacity = 430 #215
+    name = "bug_fix_sink_cycle"
+    stations_csv_path = "data/wcctci_stations-updated.csv"
+    distances_csv_path = "data/wcctci_coord_distances.csv"
+    sim = Simulation(name, stations_csv_path, distances_csv_path, simulation_length, battery_interval, kwh_per_km, battery_capacity)
+    sim.add_demand_nodes()
+    metrics = sim.run()

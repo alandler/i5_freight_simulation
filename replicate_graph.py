@@ -38,10 +38,9 @@ def layer_graph(graph, increment= 25, km_per_percent = 1.15):
         battery_cost = graph.get_edge_data(src, dst)['battery_cost']
 
         # create all pairwise edges between the src and dest at all appropriate battery levels
-        for src_layer in range(num_layers):
-            src_battery = src_layer*increment  # number
-            src_label = str(src) + "_" + str(src_layer* \
-                            increment) + "_out"  # source node is _out
+        for src_layer_index, _ in enumerate(range(num_layers)):
+            src_battery = battery_layers[src_layer_index]  # number
+            src_label = str(src) + "_" + str(src_battery) + "_out"  # source node is _out
 
             # check battery sufficient to travel from _out to _in
             if km_per_percent*src_battery > road_len:
@@ -78,13 +77,13 @@ def layer_graph(graph, increment= 25, km_per_percent = 1.15):
                         output_graph.add_edge(src_label, dst_label, weight = 0, time = 0, length = 0)
                     else:
                         output_graph.add_edge(src_label, dst_label, weight = charging_time, time = charging_time, length = battery_difference) # _in to _out
-                    output_graph.add_edge(dst_label, str(node), weight = 0, length = 0) # _out to sink
+                    # output_graph.add_edge(dst_label, str(node), weight = 0, length = 0) # _out to sink
             else: # is a node without a charging station
                 dst_label = str(node) + "_" + str(src_battery_layer) + "_out"
                 output_graph.add_edge(src_label, dst_label, weight=0, length=0)
-                output_graph.add_edge(dst_label, str(node), weight=0, length=0)  # _out to sink
+                # output_graph.add_edge(dst_label, str(node), weight=0, length=0)  # _out to sink
 
-            if src_battery_layer == 100: # always start with 100% charge
-                output_graph.add_edge(str(node), src_label, weight=0, time=0, length=0)  # sink to _in
+            # if src_battery_layer == 100: # always start with 100% charge
+            #     output_graph.add_edge(str(node), src_label, weight=0, time=0, length=0)  # sink to _in
 
     return output_graph

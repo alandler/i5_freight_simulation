@@ -52,10 +52,6 @@ def prune_station_g(station_g, max_distance = 500):
         if station_g.edges[edge]["length"] >= max_distance:
             station_g.remove_edge(*edge)
 
-def ingest_demand_data():
-    ''' TODO: USE PEMMS'''
-    pass
-
 def ingest_avg_speed_data(stations_df, distances_df):
     ''' Ingest PEMS data and extract speeds at road endpoints 
     Requires: longitude, latitude as columns in stations_df'''

@@ -10,7 +10,6 @@ def get_array(sim):
     return np.array(locations)
 
 def get_edge_totals(arr):
-#     arr = get_array(sim)
     edges={}
     for entry in arr:
         loc = entry.split(":")

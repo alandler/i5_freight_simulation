@@ -13,6 +13,7 @@ class Vehicle():
 
         # calculated
         self.path = self.get_shortest_path()
+        self.baseline_battery_path_time = None
         self.baseline_time = self.get_baseline_travel_time()
 
         self.locations = [(self.path[0],self.path[1])]
@@ -35,7 +36,7 @@ class Vehicle():
         time_interval = self.simulation.time_interval # start out with entire interval to travel
         while time_interval>0:
             # If the vehicle has reached its destination store travel time and travel delay
-            if self.dst == self.location[1]:
+            if self.dst+"_dst" == self.location[1]:
                 self.finished = True
                 end_index = self.simulation.simulation_index # end simulation index
                 travel_length = end_index - self.start_time # length of travel in iteration units
@@ -84,7 +85,7 @@ class Vehicle():
                 break # step is over
             else: # move to next segment, update parameters
                 time_interval -= time_left 
-                if "_out" in self.location[1]: # if leaving a charging station, decrement number of vehicles charging at that station
+                if "_in" in self.location[0] and "_out" in self.location[1]: # if leaving a charging station, decrement number of vehicles charging at that station
                     sink_node_label = self.location[0].split("_")[0]
                     self.simulation.battery_g.nodes[sink_node_label]["num_vehicles_charging"]-=1
                 self.set_next_location()
@@ -102,12 +103,13 @@ class Vehicle():
     def get_shortest_path(self):
         '''Calculate shortest path'''
         G = self.simulation.battery_g
-        return nx.shortest_path(G, self.src, self.dst)
+        return nx.shortest_path(G, self.src+"_src", self.dst+"_dst", weight="weight")
 
     def get_baseline_travel_time(self):
         ''' Calculate the travel time a vehicle would experience if not an electric vehicle '''
         # Use graph without charging layers
         G = self.simulation.station_demand_g
+        self.baseline_battery_path_time = nx.shortest_path_length(self.simulation.battery_g, self.src+"_src", self.dst+"_dst", weight="weight")
 
         # Return shortest path length
         return nx.shortest_path_length(G, self.src, self.dst, weight="weight")
