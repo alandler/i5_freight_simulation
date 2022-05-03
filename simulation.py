@@ -28,6 +28,7 @@ class Simulation():
         # data
         self.name = name
         self.stations_df, self.distances_df = select_dataset(stations_csv_path, distances_csv_path)
+        self.demand_df = None
 
         # graphs
         self.km_per_percent = battery_capacity/(100*kwh_per_km)
@@ -93,7 +94,7 @@ class Simulation():
             self.add_dst(node, score)
 
     def add_demand_nodes(self, demand_csv_path="data/demand_nodes.csv"):
-        demand_df = pd.read_csv(demand_csv_path)
+        self.demand_df = pd.read_csv(demand_csv_path)
 
         # Add the nodes to the graph, and add as sources/dsts
         for index, row in demand_df.iterrows():
