@@ -17,6 +17,7 @@ class Vehicle():
         self.baseline_time = self.get_baseline_travel_time()
 
         self.locations = [(self.path[0],self.path[1])]
+        self.location_types = ["demand"]
         self.path_i = 0
         self.location = (self.path[0],self.path[1]) # (src, dst)
         self.distance_along_segment = 0 # km or battery % travelled so far
@@ -42,7 +43,8 @@ class Vehicle():
                 travel_length = end_index - self.start_time # length of travel in iteration units
                 self.travel_time = self.simulation.time_interval*travel_length # calculate and store total travel time
                 self.travel_delay = self.travel_time - self.baseline_time # calculate and store travel delay experienced by the vehicle
-                self.locations.append(self.location)
+                self.locations.append(self.location) # add location at end (before return ends step)
+                self.location_types.append(get_location_type(self.location))
                 return
 
             # If entering a charging node (and not just passing through), add the car to the queue
@@ -92,6 +94,7 @@ class Vehicle():
                 self.distance_along_segment = 0
 
         self.locations.append(self.location) # only set the location at the end of the simulation_index (even if multiple are traversed)
+        self.location_types.append(get_location_type(self.location))
     
     def set_next_location(self):
         ''' increment mile location '''
@@ -117,3 +120,25 @@ class Vehicle():
     def recalculate_path(self):
         '''Recalculate path: Not needed I think'''
         raise NotImplementedError
+
+def get_location_type(edge, distance_along_segment = 1):
+    ''' Returns the type of edge {queue, charging, road, src, dst, None}
+        defaults to charging over queued if not otherwise given'''
+    if "_in" in edge[0] and "_out" in edge[1]:
+        battery_in = edge[0].split("_")[1]
+        battery_out = edge[1].split("_")[1]
+        if battery_in != battery_out:
+            if distance_along_segment==0:
+                return "queue"
+            else:
+                return "charging"
+        else:
+            return "pass"
+    elif "_out" in edge[0] and "_in" in edge[0]:
+        return "road"
+    elif "_src" in edge[0]:
+        return "src"
+    elif "_dst" in edge[1]:
+        return "dst"
+    else:
+        return None
