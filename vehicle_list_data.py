@@ -46,22 +46,26 @@ def get_road_totals(sim):
 
 def get_node_queue_lengths(sim):
     charging_and_queue_totals = get_node_totals(sim)
-    queue_totals = {}
+    queue_totals = {sim_index:{} for sim_index in charging_and_queue_totals}
     sim_length_indices = int(sim.simulation_length/sim.time_interval)
     for sim_index in range(sim_length_indices):
-        for node in charging_and_queue_totals:
+        for node in charging_and_queue_totals[sim_index]:
             total_minus_capacity = charging_and_queue_totals[sim_index][node] - sim.station_g.nodes[node]['physical_capacity']
             queue_totals[sim_index][node] = total_minus_capacity if total_minus_capacity>0 else 0
     return queue_totals
 
 def get_vehicles_charging(sim):
     charging_and_queue_totals = get_node_totals(sim)
-    charging_totals = {}
+    charging_totals = {sim_index:{} for sim_index in charging_and_queue_totals}
     sim_length_indices = int(sim.simulation_length/sim.time_interval)
     for sim_index in range(sim_length_indices):
-        for node in charging_and_queue_totals:
-            total_minus_capacity = charging_and_queue_totals[sim_index][node] - sim.station_g.nodes[node]['physical_capacity']
-            charging_totals[sim_index][node] = -total_minus_capacity if total_minus_capacity<0 else sim.station_g.nodes[node]['physical_capacity']
+        for node in charging_and_queue_totals[sim_index]:
+            total_vehicles = charging_and_queue_totals[sim_index][node]
+            physical_capacity = sim.station_g.nodes[node]['physical_capacity']
+            if total_vehicles <= physical_capacity:
+                charging_totals[sim_index][node] = total_vehicles
+            else:
+                charging_totals[sim_index][node] = physical_capacity
     return charging_totals
 
 def get_total_vehicles_in_queues(sim):

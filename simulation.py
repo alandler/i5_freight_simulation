@@ -33,7 +33,7 @@ class Simulation():
 
         # graphs
         self.km_per_percent = battery_capacity/(100*kwh_per_km)
-        self.station_g = get_station_g(self.stations_df, self.distances_df, self.km_per_percent)
+        self.station_g = get_station_g(self.stations_df, self.distances_df, self.km_per_percent, self.battery_capacity)
         self.battery_g = layer_graph(self.station_g, battery_interval, km_per_percent= self.km_per_percent)
         self.station_demand_g = self.station_g.copy()
 

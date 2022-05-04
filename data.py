@@ -23,14 +23,14 @@ def set_random_speed_columns(distances_df):
         distances_df["speed_"+str(i)] = free_flow_speed*random.gauss(hour_factors[i],.05)
     return distances_df
 
-def get_station_g(stations_df, distances_df, km_per_percent = 1.15):
+def get_station_g(stations_df, distances_df, km_per_percent = 1.15, battery_capacity=215):
     ''' Return a networkx graph containing an augmented graph of the physical network.
     '''
     # add nodes with IDs, charging_rates, positions
     station_g  = nx.DiGraph()
     for index, row in stations_df.iterrows():
         station_g.add_node(str(row["OID_"]), 
-                            charging_rate = row["charging_rate"],
+                            charging_rate = row["charging_rate"]/battery_capacity*100,
                             pos = (row["longitude"],  row["latitude"]),
                             physical_capacity = row["physical_capacity"])
 
