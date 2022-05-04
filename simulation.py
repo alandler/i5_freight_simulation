@@ -17,14 +17,15 @@ class Simulation():
     '''Create a class for a simulation'''
     
     #################### Initialization #################### 
-    def __init__(self, name, stations_csv_path, distances_csv_path, simulation_length = 24, battery_interval = 25, kwh_per_km = 1.9, battery_capacity = 215):
+    def __init__(self, name, stations_csv_path, distances_csv_path, simulation_length = 24, battery_interval = 25, kwh_per_km = 1.9, battery_capacity = 215, saving_path=""):
 
         # electricity_data
         # TODO: currently simulation sums over full grid, rather than per state
                 # Update the ingest_electricity_data (in data.py), get_electricity_metric (in simulation.py), and record_data (in simulation.py) once this is updated. - this requires a way to see what region each station is in.
                 #Also include posibility to change the seasons... right now it is just always summer
         self.state_electricity_limits = {"CA": ingest_electricity_data()[1]}
-        
+        self.saving_path = saving_path
+
         # data
         self.name = name
         self.stations_df, self.distances_df = select_dataset(stations_csv_path, distances_csv_path)
@@ -282,12 +283,20 @@ class Simulation():
         np_queue_times = np.array([v.queue_time/5 for v in self.vehicle_list if v.travel_time != 0])
         return self.helper_min_med_max_avg_std(np_queue_times)
     
+    def is_charging_edge(self, edge):
+        if "_in" in edge[0] and "_out" in edge[1]:
+            battery_in = edge[0].split("_")[1]
+            battery_out = edge[1].split("_")[1]
+            if battery_in != battery_out:
+                return True
+        return False
+
     def get_hours_spent_charging(self):
         ''' Get average hours spent charging'''
         charging_times = []
         for v in self.vehicle_list:
             if v.travel_time != 0:
-                charging_times.append(len([l for l in v.locations if "in" in l[0] and "out" in l[1]]) - v.queue_time)
+                charging_times.append(len([l for l in v.locations if self.is_charging_edge(l)]) - v.queue_time)
         np_charging_times = np.array(charging_times)
         return self.helper_min_med_max_avg_std(np_charging_times)
 
@@ -387,11 +396,6 @@ class Simulation():
 
     def run(self):
         ''' Run the simulation; return the statistics '''
-        # check for connected graph first
-        if nx.number_strongly_connected_components(self.battery_g) > 1:
-            print("Strongly connected components:", nx.number_strongly_connected_components(self.battery_g))
-            print("Weakly connected components:", nx.number_weakly_connected_components(self.battery_g))
-            print("Weakly connected?:", nx.is_weakly_connected(self.battery_g))
         for h_step in tqdm(range(self.simulation_length)): # go for simulation_length in hours
             self.update_hourly_road_time(h_step)
             for i_step in range(int(1/self.time_interval)): # go in interval segments
@@ -420,7 +424,7 @@ class Simulation():
                 pickle.dump(obj, outp, pickle.HIGHEST_PROTOCOL)
         
         file = self.name + "_" + datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
-        save_object(self, file + ".pkl")
+        save_object(self, self.saving_path+file + ".pkl")
 
     def record_data(self):
         ''' Record vehicles at each charging node, electricity grid total usage, and queues'''
