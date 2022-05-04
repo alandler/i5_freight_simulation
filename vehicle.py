@@ -1,6 +1,8 @@
 from calendar import c
 import networkx as nx
 
+LOCATION_TYPES = ["queue", "charging", "road", "src", "dst"]
+
 class Vehicle():
     '''Create a vehicle to store attributes'''
     def __init__(self, simulation, src, dst, start_time = 0):
@@ -17,7 +19,7 @@ class Vehicle():
         self.baseline_time = self.get_baseline_travel_time()
 
         self.locations = [(self.path[0],self.path[1])]
-        self.location_types = ["demand"]
+        self.location_types = ["src"]
         self.path_i = 0
         self.location = (self.path[0],self.path[1]) # (src, dst)
         self.distance_along_segment = 0 # km or battery % travelled so far
@@ -94,7 +96,7 @@ class Vehicle():
                 self.distance_along_segment = 0
 
         self.locations.append(self.location) # only set the location at the end of the simulation_index (even if multiple are traversed)
-        self.location_types.append(get_location_type(self.location))
+        self.location_types.append(get_location_type(self.location, self.distance_along_segment))
     
     def set_next_location(self):
         ''' increment mile location '''
@@ -121,6 +123,12 @@ class Vehicle():
         '''Recalculate path: Not needed I think'''
         raise NotImplementedError
 
+def get_edge_type_frequencies(vehicle):
+    edge_type_freqs = {loc_type:0 for loc_type in LOCATION_TYPES}
+    for loc_type in vehicle.location_types:
+         edge_type_freqs[loc_type]+=1
+    return edge_type_freqs
+
 def get_location_type(edge, distance_along_segment = 1):
     ''' Returns the type of edge {queue, charging, road, src, dst, None}
         defaults to charging over queued if not otherwise given'''
@@ -134,11 +142,11 @@ def get_location_type(edge, distance_along_segment = 1):
                 return "charging"
         else:
             return "pass"
-    elif "_out" in edge[0] and "_in" in edge[0]:
+    elif "_out" in edge[0] and "_in" in edge[1]:
         return "road"
     elif "_src" in edge[0]:
         return "src"
     elif "_dst" in edge[1]:
         return "dst"
     else:
-        return None
+        return "unknown"

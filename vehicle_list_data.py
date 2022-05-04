@@ -71,8 +71,8 @@ def get_vehicles_charging(sim):
 def get_total_vehicles_in_queues(sim):
     queue_lengths = get_node_queue_lengths(sim)
     vehicles_in_queues = {}
-    for sim_index in sim:
-        vehicles_in_queues[sim_index] = sum(queue_lengths[sim_index])
+    for sim_index in queue_lengths:
+        vehicles_in_queues[sim_index] = sum(queue_lengths[sim_index].values())
     return vehicles_in_queues
 
 def get_utilization(sim):
