@@ -1,8 +1,6 @@
 from calendar import c
 import networkx as nx
 
-LOCATION_TYPES = ["queue", "charging", "road", "src", "dst"]
-
 class Vehicle():
     '''Create a vehicle to store attributes'''
     def __init__(self, simulation, src, dst, start_time = 0):
@@ -122,6 +120,10 @@ class Vehicle():
     def recalculate_path(self):
         '''Recalculate path: Not needed I think'''
         raise NotImplementedError
+
+
+##################### vehicle methods #####################
+LOCATION_TYPES = ["queue", "charging", "road", "src", "dst"]
 
 def get_edge_type_frequencies(vehicle):
     edge_type_freqs = {loc_type:0 for loc_type in LOCATION_TYPES}

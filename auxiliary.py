@@ -120,3 +120,45 @@ percent_time_in_queues = np.array(percent_time_in_queues)
 percent_time_in_queues = percent_time_in_queues[percent_time_in_queues != np.array(None)]
 percent_time_in_queues.mean()
 np.array(raw_time_in_queues).mean()/5
+
+
+
+
+# Create CSV
+columns = ["scenario_number", "iteration", "charging_rate", "km_per_kwh", "battery_capacity", "success",
+           "station_utilization_disp_of_avg", "station_utilization_avg_of_disp", "electricity",
+           "percent_delay", "hours_spent_in_queues", "hours_spent_charging", 
+           "most_utilized_node", "least_utilized_node",
+          "strongly_connected_components", "weakly_connected_components"]
+scenarios_df = scenarios_df[columns]
+
+pickles_by_scenario = get_pickles_by_scenario(file_path)
+
+def get_df_row(sim):
+    arr = [True, 
+           sim.metrics["station_utilization_disp_of_avg"],
+           sim.metrics["station_utilization_avg_of_disp"],
+           sim.metrics["electricity"],
+           sim.metrics["percent_delay"],
+           sim.metrics["hours_spent_in_queues"],
+           sim.metrics["hours_spent_charging"],
+           None,
+           None,
+           nx.number_strongly_connected_components(sim.battery_g), 
+           nx.number_weakly_connected_components(sim.battery_g)]
+    return arr
+
+def get_scenario_attributes(scenarios_df, scenario_index, algorithm_index):
+    row = scenarios_df[(scenarios_df["scenario_number"]==scenario_index) & (scenarios_df["iteration"]==algorithm_index)]
+    return (row.iloc[0]["charging_rate"], row.iloc[0]["km_per_kwh"], row.iloc[0]["battery_capacity"])
+
+df = pd.DataFrame(columns=columns)
+for scenario in tqdm(pickles_by_scenario.keys()):
+    for alg_index, file in enumerate(pickles_by_scenario[scenario]):
+        with open(file_path+file, 'rb') as inp:
+            sim = pickle.load(inp)
+        if alg_index == 9:
+            continue
+        charging_rate, km_per_kwh, battery_capacity = get_scenario_attributes(scenarios_df, int(scenario), alg_index)
+        data = [scenario, alg_index, charging_rate, km_per_kwh, battery_capacity]+get_df_row(sim)
+        df.loc[len(df.index)] = data
