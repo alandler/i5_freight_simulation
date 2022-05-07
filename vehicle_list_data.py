@@ -142,7 +142,7 @@ def get_hours_on_edge_type(sim, finished_status = "finished"):
     steps_per_hour = int(1/sim.time_interval)
     for i, vehicle in enumerate(vehicle_list):
         edge_freqs = get_edge_type_frequencies(vehicle)
-        edge_hours = {key:edge_freqs[key]/steps_per_hour for key in edge_freqs}
+        edge_hours = {key:edge_freqs[key]/steps_per_hour for key in edge_freqs} # key is the loc_type
         for metric in edge_freqs:
             loc_type_all_vehicles[metric][i] = edge_hours[metric]
     return loc_type_all_vehicles
@@ -164,7 +164,7 @@ def get_electricity_usage_per_hour(sim):
 def get_utilization_metric(sim, calc_method = "avg_of_disp"):
     '''avg_of_disp, disp_of_avg'''
     
-    if calc_method == "total_disp_of_avg":
+    if calc_method == "disp_of_avg":
         node_averages = get_node_avgs(sim)
         utilization_dict = {node:node_averages[node]/sim.station_g.nodes[node]["physical_capacity"] for node in node_averages}
         utilization = sorted(list(utilization_dict.values()))
